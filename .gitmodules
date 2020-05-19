@@ -1,0 +1,3 @@
+[submodule "DetoxRecorder/Utils/ObjCHelpers"]
+	path = DetoxRecorder/Utils/ObjCHelpers
+	url = https://github.com/wix/DTXObjectiveCHelpers.git

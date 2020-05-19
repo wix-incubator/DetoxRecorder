@@ -1,0 +1,515 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
+		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
+		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
+		39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */; };
+		39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */; };
+		39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013402472EB8E00784C84 /* _DTXLongPressAction.m */; };
+		39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135C2473CC8000784C84 /* DTXAppleInternals.h */; };
+		39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135D2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h */; };
+		39C0137B2473CC8000784C84 /* UIPickerView+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C0135E2473CC8000784C84 /* UIPickerView+RecorderUtils.m */; };
+		39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C0135F2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m */; };
+		39C0138E2473CC8000784C84 /* UIDatePicker+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013722473CC8000784C84 /* UIDatePicker+RecorderUtils.m */; };
+		39C0138F2473CC8000784C84 /* UIApplication+EnableAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013732473CC8000784C84 /* UIApplication+EnableAccessibility.m */; };
+		39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013742473CC8000784C84 /* UIApplication+EnableAccessibility.h */; };
+		39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013752473CC8000784C84 /* UIDatePicker+RecorderUtils.h */; };
+		39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */; };
+		39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013772473CC8000784C84 /* UIView+DTXDescendants.h */; };
+		39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013782473CC8000784C84 /* UIView+DTXDescendants.m */; };
+		39C013962473CC9100784C84 /* Swiftier.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013952473CC9100784C84 /* Swiftier.h */; };
+		39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013972473CD0900784C84 /* NSArray+Utils.m */; };
+		39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013982473CD0900784C84 /* NSArray+Utils.h */; };
+		39F5AD042461A28400FB7F18 /* Replay.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD022461A28400FB7F18 /* Replay.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */; };
+		39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */; };
+		39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */; };
+		39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */; };
+		39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F3555225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.m */; };
+		39F5AD0E2461A29E00FB7F18 /* UIInputCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F3554225F6882003E8CF2 /* UIInputCapture.m */; };
+		39F5AD0F2461A2A000FB7F18 /* UIScrollView+ScrollToTopCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */; };
+		39F5AD102461A2AF00FB7F18 /* DTXRecordedElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C201A9226D476600E8CE30 /* DTXRecordedElement.m */; };
+		39F5AD112461A2AF00FB7F18 /* DTXRecordedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C201A6226D474900E8CE30 /* DTXRecordedAction.m */; };
+		39F5AD122461A2AF00FB7F18 /* _DTXTapAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 394535B8226D4E4A00F08C55 /* _DTXTapAction.m */; };
+		39F5AD132461A2AF00FB7F18 /* _DTXScrollAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 394535BC226D515000F08C55 /* _DTXScrollAction.m */; };
+		39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */; };
+		39F5AD152461A2AF00FB7F18 /* _DTXTakeScreenshotAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39EB26B7226D5A1000621FBA /* _DTXTakeScreenshotAction.m */; };
+		39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F5AD292461F70A00FB7F18 /* _DTXScrollToAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */; };
+		39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+TapCapture.m"; sourceTree = "<group>"; };
+		392F3551225F6882003E8CF2 /* UIInputCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInputCapture.h; sourceTree = "<group>"; };
+		392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+GestureCapture.h"; sourceTree = "<group>"; };
+		392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXUIInteractionRecorder.h; sourceTree = "<group>"; };
+		392F3554225F6882003E8CF2 /* UIInputCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIInputCapture.m; sourceTree = "<group>"; };
+		392F3555225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+GestureCapture.m"; sourceTree = "<group>"; };
+		392F3557225F6882003E8CF2 /* UIControl+TapCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+TapCapture.h"; sourceTree = "<group>"; };
+		392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXCaptureControlWindow.h; sourceTree = "<group>"; };
+		392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXCaptureControlWindow.m; sourceTree = "<group>"; };
+		392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXUIInteractionRecorder.m; sourceTree = "<group>"; };
+		39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXSetDatePickerDateAction.h; sourceTree = "<group>"; };
+		39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXSetDatePickerDateAction.m; sourceTree = "<group>"; };
+		39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXPickerViewValueChangeAction.h; sourceTree = "<group>"; };
+		39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXPickerViewValueChangeAction.m; sourceTree = "<group>"; };
+		394535B7226D4E4A00F08C55 /* _DTXTapAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXTapAction.h; sourceTree = "<group>"; };
+		394535B8226D4E4A00F08C55 /* _DTXTapAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXTapAction.m; sourceTree = "<group>"; };
+		394535BA226D502000F08C55 /* DTXRecordedAction-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTXRecordedAction-Private.h"; sourceTree = "<group>"; };
+		394535BB226D515000F08C55 /* _DTXScrollAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXScrollAction.h; sourceTree = "<group>"; };
+		394535BC226D515000F08C55 /* _DTXScrollAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollAction.m; sourceTree = "<group>"; };
+		394535BE226D570B00F08C55 /* _DTXReplaceTextAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXReplaceTextAction.h; sourceTree = "<group>"; };
+		394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXReplaceTextAction.m; sourceTree = "<group>"; };
+		399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+DTXQuotedStringForJS.h"; sourceTree = "<group>"; };
+		399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTXQuotedStringForJS.m"; sourceTree = "<group>"; };
+		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
+		39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXLongPressAction.h; sourceTree = "<group>"; };
+		39C013402472EB8E00784C84 /* _DTXLongPressAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXLongPressAction.m; sourceTree = "<group>"; };
+		39C0135C2473CC8000784C84 /* DTXAppleInternals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXAppleInternals.h; sourceTree = "<group>"; };
+		39C0135D2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+RecorderUtils.h"; sourceTree = "<group>"; };
+		39C0135E2473CC8000784C84 /* UIPickerView+RecorderUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+RecorderUtils.m"; sourceTree = "<group>"; };
+		39C0135F2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+RecorderUtils.m"; sourceTree = "<group>"; };
+		39C013722473CC8000784C84 /* UIDatePicker+RecorderUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDatePicker+RecorderUtils.m"; sourceTree = "<group>"; };
+		39C013732473CC8000784C84 /* UIApplication+EnableAccessibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+EnableAccessibility.m"; sourceTree = "<group>"; };
+		39C013742473CC8000784C84 /* UIApplication+EnableAccessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+EnableAccessibility.h"; sourceTree = "<group>"; };
+		39C013752473CC8000784C84 /* UIDatePicker+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+RecorderUtils.h"; sourceTree = "<group>"; };
+		39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+RecorderUtils.h"; sourceTree = "<group>"; };
+		39C013772473CC8000784C84 /* UIView+DTXDescendants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DTXDescendants.h"; sourceTree = "<group>"; };
+		39C013782473CC8000784C84 /* UIView+DTXDescendants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DTXDescendants.m"; sourceTree = "<group>"; };
+		39C013952473CC9100784C84 /* Swiftier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Swiftier.h; path = ObjCHelpers/Swiftier.h; sourceTree = "<group>"; };
+		39C013972473CD0900784C84 /* NSArray+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Utils.m"; path = "ObjCHelpers/NSArray+Utils.m"; sourceTree = "<group>"; };
+		39C013982473CD0900784C84 /* NSArray+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Utils.h"; path = "ObjCHelpers/NSArray+Utils.h"; sourceTree = "<group>"; };
+		39C201A5226D474900E8CE30 /* DTXRecordedAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXRecordedAction.h; sourceTree = "<group>"; };
+		39C201A6226D474900E8CE30 /* DTXRecordedAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTXRecordedAction.m; sourceTree = "<group>"; };
+		39C201A8226D476600E8CE30 /* DTXRecordedElement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXRecordedElement.h; sourceTree = "<group>"; };
+		39C201A9226D476600E8CE30 /* DTXRecordedElement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTXRecordedElement.m; sourceTree = "<group>"; };
+		39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+ScrollToTopCapture.m"; sourceTree = "<group>"; };
+		39C7DF582262692A002BABAE /* UIScrollView+ScrollToTopCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+ScrollToTopCapture.h"; sourceTree = "<group>"; };
+		39EB26B6226D5A1000621FBA /* _DTXTakeScreenshotAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXTakeScreenshotAction.h; sourceTree = "<group>"; };
+		39EB26B7226D5A1000621FBA /* _DTXTakeScreenshotAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXTakeScreenshotAction.m; sourceTree = "<group>"; };
+		39F5AD002461A28400FB7F18 /* DetoxRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DetoxRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		39F5AD022461A28400FB7F18 /* Replay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
+		39F5AD032461A28400FB7F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXScrollToAction.h; sourceTree = "<group>"; };
+		39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollToAction.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		39F5ACFD2461A28400FB7F18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		392F353B225F6851003E8CF2 = {
+			isa = PBXGroup;
+			children = (
+				39449C3F2462E78100B967FC /* Utils */,
+				39C201A4226D471100E8CE30 /* Actions */,
+				399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */,
+				399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */,
+				392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */,
+				392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */,
+				392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */,
+				392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */,
+				392F3557225F6882003E8CF2 /* UIControl+TapCapture.h */,
+				392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */,
+				392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */,
+				392F3555225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.m */,
+				392F3551225F6882003E8CF2 /* UIInputCapture.h */,
+				392F3554225F6882003E8CF2 /* UIInputCapture.m */,
+				39C7DF582262692A002BABAE /* UIScrollView+ScrollToTopCapture.h */,
+				39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */,
+				39F5AD022461A28400FB7F18 /* Replay.h */,
+				39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */,
+				39F5AD032461A28400FB7F18 /* Info.plist */,
+				392F3545225F6851003E8CF2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		392F3545225F6851003E8CF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				39F5AD002461A28400FB7F18 /* DetoxRecorder.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		39449C3F2462E78100B967FC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
+				39C013982473CD0900784C84 /* NSArray+Utils.h */,
+				39C013972473CD0900784C84 /* NSArray+Utils.m */,
+				39C0135D2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h */,
+				39C0135F2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m */,
+				39C013952473CC9100784C84 /* Swiftier.h */,
+				39C013742473CC8000784C84 /* UIApplication+EnableAccessibility.h */,
+				39C013732473CC8000784C84 /* UIApplication+EnableAccessibility.m */,
+				39C013752473CC8000784C84 /* UIDatePicker+RecorderUtils.h */,
+				39C013722473CC8000784C84 /* UIDatePicker+RecorderUtils.m */,
+				39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */,
+				39C0135E2473CC8000784C84 /* UIPickerView+RecorderUtils.m */,
+				39C013772473CC8000784C84 /* UIView+DTXDescendants.h */,
+				39C013782473CC8000784C84 /* UIView+DTXDescendants.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		39C201A4226D471100E8CE30 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */,
+				39C013402472EB8E00784C84 /* _DTXLongPressAction.m */,
+				39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */,
+				39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */,
+				394535BE226D570B00F08C55 /* _DTXReplaceTextAction.h */,
+				394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */,
+				394535BB226D515000F08C55 /* _DTXScrollAction.h */,
+				394535BC226D515000F08C55 /* _DTXScrollAction.m */,
+				39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */,
+				39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */,
+				39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */,
+				39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */,
+				39EB26B6226D5A1000621FBA /* _DTXTakeScreenshotAction.h */,
+				39EB26B7226D5A1000621FBA /* _DTXTakeScreenshotAction.m */,
+				394535B7226D4E4A00F08C55 /* _DTXTapAction.h */,
+				394535B8226D4E4A00F08C55 /* _DTXTapAction.m */,
+				394535BA226D502000F08C55 /* DTXRecordedAction-Private.h */,
+				39C201A5226D474900E8CE30 /* DTXRecordedAction.h */,
+				39C201A6226D474900E8CE30 /* DTXRecordedAction.m */,
+				39C201A8226D476600E8CE30 /* DTXRecordedElement.h */,
+				39C201A9226D476600E8CE30 /* DTXRecordedElement.m */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		39F5ACFB2461A28400FB7F18 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */,
+				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
+				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
+				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
+				39F5AD292461F70A00FB7F18 /* _DTXScrollToAction.h in Headers */,
+				39C013962473CC9100784C84 /* Swiftier.h in Headers */,
+				39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */,
+				39F5AD042461A28400FB7F18 /* Replay.h in Headers */,
+				39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */,
+				39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */,
+				39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */,
+				39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */,
+				39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */,
+				39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		39F5ACFF2461A28400FB7F18 /* DetoxRecorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39F5AD052461A28400FB7F18 /* Build configuration list for PBXNativeTarget "DetoxRecorder" */;
+			buildPhases = (
+				39F5ACFB2461A28400FB7F18 /* Headers */,
+				39F5ACFC2461A28400FB7F18 /* Sources */,
+				39F5ACFD2461A28400FB7F18 /* Frameworks */,
+				39F5ACFE2461A28400FB7F18 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DetoxRecorder;
+			productName = Replay;
+			productReference = 39F5AD002461A28400FB7F18 /* DetoxRecorder.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		392F353C225F6851003E8CF2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = Wix;
+				TargetAttributes = {
+					39F5ACFF2461A28400FB7F18 = {
+						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1150;
+					};
+				};
+			};
+			buildConfigurationList = 392F353F225F6851003E8CF2 /* Build configuration list for PBXProject "DetoxRecorder" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 392F353B225F6851003E8CF2;
+			productRefGroup = 392F3545225F6851003E8CF2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				39F5ACFF2461A28400FB7F18 /* DetoxRecorder */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		39F5ACFE2461A28400FB7F18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		39F5ACFC2461A28400FB7F18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39F5AD0F2461A2A000FB7F18 /* UIScrollView+ScrollToTopCapture.m in Sources */,
+				39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */,
+				39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */,
+				39F5AD152461A2AF00FB7F18 /* _DTXTakeScreenshotAction.m in Sources */,
+				39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */,
+				39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */,
+				39C0138E2473CC8000784C84 /* UIDatePicker+RecorderUtils.m in Sources */,
+				39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */,
+				39C0137B2473CC8000784C84 /* UIPickerView+RecorderUtils.m in Sources */,
+				39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */,
+				39F5AD0E2461A29E00FB7F18 /* UIInputCapture.m in Sources */,
+				39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */,
+				39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */,
+				39F5AD122461A2AF00FB7F18 /* _DTXTapAction.m in Sources */,
+				39F5AD112461A2AF00FB7F18 /* DTXRecordedAction.m in Sources */,
+				39C0138F2473CC8000784C84 /* UIApplication+EnableAccessibility.m in Sources */,
+				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
+				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,
+				39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */,
+				39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */,
+				39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */,
+				39F5AD132461A2AF00FB7F18 /* _DTXScrollAction.m in Sources */,
+				39F5AD102461A2AF00FB7F18 /* DTXRecordedElement.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		392F354B225F6851003E8CF2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		392F354C225F6851003E8CF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		39F5AD062461A28400FB7F18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = DetoxRecorder.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wix.DetoxRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		39F5AD072461A28400FB7F18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = DetoxRecorder.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wix.DetoxRecorder;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		392F353F225F6851003E8CF2 /* Build configuration list for PBXProject "DetoxRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				392F354B225F6851003E8CF2 /* Debug */,
+				392F354C225F6851003E8CF2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		39F5AD052461A28400FB7F18 /* Build configuration list for PBXNativeTarget "DetoxRecorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				39F5AD062461A28400FB7F18 /* Debug */,
+				39F5AD072461A28400FB7F18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 392F353C225F6851003E8CF2 /* Project object */;
+}
