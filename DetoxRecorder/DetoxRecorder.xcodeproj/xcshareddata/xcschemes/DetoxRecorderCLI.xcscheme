@@ -56,6 +56,22 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--simulatorId &quot;69D91B05-64F4-497B-A2FC-9A109B310F38&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--testName &quot;It should record&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--outputTestFile &quot;/Users/lnatan/Desktop/test.js&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--bundleId &quot;com.apple.mobilesafari&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--record"
             isEnabled = "YES">
          </CommandLineArgument>

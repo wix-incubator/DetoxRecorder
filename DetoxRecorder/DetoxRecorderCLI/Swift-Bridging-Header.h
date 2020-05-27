@@ -6,5 +6,4 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-#import "LNLog.h"
 #import "LNOptionsParser.h"
