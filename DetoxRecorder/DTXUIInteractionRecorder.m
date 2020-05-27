@@ -21,12 +21,15 @@ static DTXCaptureControlWindow* captureControlWindow;
 static NSUInteger screenshotCounter;
 static UIView* previousTextChangeVisualizer;
 
-//+ (void)load
-//{
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//		[self beginRecording];
-//	});
-//}
++ (void)load
+{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecStartRecording"] == YES)
+		{
+			[self beginRecording];
+		}
+	});
+}
 
 + (void)beginRecording
 {
@@ -38,10 +41,13 @@ static UIView* previousTextChangeVisualizer;
 
 + (void)endRecording
 {
-	[NSFileManager.defaultManager createFileAtPath:@"/Users/lnatan/Desktop/myDetox.js" contents:nil attributes:nil];
-	NSFileHandle* file = [NSFileHandle fileHandleForWritingAtPath:@"/Users/lnatan/Desktop/myDetox.js"];
+	NSString* testNamePath = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestOutputPath"];
+	NSString* testName = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestName"] ?: @"My Recorded Test";
 	
-	[file writeData:[@"describe('My Recorded Spec', () => {\n\tit('should follow my recorded test', async () => {\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[NSFileManager.defaultManager createFileAtPath:testNamePath contents:nil attributes:nil];
+	NSFileHandle* file = [NSFileHandle fileHandleForWritingAtPath:testNamePath];
+	
+	[file writeData:[[NSString stringWithFormat:@"describe('%@', () => {\n\tit('should follow my recorded test', async () => {\n", testName] dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[recordedActions enumerateObjectsUsingBlock:^(DTXRecordedAction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 		[file writeData:[[NSString stringWithFormat:@"\t\t%@\n", obj.detoxDescription] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -53,6 +59,11 @@ static UIView* previousTextChangeVisualizer;
 	recordedActions = nil;
 	captureControlWindow.hidden = YES;
 	captureControlWindow = nil;
+	
+	if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecNoExit"] == NO)
+	{
+		exit(0);
+	}
 }
 
 static NSTimeInterval lastRecordedEventTimestamp;
