@@ -1,3 +1,6 @@
 [submodule "DetoxRecorder/Utils/ObjCHelpers"]
 	path = DetoxRecorder/Utils/ObjCHelpers
 	url = https://github.com/wix/DTXObjectiveCHelpers.git
+[submodule "DetoxRecorder/DetoxRecorderCLI/ObjCCLIInfra"]
+	path = DetoxRecorder/DetoxRecorderCLI/ObjCCLIInfra
+	url = https://github.com/wix/ObjCCLIInfra.git

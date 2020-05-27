@@ -6,11 +6,33 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		397CA701247EA1D0005E8A71 /* DetoxRecorderFramework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 397CA704247EA1D0005E8A71 /* Build configuration list for PBXAggregateTarget "DetoxRecorderFramework" */;
+			buildPhases = (
+				397CA705247EA1D9005E8A71 /* Build Universal Framework */,
+			);
+			dependencies = (
+			);
+			name = DetoxRecorderFramework;
+			productName = DetoxRecorderFramework;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
 		39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */; };
+		397CA716247EB41B005E8A71 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA715247EB41B005E8A71 /* main.swift */; };
+		397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */; };
+		397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA757247EE05D005E8A71 /* LNOptionsParser.m */; };
+		397CA75A247EE05D005E8A71 /* LNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA758247EE05D005E8A71 /* LNLog.m */; };
+		397CA765247EE076005E8A71 /* GBSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA75C247EE076005E8A71 /* GBSettings.m */; };
+		397CA766247EE076005E8A71 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA75D247EE076005E8A71 /* GBPrint.m */; };
+		397CA767247EE076005E8A71 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA75F247EE076005E8A71 /* GBCommandLineParser.m */; };
+		397CA768247EE076005E8A71 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA763247EE076005E8A71 /* GBOptionsHelper.m */; };
 		39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */; };
 		39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013402472EB8E00784C84 /* _DTXLongPressAction.m */; };
 		39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135C2473CC8000784C84 /* DTXAppleInternals.h */; };
@@ -46,6 +68,18 @@
 		39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		397CA711247EB41B005E8A71 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+TapCapture.m"; sourceTree = "<group>"; };
 		392F3551225F6882003E8CF2 /* UIInputCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInputCapture.h; sourceTree = "<group>"; };
@@ -68,6 +102,23 @@
 		394535BC226D515000F08C55 /* _DTXScrollAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollAction.m; sourceTree = "<group>"; };
 		394535BE226D570B00F08C55 /* _DTXReplaceTextAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXReplaceTextAction.h; sourceTree = "<group>"; };
 		394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXReplaceTextAction.m; sourceTree = "<group>"; };
+		397CA713247EB41B005E8A71 /* DetoxRecorderCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DetoxRecorderCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		397CA715247EB41B005E8A71 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		397CA744247EB54A005E8A71 /* Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Bridging-Header.h"; sourceTree = "<group>"; };
+		397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LNOptionsParser.swift; path = ObjCCLIInfra/LNOptionsParser.swift; sourceTree = "<group>"; };
+		397CA755247EE05D005E8A71 /* LNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LNLog.h; path = ObjCCLIInfra/LNLog.h; sourceTree = "<group>"; };
+		397CA756247EE05D005E8A71 /* LNOptionsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LNOptionsParser.h; path = ObjCCLIInfra/LNOptionsParser.h; sourceTree = "<group>"; };
+		397CA757247EE05D005E8A71 /* LNOptionsParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LNOptionsParser.m; path = ObjCCLIInfra/LNOptionsParser.m; sourceTree = "<group>"; };
+		397CA758247EE05D005E8A71 /* LNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LNLog.m; path = ObjCCLIInfra/LNLog.m; sourceTree = "<group>"; };
+		397CA75C247EE076005E8A71 /* GBSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBSettings.m; path = ObjCCLIInfra/GBCli/GBCli/src/GBSettings.m; sourceTree = "<group>"; };
+		397CA75D247EE076005E8A71 /* GBPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBPrint.m; path = ObjCCLIInfra/GBCli/GBCli/src/GBPrint.m; sourceTree = "<group>"; };
+		397CA75E247EE076005E8A71 /* GBCommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCommandLineParser.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBCommandLineParser.h; sourceTree = "<group>"; };
+		397CA75F247EE076005E8A71 /* GBCommandLineParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBCommandLineParser.m; path = ObjCCLIInfra/GBCli/GBCli/src/GBCommandLineParser.m; sourceTree = "<group>"; };
+		397CA760247EE076005E8A71 /* GBOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBOptionsHelper.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBOptionsHelper.h; sourceTree = "<group>"; };
+		397CA761247EE076005E8A71 /* GBPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBPrint.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBPrint.h; sourceTree = "<group>"; };
+		397CA762247EE076005E8A71 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCli.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBCli.h; sourceTree = "<group>"; };
+		397CA763247EE076005E8A71 /* GBOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBOptionsHelper.m; path = ObjCCLIInfra/GBCli/GBCli/src/GBOptionsHelper.m; sourceTree = "<group>"; };
+		397CA764247EE076005E8A71 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBSettings.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBSettings.h; sourceTree = "<group>"; };
 		399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+DTXQuotedStringForJS.h"; sourceTree = "<group>"; };
 		399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTXQuotedStringForJS.m"; sourceTree = "<group>"; };
 		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
@@ -103,6 +154,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		397CA710247EB41B005E8A71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		39F5ACFD2461A28400FB7F18 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -135,6 +193,7 @@
 				39F5AD022461A28400FB7F18 /* Replay.h */,
 				39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */,
 				39F5AD032461A28400FB7F18 /* Info.plist */,
+				397CA714247EB41B005E8A71 /* DetoxRecorderCLI */,
 				392F3545225F6851003E8CF2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				39F5AD002461A28400FB7F18 /* DetoxRecorder.framework */,
+				397CA713247EB41B005E8A71 /* DetoxRecorderCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,6 +226,45 @@
 				39C013782473CC8000784C84 /* UIView+DTXDescendants.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		397CA714247EB41B005E8A71 /* DetoxRecorderCLI */ = {
+			isa = PBXGroup;
+			children = (
+				397CA71A247EB4D8005E8A71 /* CLIInfra */,
+				397CA715247EB41B005E8A71 /* main.swift */,
+				397CA744247EB54A005E8A71 /* Swift-Bridging-Header.h */,
+			);
+			path = DetoxRecorderCLI;
+			sourceTree = "<group>";
+		};
+		397CA71A247EB4D8005E8A71 /* CLIInfra */ = {
+			isa = PBXGroup;
+			children = (
+				397CA75B247EE066005E8A71 /* GBCli */,
+				397CA755247EE05D005E8A71 /* LNLog.h */,
+				397CA758247EE05D005E8A71 /* LNLog.m */,
+				397CA756247EE05D005E8A71 /* LNOptionsParser.h */,
+				397CA757247EE05D005E8A71 /* LNOptionsParser.m */,
+				397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */,
+			);
+			name = CLIInfra;
+			sourceTree = "<group>";
+		};
+		397CA75B247EE066005E8A71 /* GBCli */ = {
+			isa = PBXGroup;
+			children = (
+				397CA762247EE076005E8A71 /* GBCli.h */,
+				397CA75E247EE076005E8A71 /* GBCommandLineParser.h */,
+				397CA75F247EE076005E8A71 /* GBCommandLineParser.m */,
+				397CA760247EE076005E8A71 /* GBOptionsHelper.h */,
+				397CA763247EE076005E8A71 /* GBOptionsHelper.m */,
+				397CA761247EE076005E8A71 /* GBPrint.h */,
+				397CA75D247EE076005E8A71 /* GBPrint.m */,
+				397CA764247EE076005E8A71 /* GBSettings.h */,
+				397CA75C247EE076005E8A71 /* GBSettings.m */,
+			);
+			name = GBCli;
 			sourceTree = "<group>";
 		};
 		39C201A4226D471100E8CE30 /* Actions */ = {
@@ -223,6 +322,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		397CA712247EB41B005E8A71 /* DetoxRecorderCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 397CA717247EB41B005E8A71 /* Build configuration list for PBXNativeTarget "DetoxRecorderCLI" */;
+			buildPhases = (
+				397CA70F247EB41B005E8A71 /* Sources */,
+				397CA710247EB41B005E8A71 /* Frameworks */,
+				397CA711247EB41B005E8A71 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DetoxRecorderCLI;
+			productName = DetoxRecorderCLI;
+			productReference = 397CA713247EB41B005E8A71 /* DetoxRecorderCLI */;
+			productType = "com.apple.product-type.tool";
+		};
 		39F5ACFF2461A28400FB7F18 /* DetoxRecorder */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39F5AD052461A28400FB7F18 /* Build configuration list for PBXNativeTarget "DetoxRecorder" */;
@@ -247,9 +363,16 @@
 		392F353C225F6851003E8CF2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Wix;
 				TargetAttributes = {
+					397CA701247EA1D0005E8A71 = {
+						CreatedOnToolsVersion = 11.5;
+					};
+					397CA712247EB41B005E8A71 = {
+						CreatedOnToolsVersion = 11.5;
+					};
 					39F5ACFF2461A28400FB7F18 = {
 						CreatedOnToolsVersion = 11.4;
 						LastSwiftMigration = 1150;
@@ -270,6 +393,8 @@
 			projectRoot = "";
 			targets = (
 				39F5ACFF2461A28400FB7F18 /* DetoxRecorder */,
+				397CA701247EA1D0005E8A71 /* DetoxRecorderFramework */,
+				397CA712247EB41B005E8A71 /* DetoxRecorderCLI */,
 			);
 		};
 /* End PBXProject section */
@@ -284,7 +409,44 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		397CA705247EA1D9005E8A71 /* Build Universal Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Universal Framework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -scheme ${PROJECT_NAME} ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos build -derivedDataPath \"${SYMROOT}/../..\" OBJROOT=\"${OBJROOT}/DependentBuilds\" -quiet\nxcodebuild -scheme ${PROJECT_NAME} ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator build -derivedDataPath \"${SYMROOT}/../..\" OBJROOT=\"${OBJROOT}/DependentBuilds\" -quiet\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Step 4. Create universal binaries for embedded frameworks if needed\nif [ -d \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks\" ]; then\nfor SUB_FRAMEWORK in $( ls \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks\" ); do\nif [ -d \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/$SUB_FRAMEWORK\" ]; then\necho \"Processing ${SUB_FRAMEWORK} as a dir\"\nBINARY_NAME=\"${SUB_FRAMEWORK%.*}\"\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\"\nelse\necho \"Processing ${SUB_FRAMEWORK} as a file\"\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\"\nfi\ndone\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		397CA70F247EB41B005E8A71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				397CA767247EE076005E8A71 /* GBCommandLineParser.m in Sources */,
+				397CA768247EE076005E8A71 /* GBOptionsHelper.m in Sources */,
+				397CA766247EE076005E8A71 /* GBPrint.m in Sources */,
+				397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */,
+				397CA765247EE076005E8A71 /* GBSettings.m in Sources */,
+				397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */,
+				397CA75A247EE05D005E8A71 /* LNLog.m in Sources */,
+				397CA716247EB41B005E8A71 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		39F5ACFC2461A28400FB7F18 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -429,6 +591,53 @@
 			};
 			name = Release;
 		};
+		397CA702247EA1D0005E8A71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		397CA703247EA1D0005E8A71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		397CA718247EB41B005E8A71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "DetoxRecorderCLI/Swift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		397CA719247EB41B005E8A71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_NS_ASSERTIONS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "DetoxRecorderCLI/Swift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		39F5AD062461A28400FB7F18 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -496,6 +705,24 @@
 			buildConfigurations = (
 				392F354B225F6851003E8CF2 /* Debug */,
 				392F354C225F6851003E8CF2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		397CA704247EA1D0005E8A71 /* Build configuration list for PBXAggregateTarget "DetoxRecorderFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				397CA702247EA1D0005E8A71 /* Debug */,
+				397CA703247EA1D0005E8A71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		397CA717247EB41B005E8A71 /* Build configuration list for PBXNativeTarget "DetoxRecorderCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				397CA718247EB41B005E8A71 /* Debug */,
+				397CA719247EB41B005E8A71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
