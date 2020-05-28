@@ -8,80 +8,6 @@
 
 import Foundation
 
-extension String: LocalizedError {
-    public var errorDescription: String? { return self }
-}
-
-class DetoxRecorderCLI
-{
-	static let detoxPackageJson : [String: Any] = {
-		let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("package.json")
-		do {
-			let data = try Data(contentsOf: url)
-			let jsonObj = try JSONSerialization.jsonObject(with: data, options: [])
-			
-			guard let dict = jsonObj as? [String: Any] else {
-				throw "Unknown package.json file format."
-			}
-			
-			guard let detox = dict["detox"] as? [String: Any] else {
-				throw "Unable to find “detox” object in package.json."
-			}
-			
-			return detox
-		} catch {
-			LNUsagePrintMessageAndExit(prependMessage: error.localizedDescription, logLevel: .error)
-		}
-	}()
-}
-
-func whichURLFor(binaryName: String) throws -> URL {
-	let whichProcess = Process()
-	whichProcess.executableURL = URL(fileURLWithPath: "/usr/bin/which")
-	whichProcess.arguments = [binaryName]
-	
-	let out = Pipe()
-//	let err = Pipe()
-	whichProcess.standardOutput = out
-//	whichProcess.standardError = err
-	
-	whichProcess.launch()
-	whichProcess.waitUntilExit()
-	
-//	let errFileHandle = err.fileHandleForReading
-	let readFileHandle = out.fileHandleForReading
-	
-//	let error = String(data: errFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
-	let response = String(data: readFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
-	
-	if response.count == 0 {
-		throw "\(binaryName) not found"
-	}
-	
-	return URL(fileURLWithPath: response)
-}
-
-func prepareappBundleId(bundleId: String?, appPath: String?, config: String?) -> String {
-	if let bundleId = bundleId {
-		return bundleId
-	} else if let _ /*appPath*/ = appPath {
-		//TODO: Install path, get bundle identifier and return it
-	} else {
-		//TODO: Extract from config, install and use
-	}
-	
-	return ""
-}
-
-func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
-	if let simulatorId = simulatorId {
-		return simulatorId
-	}
-	
-	//TODO: Extract from config
-	return ""
-}
-
 LNUsageSetUtilName("detox recorder")
 
 LNUsageSetIntroStrings([
@@ -113,12 +39,152 @@ LNUsageSetOptions([
 LNUsageSetHiddenOptions([
 	LNUsageOption(name: "noExit", shortcut: "no", valueRequirement: .none, description: "Do not exit the app after completing the test recording"),
 	LNUsageOption(name: "noInsertLibraries", shortcut: "no2", valueRequirement: .none, description: "Do not use DYLD_INSERT_LIBRARIES for injecting the Detox Recorder framework; the app is responsible for loading the framework"),
+	LNUsageOption(name: "recorderFrameworkPath", shortcut: "fpath", valueRequirement: .required, description: "The Detox Recorder path to use, rather than the default"),
 ])
+
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
+}
+
+extension Process {
+	var simctlArguments: [String]? {
+		get {
+			return Array(arguments![1..<arguments!.count])
+		}
+		set(simctlArguments) {
+			if let simctlArguments = simctlArguments {
+				arguments!.replaceSubrange(1..<arguments!.count, with: simctlArguments)
+			} else {
+				arguments?.removeSubrange(1..<arguments!.count)
+			}
+		}
+	}
+	
+	func launchWaitUntilExitAndReturnOutput() -> String {
+		let out = Pipe()
+//		let err = Pipe()
+		standardOutput = out
+//		standardError = err
+		
+		launch()
+		
+//		let errFileHandle = err.fileHandleForReading
+		let readFileHandle = out.fileHandleForReading
+//		let error = String(data: errFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
+		let response = String(data: readFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
+
+		waitUntilExit()
+		
+		return response
+	}
+}
+
+class DetoxRecorderCLI
+{
+	static let detoxPackageJson : [String: Any] = {
+		let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("package.json")
+		do {
+			let data = try Data(contentsOf: url)
+			let jsonObj = try JSONSerialization.jsonObject(with: data, options: [])
+			
+			guard let dict = jsonObj as? [String: Any] else {
+				throw "Unknown package.json file format."
+			}
+			
+			guard let detox = dict["detox"] as? [String: Any] else {
+				throw "Unable to find “detox” object in package.json."
+			}
+			
+			return detox
+		} catch {
+			LNUsagePrintMessageAndExit(prependMessage: error.localizedDescription, logLevel: .error)
+		}
+	}()
+}
+
+func whichURLFor(binaryName: String) throws -> URL {
+	let whichProcess = Process()
+	whichProcess.executableURL = URL(fileURLWithPath: "/usr/bin/which")
+	whichProcess.arguments = [binaryName]
+	
+	let response = whichProcess.launchWaitUntilExitAndReturnOutput()
+	if response.count == 0 {
+		throw "\(binaryName) not found"
+	}
+	
+	return URL(fileURLWithPath: response)
+}
+
+func xcrunSimctlProcess() -> Process {
+	let xcrunSimctlProcess = Process()
+	do {
+		xcrunSimctlProcess.executableURL = try whichURLFor(binaryName: "xcrun")
+	} catch {
+		LNUsagePrintMessageAndExit(prependMessage: "Xcode not installed.", logLevel: .error)
+	}
+	xcrunSimctlProcess.arguments = ["simctl"]
+	return xcrunSimctlProcess
+}
+
+func applesimutilsProcess() -> Process {
+	let applesimutilsProcess = Process()
+//	do {
+	applesimutilsProcess.executableURL = URL(fileURLWithPath: "/usr/local/bin/applesimutils") //try whichURLFor(binaryName: "applesimutils")
+//	} catch {
+//		LNUsagePrintMessageAndExit(prependMessage: "applesimutils is not installed", logLevel: .error)
+//	}
+	return applesimutilsProcess
+}
+
+func prepareappBundleId(bundleId: String?, appPath: String?, config: String?) -> String {
+	if let bundleId = bundleId {
+		return bundleId
+	} else if let _ /*appPath*/ = appPath {
+		//TODO: Install path, get bundle identifier and return it
+	} else {
+		//TODO: Extract from config, install and use
+	}
+	
+	return ""
+}
+
+func ensureSimulatorBooted(_ simulatorId: String) {
+	let process = applesimutilsProcess()
+	process.arguments = ["--list", "--byId", simulatorId]
+	let jsonString = process.launchWaitUntilExitAndReturnOutput()
+	let object : [[String: Any]]
+	do {
+		object = try JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!, options: []) as! [[String: Any]]
+	} catch {
+		LNUsagePrintMessageAndExit(prependMessage: "applesimutils failed obtaining information about the simulator.", logLevel: .error)
+	}
+	
+	guard let device = object.first else {
+		LNUsagePrintMessageAndExit(prependMessage: "No device found with simulator identifier \(simulatorId).", logLevel: .error)
+	}
+		
+	if device["state"]! as! String != "Booted" {
+		let bootProcess = xcrunSimctlProcess()
+		bootProcess.simctlArguments = ["boot", simulatorId]
+		bootProcess.launch()
+		bootProcess.waitUntilExit()
+	}
+}
+
+func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
+	if let simulatorId = simulatorId {
+		ensureSimulatorBooted(simulatorId)
+		return simulatorId
+	}
+	
+	//TODO: Extract from config
+	return ""
+}
 
 let parser = LNUsageParseArguments()
 
 guard parser.object(forKey: "record") != nil else {
-	LNUsagePrintMessageAndExit(prependMessage: nil, logLevel: .stdOut, exitCode: 0)
+	LNUsagePrintMessageAndExit(prependMessage: nil, logLevel: .stdOut)
 }
 
 let bundleId = parser.object(forKey: "bundleId") as? String
@@ -146,7 +212,7 @@ guard let outputTestFile = parser.object(forKey: "outputTestFile") as? String el
 let appBundleId = prepareappBundleId(bundleId: bundleId, appPath: appPath, config: config)
 let simulatorId = prepareSimulatorId(simulatorId: simId, config: config)
 
-var args = ["simctl", "launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestOutputPath", outputTestFile]
+var args = ["launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestOutputPath", outputTestFile]
 
 if let testName = parser.object(forKey: "testName") as? String {
 	args.append(contentsOf: ["-DTXRecTestName", testName])
@@ -156,24 +222,26 @@ if parser.bool(forKey: "noExit") {
 	args.append(contentsOf: ["-DTXRecNoExit", "1"])
 }
 
-do {
-	let terminateProcess = Process()
-	terminateProcess.executableURL = try whichURLFor(binaryName: "xcrun")
-	terminateProcess.arguments = ["simctl", "launch", simulatorId, appBundleId]
-	
-	terminateProcess.launch()
-	terminateProcess.waitUntilExit()
-	
-	let recordProcess = Process()
-	recordProcess.executableURL = try whichURLFor(binaryName: "xcrun")
-	recordProcess.arguments = args
-	if parser.bool(forKey: "noInsertLibraries") {
-		recordProcess.environment = [:]
+let terminateProcess = xcrunSimctlProcess()
+terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
+
+terminateProcess.launch()
+terminateProcess.waitUntilExit()
+
+let recordProcess = xcrunSimctlProcess()
+recordProcess.simctlArguments = args
+if parser.bool(forKey: "noInsertLibraries") {
+	recordProcess.environment = [:]
+} else {
+	let frameworkUrl : URL
+	if let frameworkOverridePath = parser.object(forKey: "recorderFrameworkPath") as? String {
+		frameworkUrl = URL(fileURLWithPath: frameworkOverridePath, isDirectory: true)
 	} else {
-		recordProcess.environment = ["SIMCTL_CHILD_DYLD_INSERT_LIBRARIES": Bundle.main.executableURL!.deletingLastPathComponent().appendingPathComponent("DetoxRecorder.framework/DetoxRecorder").standardized.path]
+		frameworkUrl = Bundle.main.executableURL!.deletingLastPathComponent().appendingPathComponent("DetoxRecorder.framework/")
 	}
-	recordProcess.launch()
-	recordProcess.waitUntilExit()
-} catch {
-	LNUsagePrintMessageAndExit(prependMessage: "Xcode not installed.", logLevel: .error)
+	recordProcess.environment = ["SIMCTL_CHILD_DYLD_INSERT_LIBRARIES": frameworkUrl.appendingPathComponent("DetoxRecorder").standardized.path]
 }
+recordProcess.launch()
+recordProcess.waitUntilExit()
+
+LNUsagePrintArguments(logLevel: .stdOut)

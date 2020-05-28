@@ -75,6 +75,10 @@
             argument = "--record"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--recorderFrameworkPath &quot;/Users/lnatan/Library/Developer/Xcode/DerivedData/DetoxRecorder-biubjvatwqphmugfjwzrkphnypdq/Build/Products/Debug-iphonesimulator/DetoxRecorder.framework&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
