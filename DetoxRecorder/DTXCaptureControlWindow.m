@@ -10,6 +10,12 @@
 #import "DTXUIInteractionRecorder.h"
 @import AudioToolbox;
 
+@interface UIWindowScene ()
+
++ (instancetype)_keyWindowScene;
+
+@end
+
 #define SCREEN_PERCENT 0.25
 
 const CGFloat buttonWidth = 44;
@@ -247,6 +253,7 @@ const CGFloat buttonWidth = 44;
 		
 		self.windowLevel = UIWindowLevelStatusBar;
 		self.hidden = NO;
+		self.windowScene = [UIWindowScene _keyWindowScene];
 		
 		_stopRecording.tintColor = UIColor.whiteColor;
 		_stopRecording.backgroundColor = UIColor.systemRedColor;
