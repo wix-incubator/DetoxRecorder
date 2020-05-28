@@ -53,6 +53,11 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 	return [[_DTXReplaceTextAction alloc] initWithView:view text:text];
 }
 
++ (nullable instancetype)returnKeyTextActionWithView:(UIView*)view event:(nullable UIEvent*)event;
+{
+	return [[_DTXReplaceTextAction alloc] initWithView:view text:@"\n"];
+}
+
 + (instancetype)takeScreenshotAction
 {
 	return [_DTXTakeScreenshotAction new];

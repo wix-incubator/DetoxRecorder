@@ -47,7 +47,7 @@ static UIView* previousTextChangeVisualizer;
 	[NSFileManager.defaultManager createFileAtPath:testNamePath contents:nil attributes:nil];
 	NSFileHandle* file = [NSFileHandle fileHandleForWritingAtPath:testNamePath];
 	
-	[file writeData:[[NSString stringWithFormat:@"describe('%@', () => {\n\tit('should follow my recorded test', async () => {\n", testName] dataUsingEncoding:NSUTF8StringEncoding]];
+	[file writeData:[[NSString stringWithFormat:@"describe('Recorded suite', () => {\n\tit('%@', async () => {\n", testName] dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[recordedActions enumerateObjectsUsingBlock:^(DTXRecordedAction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 		[file writeData:[[NSString stringWithFormat:@"\t\t%@\n", obj.detoxDescription] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -302,6 +302,11 @@ static NSTimeInterval lastRecordedEventTimestamp;
 	[self _addTapWithView:control event:event fromRN:NO];
 }
 
++ (void)addTapWithView:(UIView*)view withEvent:(UIEvent*)event
+{
+	[self _addTapWithView:view event:event fromRN:NO];
+}
+
 + (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(UIEvent*)event
 {
 	[self _addTapWithView:tgr.view event:event fromRN:NO];
@@ -480,6 +485,16 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 	[self _flashVisualizerView:previousTextChangeVisualizer];
 }
 
++ (void)_visualizeReturnTapInView:(UIView*)view action:(DTXRecordedAction*)action
+{
+	if(previousTextChangeVisualizer == nil || previousTextChangeVisualizer.superview == nil)
+	{
+		previousTextChangeVisualizer = [self _visualizerViewForView:view action:action systemImageName:@"return"];
+	}
+	
+	[self _flashVisualizerView:previousTextChangeVisualizer];
+}
+
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput
 {
 	NSString* text = [textInput textInRange:[textInput textRangeFromPosition:textInput.beginningOfDocument toPosition:textInput.endOfDocument]];
@@ -491,6 +506,18 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 	
 	[recordedActions addObject:action];
 	[self _visualizeTextChangeOfView:textInput action:action];
+}
+
++ (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput
+{
+	DTXRecordedAction* action = [DTXRecordedAction returnKeyTextActionWithView:textInput event:nil];
+	if(action == nil)
+	{
+		return;
+	}
+	
+	[recordedActions addObject:action];
+	[self _visualizeReturnTapInView:textInput action:action];
 }
 
 + (void)addTakeScreenshot

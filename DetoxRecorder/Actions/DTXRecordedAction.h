@@ -38,6 +38,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
 + (nullable instancetype)scrollActionWithView:(UIScrollView*)scrollView originOffset:(CGPoint)originOffset newOffset:(CGPoint)newOffset event:(nullable UIEvent*)event;
 + (nullable instancetype)scrollToTopActionWithView:(UIScrollView*)scrollView event:(nullable UIEvent*)event;
 + (nullable instancetype)replaceTextActionWithView:(UIView*)view text:(NSString*)text event:(nullable UIEvent*)event;
++ (nullable instancetype)returnKeyTextActionWithView:(UIView*)view event:(nullable UIEvent*)event;
 + (instancetype)takeScreenshotAction;
 + (nullable instancetype)datePickerDateChangeActionWithView:(UIDatePicker*)datePicker event:(nullable UIEvent*)event;
 + (nullable instancetype)pickerViewValueChangeActionWithView:(UIPickerView*)pickerView component:(NSInteger)component event:(nullable UIEvent*)event;

@@ -23,4 +23,14 @@
 	return self;
 }
 
+- (NSString *)detoxDescription
+{
+	if([self.actionArgs.firstObject isEqualToString:@"\n"])
+	{
+		return [NSString stringWithFormat:@"await %@.tapReturnKey();", self.element.detoxDescription];
+	}
+	
+	return super.detoxDescription;
+}
+
 @end

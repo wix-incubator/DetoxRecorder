@@ -60,12 +60,20 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="XUQ-GU-hsq"/>
                                 </connections>
                             </pickerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UE4-ed-FQy">
+                                <rect key="frame" x="141.5" y="673" width="131" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xYa-IY-5vI" secondAttribute="trailing" constant="20" id="0CB-1K-gJg"/>
                             <constraint firstItem="93v-HT-fum" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Bay-L7-vx5"/>
                             <constraint firstItem="fkq-sg-I9V" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Fev-up-439"/>
+                            <constraint firstItem="UE4-ed-FQy" firstAttribute="centerX" secondItem="fkq-sg-I9V" secondAttribute="centerX" id="FwH-WT-P32"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xYa-IY-5vI" secondAttribute="bottom" id="LYk-Cd-uAX"/>
                             <constraint firstItem="pCc-EI-8u4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="R28-cH-6Xi"/>
                             <constraint firstItem="xYa-IY-5vI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="Rqw-Tz-K0m"/>
@@ -75,6 +83,7 @@
                             <constraint firstItem="fkq-sg-I9V" firstAttribute="top" secondItem="93v-HT-fum" secondAttribute="bottom" constant="8" id="gyH-pd-QcR"/>
                             <constraint firstItem="lSY-nV-EOH" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="i7m-mM-wl2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="W8G-Ds-e60" secondAttribute="trailing" constant="20" id="v8b-os-FV8"/>
+                            <constraint firstItem="UE4-ed-FQy" firstAttribute="top" secondItem="fkq-sg-I9V" secondAttribute="bottom" constant="8" symbolType="layoutAnchor" id="wRT-VQ-IVB"/>
                             <constraint firstItem="W8G-Ds-e60" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="yow-Hl-s1W"/>
                             <constraint firstItem="93v-HT-fum" firstAttribute="top" secondItem="lSY-nV-EOH" secondAttribute="bottom" constant="8" id="zfY-V9-C4X"/>
                         </constraints>

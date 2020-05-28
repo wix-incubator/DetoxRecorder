@@ -15,6 +15,7 @@
 + (void)beginRecording;
 + (void)endRecording;
 
++ (void)addTapWithView:(UIView*)view withEvent:(UIEvent*)event;
 + (void)addControlTapWithControl:(UIControl*)control withEvent:(UIEvent*)event;
 + (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(UIEvent*)event;
 + (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(UIEvent*)event;
@@ -29,6 +30,7 @@
 + (void)addPickerViewValueChangeEvent:(UIPickerView*)pickerView component:(NSInteger)component withEvent:(UIEvent*)event;
 
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput;
++ (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput;
 
 + (void)addTakeScreenshot;
 

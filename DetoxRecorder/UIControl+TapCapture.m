@@ -145,6 +145,29 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 		return;
 	}
 	
+	if([self isKindOfClass:UITextField.class])
+	{
+		if(arg1 == UIControlEventEditingDidEndOnExit)
+		{
+			[DTXUIInteractionRecorder addTextReturnKeyEvent:(UITextField*)self];
+		}
+		
+		return;
+	}
+	
+	if([self isKindOfClass:UISegmentedControl.class])
+	{
+		if(arg1 == UIControlEventValueChanged)
+		{
+			UISegmentedControl* segmented = (id)self;
+			UIView* tapped = [segmented accessibilityElementAtIndex:segmented.selectedSegmentIndex];
+			
+			[DTXUIInteractionRecorder addTapWithView:tapped withEvent:arg2];
+		}
+		
+		return;
+	}
+	
 	if((arg1 == UIControlEventTouchUpInside && arg2 != nil) || (arg1 == UIControlEventPrimaryActionTriggered && arg2 == nil))
 	{
 		if([self isKindOfClass:UIDatePicker.class])
