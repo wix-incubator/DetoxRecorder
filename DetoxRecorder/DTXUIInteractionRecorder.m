@@ -74,23 +74,66 @@ static NSTimeInterval lastRecordedEventTimestamp;
 	return [self _visualizerViewForView:view action:action systemImageName:systemImageName imageViewTransform:CGAffineTransformIdentity];
 }
 
+static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* anyById, BOOL* anyByLabel, BOOL* anyByClass, BOOL* anyByIndex, BOOL* hasAncestorChain)
+{
+	if(element == nil)
+	{
+		return;
+	}
+	
+	*anyByIndex |= element.requiresAtIndex;
+	
+	[element.matchers enumerateObjectsUsingBlock:^(DTXRecordedElementMatcher * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		*anyById |= (obj.matcherType == DTXRecordedElementMatcherTypeById);
+		*anyByLabel |= (obj.matcherType == DTXRecordedElementMatcherTypeByLabel);
+		*anyByClass |= (obj.matcherType == DTXRecordedElementMatcherTypeByType);
+	}];
+	
+	*hasAncestorChain |= (element.ancestorElement != nil);
+	
+	_traverseElementMatchersAndFill(element.ancestorElement, anyById, anyByLabel, anyByClass, anyByIndex, hasAncestorChain);
+}
+
 + (UIView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageName:(NSString*)systemImageName imageViewTransform:(CGAffineTransform)transform
 {
 	_DTXVisualizedView* visualizer = [_DTXVisualizedView new];
 	
 	UIColor* color;
-	if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeById)
+	
+	BOOL anyById = NO;
+	BOOL anyByLabel = NO;
+	BOOL anyByClass = NO;
+	BOOL anyByIndex = NO;
+	BOOL hasAncestorChain = NO;
+	
+	_traverseElementMatchersAndFill(action.element, &anyById, &anyByLabel, &anyByClass, &anyByIndex, &hasAncestorChain);
+	
+	if(anyById == YES && anyByIndex == NO)
 	{
 		color = UIColor.systemGreenColor;
 	}
-	else if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeByLabel)
+	else if((anyByLabel == YES || anyByClass == YES) && anyByIndex == NO)
 	{
 		color = UIColor.systemOrangeColor;
 	}
-	else
+		
+	if(color == nil)
 	{
 		color = UIColor.systemRedColor;
 	}
+	
+//	if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeById)
+//	{
+//		;
+//	}
+//	else if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeByLabel)
+//	{
+//		color = UIColor.systemOrangeColor;
+//	}
+//	else
+//	{
+//		color = UIColor.systemRedColor;
+//	}
 	
 	CGRect frame = [view.window convertRect:view.bounds fromView:view];
 	
@@ -396,7 +439,7 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)_visualizeScrollCancelOfView:(UIView*)view action:(DTXRecordedAction*)action
 {
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:nil];
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"arrow.2.circlepath"];
 	
 	[self _systemDeleteVisualizerView:visualizer];
 }
@@ -462,6 +505,24 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 		[recordedActions addObject:action];
 
 		[self _visualizePickerValueChangeAtView:pickerView component:component withAction:action];
+	}
+}
+
++ (void)_visualizeSliderAdjust:(UISlider*)view withAction:(DTXRecordedAction*)action
+{
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"slider.horizontal.3"];
+	
+	[self _blinkVisualizerView:visualizer];
+}
+
++ (void)addSliderAdjustEvent:(UISlider*)slider withEvent:(UIEvent*)event
+{
+	DTXRecordedAction* action = [DTXRecordedAction sliderAdjustActionWithView:slider event:event];
+	if(action != nil)
+	{
+		[recordedActions addObject:action];
+
+		[self _visualizeSliderAdjust:slider withAction:action];
 	}
 }
 

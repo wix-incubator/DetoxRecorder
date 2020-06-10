@@ -168,6 +168,16 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 		return;
 	}
 	
+	if([self isKindOfClass:UISlider.class])
+	{
+		if(arg1 == UIControlEventTouchUpInside)
+		{
+			[DTXUIInteractionRecorder addSliderAdjustEvent:(id)self withEvent:arg2];
+		}
+		
+		return;
+	}
+	
 	if((arg1 == UIControlEventTouchUpInside && arg2 != nil) || (arg1 == UIControlEventPrimaryActionTriggered && arg2 == nil))
 	{
 		if([self isKindOfClass:UIDatePicker.class])

@@ -20,6 +20,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeScrollTo;
 extern DTXRecordedActionType const DTXRecordedActionTypeReplaceText;
 extern DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange;
 extern DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange;
+extern DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust;
 extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
 
 @interface DTXRecordedAction : NSObject
@@ -40,6 +41,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
 + (nullable instancetype)replaceTextActionWithView:(UIView*)view text:(NSString*)text event:(nullable UIEvent*)event;
 + (nullable instancetype)returnKeyTextActionWithView:(UIView*)view event:(nullable UIEvent*)event;
 + (instancetype)takeScreenshotAction;
++ (nullable instancetype)sliderAdjustActionWithView:(UISlider*)slider event:(nullable UIEvent*)event;
 + (nullable instancetype)datePickerDateChangeActionWithView:(UIDatePicker*)datePicker event:(nullable UIEvent*)event;
 + (nullable instancetype)pickerViewValueChangeActionWithView:(UIPickerView*)pickerView component:(NSInteger)component event:(nullable UIEvent*)event;
 

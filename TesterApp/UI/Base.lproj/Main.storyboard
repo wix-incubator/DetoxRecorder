@@ -61,29 +61,39 @@
                                 </connections>
                             </pickerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UE4-ed-FQy">
-                                <rect key="frame" x="141.5" y="673" width="131" height="32"/>
+                                <rect key="frame" x="141.5" y="685" width="131" height="32"/>
                                 <segments>
                                     <segment title="First"/>
                                     <segment title="Second"/>
                                 </segments>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MySegment"/>
+                                </userDefinedRuntimeAttributes>
                             </segmentedControl>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="768" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="9X5-gp-W7t">
+                                <rect key="frame" x="38" y="736" width="338" height="31"/>
+                                <accessibility key="accessibilityConfiguration" identifier="MySlider"/>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xYa-IY-5vI" secondAttribute="trailing" constant="20" id="0CB-1K-gJg"/>
+                            <constraint firstItem="9X5-gp-W7t" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="8Nh-26-lRf"/>
                             <constraint firstItem="93v-HT-fum" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Bay-L7-vx5"/>
                             <constraint firstItem="fkq-sg-I9V" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Fev-up-439"/>
                             <constraint firstItem="UE4-ed-FQy" firstAttribute="centerX" secondItem="fkq-sg-I9V" secondAttribute="centerX" id="FwH-WT-P32"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xYa-IY-5vI" secondAttribute="bottom" id="LYk-Cd-uAX"/>
                             <constraint firstItem="pCc-EI-8u4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="R28-cH-6Xi"/>
                             <constraint firstItem="xYa-IY-5vI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="Rqw-Tz-K0m"/>
+                            <constraint firstItem="9X5-gp-W7t" firstAttribute="top" secondItem="UE4-ed-FQy" secondAttribute="bottom" constant="20" id="WJV-lG-4Bg"/>
                             <constraint firstItem="W8G-Ds-e60" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pCc-EI-8u4" secondAttribute="trailing" constant="8" symbolic="YES" id="XRJ-xq-w3H"/>
                             <constraint firstItem="lSY-nV-EOH" firstAttribute="top" secondItem="W8G-Ds-e60" secondAttribute="bottom" constant="8" id="Xng-k7-fh8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9X5-gp-W7t" secondAttribute="trailing" constant="40" id="cVr-O2-iUV"/>
                             <constraint firstItem="pCc-EI-8u4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="cWf-Vm-b4X"/>
                             <constraint firstItem="fkq-sg-I9V" firstAttribute="top" secondItem="93v-HT-fum" secondAttribute="bottom" constant="8" id="gyH-pd-QcR"/>
                             <constraint firstItem="lSY-nV-EOH" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="i7m-mM-wl2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="W8G-Ds-e60" secondAttribute="trailing" constant="20" id="v8b-os-FV8"/>
-                            <constraint firstItem="UE4-ed-FQy" firstAttribute="top" secondItem="fkq-sg-I9V" secondAttribute="bottom" constant="8" symbolType="layoutAnchor" id="wRT-VQ-IVB"/>
+                            <constraint firstItem="UE4-ed-FQy" firstAttribute="top" secondItem="fkq-sg-I9V" secondAttribute="bottom" constant="20" id="wRT-VQ-IVB"/>
                             <constraint firstItem="W8G-Ds-e60" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="yow-Hl-s1W"/>
                             <constraint firstItem="93v-HT-fum" firstAttribute="top" secondItem="lSY-nV-EOH" secondAttribute="bottom" constant="8" id="zfY-V9-C4X"/>
                         </constraints>

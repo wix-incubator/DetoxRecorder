@@ -31,6 +31,7 @@ extern DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByLabel;
 @property (nonatomic, readonly, copy) NSArray<DTXRecordedElementMatcher*>* matchers;
 @property (nonatomic, readonly) BOOL requiresAtIndex;
 @property (nonatomic, readonly) NSInteger atIndex;
+@property (nonatomic, readonly) DTXRecordedElement* ancestorElement;
 
 + (nullable instancetype)elementWithView:(UIView*)view allowHierarchyTraversal:(BOOL)allowHierarchyTraversal;
 

@@ -33,6 +33,10 @@
 		397CA766247EE076005E8A71 /* GBPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA75D247EE076005E8A71 /* GBPrint.m */; };
 		397CA767247EE076005E8A71 /* GBCommandLineParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA75F247EE076005E8A71 /* GBCommandLineParser.m */; };
 		397CA768247EE076005E8A71 /* GBOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA763247EE076005E8A71 /* GBOptionsHelper.m */; };
+		39AE548E2490FA3A0093BFEE /* _DTXAdjustSliderAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE548C2490FA3A0093BFEE /* _DTXAdjustSliderAction.h */; };
+		39AE548F2490FA3A0093BFEE /* _DTXAdjustSliderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */; };
+		39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */; };
+		39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */; };
 		39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */; };
 		39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013402472EB8E00784C84 /* _DTXLongPressAction.m */; };
 		39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135C2473CC8000784C84 /* DTXAppleInternals.h */; };
@@ -121,6 +125,10 @@
 		397CA764247EE076005E8A71 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBSettings.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBSettings.h; sourceTree = "<group>"; };
 		399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+DTXQuotedStringForJS.h"; sourceTree = "<group>"; };
 		399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTXQuotedStringForJS.m"; sourceTree = "<group>"; };
+		39AE548C2490FA3A0093BFEE /* _DTXAdjustSliderAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXAdjustSliderAction.h; sourceTree = "<group>"; };
+		39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXAdjustSliderAction.m; sourceTree = "<group>"; };
+		39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISlider+RecorderUtils.h"; sourceTree = "<group>"; };
+		39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISlider+RecorderUtils.m"; sourceTree = "<group>"; };
 		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
 		39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXLongPressAction.h; sourceTree = "<group>"; };
 		39C013402472EB8E00784C84 /* _DTXLongPressAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXLongPressAction.m; sourceTree = "<group>"; };
@@ -222,6 +230,8 @@
 				39C013722473CC8000784C84 /* UIDatePicker+RecorderUtils.m */,
 				39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */,
 				39C0135E2473CC8000784C84 /* UIPickerView+RecorderUtils.m */,
+				39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */,
+				39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */,
 				39C013772473CC8000784C84 /* UIView+DTXDescendants.h */,
 				39C013782473CC8000784C84 /* UIView+DTXDescendants.m */,
 			);
@@ -270,6 +280,8 @@
 		39C201A4226D471100E8CE30 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				39AE548C2490FA3A0093BFEE /* _DTXAdjustSliderAction.h */,
+				39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */,
 				39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */,
 				39C013402472EB8E00784C84 /* _DTXLongPressAction.m */,
 				39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */,
@@ -303,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */,
+				39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */,
 				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
@@ -316,6 +329,7 @@
 				39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */,
 				39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */,
 				39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */,
+				39AE548E2490FA3A0093BFEE /* _DTXAdjustSliderAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,12 +471,14 @@
 				39F5AD152461A2AF00FB7F18 /* _DTXTakeScreenshotAction.m in Sources */,
 				39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */,
 				39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */,
+				39AE548F2490FA3A0093BFEE /* _DTXAdjustSliderAction.m in Sources */,
 				39C0138E2473CC8000784C84 /* UIDatePicker+RecorderUtils.m in Sources */,
 				39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */,
 				39C0137B2473CC8000784C84 /* UIPickerView+RecorderUtils.m in Sources */,
 				39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */,
 				39F5AD0E2461A29E00FB7F18 /* UIInputCapture.m in Sources */,
 				39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */,
+				39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */,
 				39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */,
 				39F5AD122461A2AF00FB7F18 /* _DTXTapAction.m in Sources */,
 				39F5AD112461A2AF00FB7F18 /* DTXRecordedAction.m in Sources */,

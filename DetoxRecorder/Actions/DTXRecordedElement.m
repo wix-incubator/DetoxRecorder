@@ -81,6 +81,7 @@ static void _DTXDeepMacherDescription(NSArray<DTXRecordedElementMatcher*>* match
 @property (nonatomic, readwrite, copy) NSArray<DTXRecordedElementMatcher*>* matchers;
 @property (nonatomic, readwrite) BOOL requiresAtIndex;
 @property (nonatomic, readwrite) NSInteger atIndex;
+@property (nonatomic, readwrite) DTXRecordedElement* ancestorElement;
 
 @property (nonatomic, strong) Class viewClass;
 @property (nonatomic, strong) NSString* chainDescription;
@@ -197,6 +198,18 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 	
 	UIAccessibilityTraits allowedLookupTraits = allowTraversal ? UIAccessibilityTraitButton : 0;
 	
+	DTXRecordedElement* ancestorElement = nil;
+	if([view isKindOfClass:NSClassFromString(@"UISegment")])
+	{
+		UISegmentedControl* segmentControl = (id)view;
+		while(segmentControl != nil && [segmentControl isKindOfClass:UISegmentedControl.class] == NO)
+		{
+			segmentControl = (id)segmentControl.superview;
+		}
+		
+		ancestorElement = [self elementWithView:segmentControl allowHierarchyTraversal:NO];
+	}
+	
 	NSInteger byTypeIdx = NSNotFound;
 	NSString* byId = DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits, &byTypeIdx);
 	NSString* byLabel = DTXBestEffortAccessibilityLabelForView(view, &byTypeIdx);
@@ -258,6 +271,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 	rv.viewClass = view.class;
 	rv.chainDescription = DTXGetViewChainDescription(view);
 	rv.superviewChain = DTXGetSuperviewChain(view);
+	rv.ancestorElement = ancestorElement;
 	
 	return rv;
 }
@@ -289,6 +303,11 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 	[rv appendString:[DTXRecordedElementMatcher detoxDescriptionForMatchers:self.matchers]];
 	
 	[rv appendString:@")"];
+	
+	if(self.ancestorElement)
+	{
+		[rv appendFormat:@".withAncestor(%@)", self.ancestorElement.detoxDescription];
+	}
 	
 	if(self.requiresAtIndex)
 	{

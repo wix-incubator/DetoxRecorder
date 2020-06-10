@@ -29,6 +29,8 @@
 + (void)addDatePickerDateChangeEvent:(UIDatePicker*)datePicker withEvent:(UIEvent*)event;
 + (void)addPickerViewValueChangeEvent:(UIPickerView*)pickerView component:(NSInteger)component withEvent:(UIEvent*)event;
 
++ (void)addSliderAdjustEvent:(UISlider*)slider withEvent:(UIEvent*)event;
+
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput;
 + (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput;
 

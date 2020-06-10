@@ -15,6 +15,7 @@
 #import "_DTXPickerViewValueChangeAction.h"
 #import "_DTXTakeScreenshotAction.h"
 #import "_DTXLongPressAction.h"
+#import "_DTXAdjustSliderAction.h"
 #import "NSString+DTXQuotedStringForJS.h"
 
 DTXRecordedActionType const DTXRecordedActionTypeTap = @"tap";
@@ -24,6 +25,7 @@ DTXRecordedActionType const DTXRecordedActionTypeScrollTo = @"scrollTo";
 DTXRecordedActionType const DTXRecordedActionTypeReplaceText = @"replaceText";
 DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange = @"setDatePickerDate";
 DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange = @"setColumnToValue";
+DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust = @"adjustSliderToPosition";
 DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreenshot";
 
 @implementation DTXRecordedAction
@@ -71,6 +73,11 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 + (instancetype)pickerViewValueChangeActionWithView:(UIPickerView *)pickerView component:(NSInteger)component event:(UIEvent *)event
 {
 	return [[_DTXPickerViewValueChangeAction alloc] initWithPickerView:pickerView component:component];
+}
+
++ (nullable instancetype)sliderAdjustActionWithView:(UISlider*)slider event:(nullable UIEvent*)event
+{
+	return [[_DTXAdjustSliderAction alloc] initWithSlider:slider event:event];
 }
 
 - (instancetype)init;
