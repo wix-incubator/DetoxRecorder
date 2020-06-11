@@ -10,15 +10,19 @@
 #import "DTXCaptureControlWindow.h"
 #import "DTXRecordedAction.h"
 #import "DTXAppleInternals.h"
+#import "NSUserDefaults+RecorderUtils.h"
+
+#define IGNORE_RECORDING_WINDOW(view) if(view.window == captureControlWindow) { return; }
 
 @interface _DTXVisualizedView : UIView @end
 @implementation _DTXVisualizedView @end
 
 @implementation DTXUIInteractionRecorder
 
+static __weak id<DTXUIInteractionRecorderDelegate> delegate;
+static BOOL startedByUser;
 static NSMutableArray<DTXRecordedAction*>* recordedActions;
 static DTXCaptureControlWindow* captureControlWindow;
-static NSUInteger screenshotCounter;
 static UIView* previousTextChangeVisualizer;
 
 + (void)load
@@ -26,41 +30,82 @@ static UIView* previousTextChangeVisualizer;
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecStartRecording"] == YES)
 		{
-			[self beginRecording];
+			[self _beginRecordingByUser:NO];
 		}
 	});
 }
 
++ (id<DTXUIInteractionRecorderDelegate>)delegate
+{
+	return delegate;
+}
+
++ (void)setDelegate:(id<DTXUIInteractionRecorderDelegate>)_delegate
+{
+	delegate = _delegate;
+}
+
 + (void)beginRecording
 {
+	[self _beginRecordingByUser:YES];
+}
+
++ (void)_beginRecordingByUser:(BOOL)byUser;
+{
+	if(captureControlWindow != nil)
+	{
+		return;
+	}
+	
+	startedByUser = byUser;
+	
 	recordedActions = [NSMutableArray new];
-	screenshotCounter = 1;
+	[DTXRecordedAction resetScreenshotCounter];
 	
 	captureControlWindow = [[DTXCaptureControlWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
 }
 
 + (void)endRecording
 {
+	NSMutableArray<NSString*>* detoxCommands = nil;
+	if([delegate respondsToSelector:@selector(interactionRecorderDidEndRecordingWithTestCommands:)])
+	{
+		detoxCommands = [NSMutableArray new];
+	}
+	
 	NSString* testNamePath = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestOutputPath"];
 	NSString* testName = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestName"] ?: @"My Recorded Test";
 	
-	[NSFileManager.defaultManager createFileAtPath:testNamePath contents:nil attributes:nil];
-	NSFileHandle* file = [NSFileHandle fileHandleForWritingAtPath:testNamePath];
+	NSFileHandle* file = nil;
+	if(testNamePath != nil)
+	{
+		[NSFileManager.defaultManager createFileAtPath:testNamePath contents:nil attributes:nil];
+		file = [NSFileHandle fileHandleForWritingAtPath:testNamePath];
+	}
 	
 	[file writeData:[[NSString stringWithFormat:@"describe('Recorded suite', () => {\n\tit('%@', async () => {\n", testName] dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	[recordedActions enumerateObjectsUsingBlock:^(DTXRecordedAction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-		[file writeData:[[NSString stringWithFormat:@"\t\t%@\n", obj.detoxDescription] dataUsingEncoding:NSUTF8StringEncoding]];
+		NSString* detoxDescription = obj.detoxDescription;
+		[detoxCommands addObject:detoxDescription];
+		[file writeData:[[NSString stringWithFormat:@"\t\t%@\n", detoxDescription] dataUsingEncoding:NSUTF8StringEncoding]];
 	}];
 	
 	[file writeData:[@"\t}\n}" dataUsingEncoding:NSUTF8StringEncoding]];
 	[file closeFile];
 	
+	if(detoxCommands != nil)
+	{
+		[delegate interactionRecorderDidEndRecordingWithTestCommands:detoxCommands];
+	}
+	
 	recordedActions = nil;
 	captureControlWindow.hidden = YES;
 	captureControlWindow = nil;
 	
-	if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecNoExit"] == NO)
+	if(startedByUser == NO &&
+	   (([delegate respondsToSelector:@selector(interactionRecorderShouldExitApp)] == NO && [NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecNoExit"] == NO) ||
+	   [delegate interactionRecorderShouldExitApp]))
 	{
 		exit(0);
 	}
@@ -121,19 +166,6 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	{
 		color = UIColor.systemRedColor;
 	}
-	
-//	if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeById)
-//	{
-//		;
-//	}
-//	else if(action.element.matchers.count == 1 && action.element.matchers.firstObject.matcherType == DTXRecordedElementMatcherTypeByLabel)
-//	{
-//		color = UIColor.systemOrangeColor;
-//	}
-//	else
-//	{
-//		color = UIColor.systemRedColor;
-//	}
 	
 	CGRect frame = [view.window convertRect:view.bounds fromView:view];
 	
@@ -327,6 +359,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 + (void)_addTapWithView:(UIView*)view event:(UIEvent*)event fromRN:(BOOL)fromRN
 {
 	IGNORE_IF_FROM_LAST_EVENT
+	IGNORE_RECORDING_WINDOW(view)
 	
 	DTXRecordedAction* action = [DTXRecordedAction tapActionWithView:view event:event isFromRN:fromRN];
 	if(action != nil)
@@ -362,6 +395,8 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(UIEvent*)event
 {
+	IGNORE_RECORDING_WINDOW(tgr.view)
+	
 	DTXRecordedAction* action = [DTXRecordedAction longPressActionWithView:tgr.view duration:duration event:event];
 	if(action != nil)
 	{
@@ -388,6 +423,11 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (BOOL)_coalesceScrollViewEvent:(UIScrollView*)scrollView fromDeltaOriginOffset:(CGPoint)deltaOriginOffset toNewOffset:(CGPoint)newOffset
 {
+	if(NSUserDefaults.standardUserDefaults.dtx_coalesceScrollEvents == NO)
+	{
+		return NO;
+	}
+	
 	DTXRecordedAction* prevAction = recordedActions.lastObject;
 	
 	if(prevAction.allowsUpdates == NO || prevAction.actionType != DTXRecordedActionTypeScroll || [prevAction.element isReferencingView:scrollView] == NO)
@@ -408,6 +448,8 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset withEvent:(UIEvent *)event
 {
+	IGNORE_RECORDING_WINDOW(scrollView)
+	
 	[self addScrollEvent:scrollView fromOriginOffset:originOffset toNewOffset:scrollView.contentOffset withEvent:event];
 }
 
@@ -446,6 +488,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset toNewOffset:(CGPoint)newOffset withEvent:(UIEvent *)event
 {
+	IGNORE_RECORDING_WINDOW(scrollView)
+	
 //	NSLog(@"📣 %@->%@", @(originOffset), @(newOffset));
 	
 	DTXRecordedAction* action = [DTXRecordedAction scrollActionWithView:scrollView originOffset:originOffset newOffset:newOffset event:event];
@@ -464,16 +508,18 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 	
 	[self _visualizeScrollOfView:scrollView action:action];
 	
-//	if([self _coalesceScrollViewEvent:scrollView fromDeltaOriginOffset:originOffset toNewOffset:newOffset] == YES)
-//	{
-//		return;
-//	}
+	if([self _coalesceScrollViewEvent:scrollView fromDeltaOriginOffset:originOffset toNewOffset:newOffset] == YES)
+	{
+		return;
+	}
 	
 	[recordedActions addObject:action];
 }
 
 + (void)addDatePickerDateChangeEvent:(UIDatePicker*)datePicker withEvent:(UIEvent*)event
 {
+	IGNORE_RECORDING_WINDOW(datePicker)
+	
 	DTXRecordedAction* action = [DTXRecordedAction datePickerDateChangeActionWithView:datePicker event:event];
 	if(action != nil)
 	{
@@ -499,6 +545,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addPickerViewValueChangeEvent:(UIPickerView*)pickerView component:(NSInteger)component withEvent:(UIEvent*)event
 {
+	IGNORE_RECORDING_WINDOW(pickerView)
+	
 	DTXRecordedAction* action = [DTXRecordedAction pickerViewValueChangeActionWithView:pickerView component:component event:event];
 	if(action != nil)
 	{
@@ -517,6 +565,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addSliderAdjustEvent:(UISlider*)slider withEvent:(UIEvent*)event
 {
+	IGNORE_RECORDING_WINDOW(slider)
+	
 	DTXRecordedAction* action = [DTXRecordedAction sliderAdjustActionWithView:slider event:event];
 	if(action != nil)
 	{
@@ -528,6 +578,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addScrollToTopEvent:(UIScrollView*)scrollView withEvent:(UIEvent*)event
 {
+	IGNORE_RECORDING_WINDOW(scrollView)
+	
 	DTXRecordedAction* action = [DTXRecordedAction scrollToTopActionWithView:scrollView event:event];
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([[scrollView valueForKeyPath:@"animation.duration"] doubleValue] * 0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		[self _visualizeScrollToTopOfView:scrollView action:action];
@@ -558,6 +610,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput
 {
+	IGNORE_RECORDING_WINDOW(textInput)
+	
 	NSString* text = [textInput textInRange:[textInput textRangeFromPosition:textInput.beginningOfDocument toPosition:textInput.endOfDocument]];
 	DTXRecordedAction* action = [DTXRecordedAction replaceTextActionWithView:textInput text:text event:nil];
 	if(action == nil)
@@ -571,6 +625,8 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput
 {
+	IGNORE_RECORDING_WINDOW(textInput)
+	
 	DTXRecordedAction* action = [DTXRecordedAction returnKeyTextActionWithView:textInput event:nil];
 	if(action == nil)
 	{
@@ -583,7 +639,13 @@ static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)addTakeScreenshot
 {
-	[recordedActions addObject:[DTXRecordedAction takeScreenshotAction]];
+	[self addTakeScreenshotWithName:nil];
+}
+
++ (void)addTakeScreenshotWithName:(NSString*)screenshotName
+{
+	[recordedActions addObject:[DTXRecordedAction takeScreenshotActionWithName:screenshotName]];
+	[captureControlWindow visualizeTakeScreenshotWithName:screenshotName];
 }
 
 @end

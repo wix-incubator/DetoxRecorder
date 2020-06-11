@@ -8,32 +8,48 @@
 
 @import UIKit;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class DTXUIInteractionRecorder;
 
+@protocol DTXUIInteractionRecorderDelegate <NSObject>
+
+@optional
+
+- (BOOL)interactionRecorderShouldExitApp;
+- (void)interactionRecorderDidEndRecordingWithTestCommands:(NSArray<NSString*>*)testCommands;
+
+@end
+
 @interface DTXUIInteractionRecorder : NSObject
+
+@property (nonatomic, class, weak) id<DTXUIInteractionRecorderDelegate> delegate;
 
 + (void)beginRecording;
 + (void)endRecording;
 
-+ (void)addTapWithView:(UIView*)view withEvent:(UIEvent*)event;
-+ (void)addControlTapWithControl:(UIControl*)control withEvent:(UIEvent*)event;
-+ (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(UIEvent*)event;
-+ (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(UIEvent*)event;
++ (void)addTapWithView:(UIView*)view withEvent:(nullable UIEvent*)event;
++ (void)addControlTapWithControl:(UIControl*)control withEvent:(nullable UIEvent*)event;
++ (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(nullable UIEvent*)event;
++ (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event;
 
-+ (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(UIEvent*)event;
++ (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(nullable UIEvent*)event;
 
-+ (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset withEvent:(UIEvent*)event;
-+ (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset toNewOffset:(CGPoint)newOffset withEvent:(UIEvent*)event;
-+ (void)addScrollToTopEvent:(UIScrollView*)scrollView withEvent:(UIEvent*)event;
++ (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset withEvent:(nullable UIEvent*)event;
++ (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset toNewOffset:(CGPoint)newOffset withEvent:(nullable UIEvent*)event;
++ (void)addScrollToTopEvent:(UIScrollView*)scrollView withEvent:(nullable UIEvent*)event;
 
-+ (void)addDatePickerDateChangeEvent:(UIDatePicker*)datePicker withEvent:(UIEvent*)event;
-+ (void)addPickerViewValueChangeEvent:(UIPickerView*)pickerView component:(NSInteger)component withEvent:(UIEvent*)event;
++ (void)addDatePickerDateChangeEvent:(UIDatePicker*)datePicker withEvent:(nullable UIEvent*)event;
++ (void)addPickerViewValueChangeEvent:(UIPickerView*)pickerView component:(NSInteger)component withEvent:(nullable UIEvent*)event;
 
-+ (void)addSliderAdjustEvent:(UISlider*)slider withEvent:(UIEvent*)event;
++ (void)addSliderAdjustEvent:(UISlider*)slider withEvent:(nullable UIEvent*)event;
 
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput;
 + (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput;
 
 + (void)addTakeScreenshot;
++ (void)addTakeScreenshotWithName:(nullable NSString*)screenshotName;
 
 @end
+
+NS_ASSUME_NONNULL_END

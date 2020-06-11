@@ -9,15 +9,28 @@
 #import "AppDelegate.h"
 #import <DetoxRecorder/DTXUIInteractionRecorder.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <DTXUIInteractionRecorderDelegate>
 
 @end
 
 @implementation AppDelegate
 
+- (BOOL)interactionRecorderShouldExitApp
+{
+	return NO;
+}
+
+- (void)interactionRecorderDidEndRecordingWithTestCommands:(NSArray<NSString *> *)testCommands
+{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[DTXUIInteractionRecorder beginRecording];
+	});
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
+	
+	[DTXUIInteractionRecorder setDelegate:self];
 	
 	[NSNotificationCenter.defaultCenter addObserverForName:nil object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
 		if([note.name isEqualToString:@"UIViewAnimationDidStopNotification"] || [note.name isEqualToString:@"UIViewAnimationDidCommitNotification"])
@@ -35,10 +48,6 @@
 //			NSLog(@"🤟 %@", note);
 //		}
 	}];
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		[DTXUIInteractionRecorder beginRecording];
-	});
 	
 	return YES;
 }

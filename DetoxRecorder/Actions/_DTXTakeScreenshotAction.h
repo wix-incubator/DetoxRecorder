@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _DTXTakeScreenshotAction : DTXRecordedAction
 
++ (void)resetScreenshotCounter;
+
+@property (nonatomic, readonly, copy, nullable) NSString* screenshotName;
+
+- (instancetype)initWithName:(nullable NSString*)screenshotName;
+
 @end
 
 NS_ASSUME_NONNULL_END

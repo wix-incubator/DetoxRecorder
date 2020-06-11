@@ -14,19 +14,29 @@
 + (void)load
 {
 	@autoreleasepool {
-		
-		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"detoxrecorder_attemptXYRecording": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtx_attemptXYRecording": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtx_coalesceScrollEvents": @NO}];
 	}
 }
 
 - (BOOL)dtx_attemptXYRecording
 {
-	return [self boolForKey:@"detoxrecorder_attemptXYRecording"];
+	return [self boolForKey:@"dtx_attemptXYRecording"];
 }
 
 - (void)dtx_setAttemptXYRecording:(BOOL)dtx_attemptXYRecording
 {
-	[self setBool:dtx_attemptXYRecording forKey:@"detoxrecorder_attemptXYRecording"];
+	[self setBool:dtx_attemptXYRecording forKey:@"dtx_attemptXYRecording"];
+}
+
+- (BOOL)dtx_coalesceScrollEvents
+{
+	return [self boolForKey:@"dtx_coalesceScrollEvents"];
+}
+
+- (void)dtx_setCoalesceScrollEvents:(BOOL)dtx_coalesceScrollEvents
+{
+	[self setBool:dtx_coalesceScrollEvents forKey:@"dtx_coalesceScrollEvents"];
 }
 
 @end

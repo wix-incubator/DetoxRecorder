@@ -157,8 +157,7 @@ afterPickerView:
 	{
 		if([self.view isKindOfClass:NSClassFromString(@"UISwitchModernVisualElement")] ||
 		   [self isKindOfClass:NSClassFromString(@"_UIDragLiftGestureRecognizer")] ||
-		   [self isKindOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")]
-		   )
+		   [self isKindOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")])
 		{
 			return;
 		}

@@ -8,18 +8,28 @@
 
 #import "_DTXTakeScreenshotAction.h"
 
-static NSUInteger screenshotCounter;
+static NSUInteger screenshotCounter = 0;
 
 @implementation _DTXTakeScreenshotAction
 
-- (instancetype)init
++ (void)resetScreenshotCounter
+{
+	screenshotCounter = 0;
+}
+
+- (instancetype)initWithName:(NSString*)screenshotName;
 {
 	self = [super init];
 	
 	if(self)
 	{
+		_screenshotName = screenshotName.copy;
+		
 		self.actionType = DTXRecordedActionTypeTakeScreenshot;
-		self.actionArgs = @[[NSString stringWithFormat:@"Screen%@", @(++screenshotCounter)]];
+		
+		screenshotCounter++;
+		
+		self.actionArgs = @[[NSString stringWithFormat:@"Screenshot %@", screenshotName.length > 0 ? screenshotName : @(screenshotCounter)]];
 	}
 	
 	return self;

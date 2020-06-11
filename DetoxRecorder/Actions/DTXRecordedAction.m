@@ -60,9 +60,19 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 	return [[_DTXReplaceTextAction alloc] initWithView:view text:@"\n"];
 }
 
-+ (instancetype)takeScreenshotAction
++ (void)resetScreenshotCounter
 {
-	return [_DTXTakeScreenshotAction new];
+	[_DTXTakeScreenshotAction resetScreenshotCounter];
+}
+
++(instancetype)takeScreenshotAction
+{
+	return [[_DTXTakeScreenshotAction alloc] initWithName:nil];
+}
+
++ (instancetype)takeScreenshotActionWithName:(NSString*)screenshotName
+{
+	return [[_DTXTakeScreenshotAction alloc] initWithName:screenshotName];
 }
 
 + (nullable instancetype)datePickerDateChangeActionWithView:(UIDatePicker*)datePicker event:(nullable UIEvent*)event

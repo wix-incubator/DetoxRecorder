@@ -37,6 +37,8 @@
 		39AE548F2490FA3A0093BFEE /* _DTXAdjustSliderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */; };
 		39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */; };
 		39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */; };
+		39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */; };
+		39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */; };
 		39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */; };
 		39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013402472EB8E00784C84 /* _DTXLongPressAction.m */; };
 		39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135C2473CC8000784C84 /* DTXAppleInternals.h */; };
@@ -53,7 +55,7 @@
 		39C013962473CC9100784C84 /* Swiftier.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013952473CC9100784C84 /* Swiftier.h */; };
 		39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013972473CD0900784C84 /* NSArray+Utils.m */; };
 		39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013982473CD0900784C84 /* NSArray+Utils.h */; };
-		39F5AD042461A28400FB7F18 /* Replay.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD022461A28400FB7F18 /* Replay.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F5AD042461A28400FB7F18 /* DetoxRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD022461A28400FB7F18 /* DetoxRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */; };
 		39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */; };
 		39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */; };
@@ -129,6 +131,8 @@
 		39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXAdjustSliderAction.m; sourceTree = "<group>"; };
 		39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISlider+RecorderUtils.h"; sourceTree = "<group>"; };
 		39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UISlider+RecorderUtils.m"; sourceTree = "<group>"; };
+		39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXRecSettingsViewController.h; sourceTree = "<group>"; };
+		39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTXRecSettingsViewController.m; sourceTree = "<group>"; };
 		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
 		39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXLongPressAction.h; sourceTree = "<group>"; };
 		39C013402472EB8E00784C84 /* _DTXLongPressAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXLongPressAction.m; sourceTree = "<group>"; };
@@ -155,7 +159,7 @@
 		39EB26B6226D5A1000621FBA /* _DTXTakeScreenshotAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXTakeScreenshotAction.h; sourceTree = "<group>"; };
 		39EB26B7226D5A1000621FBA /* _DTXTakeScreenshotAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXTakeScreenshotAction.m; sourceTree = "<group>"; };
 		39F5AD002461A28400FB7F18 /* DetoxRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DetoxRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		39F5AD022461A28400FB7F18 /* Replay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
+		39F5AD022461A28400FB7F18 /* DetoxRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.h; sourceTree = "<group>"; };
 		39F5AD032461A28400FB7F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXScrollToAction.h; sourceTree = "<group>"; };
 		39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollToAction.m; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 		392F353B225F6851003E8CF2 = {
 			isa = PBXGroup;
 			children = (
+				39AE549A2492464C0093BFEE /* Settings */,
 				39449C3F2462E78100B967FC /* Utils */,
 				39C201A4226D471100E8CE30 /* Actions */,
 				399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */,
@@ -198,7 +203,7 @@
 				392F3554225F6882003E8CF2 /* UIInputCapture.m */,
 				39C7DF582262692A002BABAE /* UIScrollView+ScrollToTopCapture.h */,
 				39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */,
-				39F5AD022461A28400FB7F18 /* Replay.h */,
+				39F5AD022461A28400FB7F18 /* DetoxRecorder.h */,
 				39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */,
 				39F5AD032461A28400FB7F18 /* Info.plist */,
 				397CA714247EB41B005E8A71 /* DetoxRecorderCLI */,
@@ -277,6 +282,15 @@
 			name = GBCli;
 			sourceTree = "<group>";
 		};
+		39AE549A2492464C0093BFEE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */,
+				39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		39C201A4226D471100E8CE30 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,10 +333,11 @@
 				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
+				39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */,
 				39F5AD292461F70A00FB7F18 /* _DTXScrollToAction.h in Headers */,
 				39C013962473CC9100784C84 /* Swiftier.h in Headers */,
 				39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */,
-				39F5AD042461A28400FB7F18 /* Replay.h in Headers */,
+				39F5AD042461A28400FB7F18 /* DetoxRecorder.h in Headers */,
 				39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */,
 				39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */,
 				39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */,
@@ -486,6 +501,7 @@
 				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
 				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,
 				39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */,
+				39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */,
 				39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */,
 				39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */,
 				39F5AD132461A2AF00FB7F18 /* _DTXScrollAction.m in Sources */,

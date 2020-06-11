@@ -16,4 +16,6 @@
 @end
 @interface DTXCaptureControlWindow : UIWindow
 
+- (void)visualizeTakeScreenshotWithName:(NSString*)name;
+
 @end

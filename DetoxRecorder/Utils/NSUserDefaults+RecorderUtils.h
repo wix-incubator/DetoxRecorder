@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSUserDefaults (RecorderUtils)
 
 @property (nonatomic, assign, setter=dtx_setAttemptXYRecording:) BOOL dtx_attemptXYRecording;
+@property (nonatomic, assign, setter=dtx_setCoalesceScrollEvents:) BOOL dtx_coalesceScrollEvents;
 
 @end
 

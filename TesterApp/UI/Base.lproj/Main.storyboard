@@ -876,9 +876,6 @@
                             <constraint firstItem="mr4-bq-xLe" firstAttribute="centerX" secondItem="NIq-cn-gQn" secondAttribute="centerX" id="lJh-7U-hRH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NIq-cn-gQn"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="LhK-LC-1Ha" appends="YES" id="tiL-qx-igo"/>
-                        </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="aWM-oA-VZ0"/>
                     <connections>
@@ -886,11 +883,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ksZ-m1-Bjg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="LhK-LC-1Ha">
-                    <connections>
-                        <action selector="clearKeyboard:" destination="62K-aY-xXB" id="2fE-ua-eWy"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2362.3188405797105" y="-208.25892857142856"/>
         </scene>

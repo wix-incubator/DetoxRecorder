@@ -8,11 +8,13 @@
 
 #import "DTXCaptureControlWindow.h"
 #import "DTXUIInteractionRecorder.h"
+#import "DTXRecSettingsViewController.h"
 @import AudioToolbox;
 
 @interface UIWindowScene ()
 
 + (instancetype)_keyWindowScene;
+@property(readonly, nonatomic) UIWindow *_keyWindow;
 
 @end
 
@@ -48,6 +50,15 @@ const CGFloat buttonWidth = 44;
 		_toggledStateImageTransform = CGAffineTransformIdentity;
 		_disabled = NO;
 		_toggled = NO;
+		if (@available(iOS 13.4, *))
+		{
+			self.pointerInteractionEnabled = YES;
+		}
+		
+		[NSLayoutConstraint activateConstraints:@[
+			[self.widthAnchor constraintEqualToConstant:buttonWidth],
+			[self.heightAnchor constraintEqualToConstant:buttonWidth],
+		]];
 		
 		[self _refreshButtonAppearance];
 	}
@@ -144,6 +155,8 @@ const CGFloat buttonWidth = 44;
 
 @end
 
+@interface DTXCaptureControlWindow () <UIAdaptivePresentationControllerDelegate> @end
+
 @implementation DTXCaptureControlWindow
 {
 	UIView* _wrapperView;
@@ -154,6 +167,10 @@ const CGFloat buttonWidth = 44;
 	_DTXCaptureControlButton* _takeScreenshot;
 	_DTXCaptureControlButton* _xyRecord;
 	_DTXCaptureControlButton* _settings;
+	
+	NSLayoutConstraint* _topConstraint;
+	
+	__weak UIWindow* _prevKeyWindow;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -185,35 +202,28 @@ const CGFloat buttonWidth = 44;
 		
 		[self.rootViewController.view addSubview:_wrapperView];
 		
-		NSLayoutConstraint* constraint = [_wrapperView.topAnchor constraintEqualToAnchor:self.rootViewController.view.safeAreaLayoutGuide.topAnchor constant: buttonWidth * -0.2722222222];
-		constraint.priority = UILayoutPriorityDefaultHigh;
+		_topConstraint = [_wrapperView.topAnchor constraintEqualToAnchor:self.rootViewController.view.safeAreaLayoutGuide.topAnchor];
+		_topConstraint.priority = UILayoutPriorityRequired;
+		[self _updateTopConstraint];
 		
 		_takeScreenshot = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 		[_takeScreenshot setImage:[UIImage systemImageNamed:@"camera.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
 		[_takeScreenshot addTarget:self action:@selector(takeScreenshot:) forControlEvents:UIControlEventPrimaryActionTriggered];
-		[NSLayoutConstraint activateConstraints:@[
-												  [_takeScreenshot.widthAnchor constraintEqualToConstant:buttonWidth],
-												  [_takeScreenshot.heightAnchor constraintEqualToConstant:buttonWidth],
-												  ]];
+	
+		UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(takeScreenshotLongPress:)];
+		[_takeScreenshot addGestureRecognizer:longPress];
 		
 		_settings = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 		[_settings setImage:[UIImage systemImageNamed:@"gear" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
 		[_settings addTarget:self action:@selector(settings:) forControlEvents:UIControlEventPrimaryActionTriggered];
-		[NSLayoutConstraint activateConstraints:@[
-												  [_settings.widthAnchor constraintEqualToConstant:buttonWidth],
-												  [_settings.heightAnchor constraintEqualToConstant:buttonWidth],
-												  ]];
 		
 		_xyRecord = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		_xyRecord.toggled = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
+		[NSUserDefaults.standardUserDefaults addObserver:self forKeyPath:NSStringFromSelector(@selector(dtx_attemptXYRecording)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
+		
 		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.draw.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateSelected];
 		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.point.right.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
 		[_xyRecord setImageTransform:CGAffineTransformMakeRotation(-M_PI_2) forState:UIControlStateNormal];
 		[_xyRecord addTarget:self action:@selector(toggleXYRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
-		[NSLayoutConstraint activateConstraints:@[
-												  [_xyRecord.widthAnchor constraintEqualToConstant:buttonWidth],
-												  [_xyRecord.heightAnchor constraintEqualToConstant:buttonWidth],
-												  ]];
 		
 		_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _xyRecord, _settings]];
 		_actionButtonsStackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -227,16 +237,11 @@ const CGFloat buttonWidth = 44;
 		_stopRecording = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 		[_stopRecording setImage:[UIImage systemImageNamed:@"stop.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:20]] forState:UIControlStateNormal];
 		[_stopRecording addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
-		[NSLayoutConstraint activateConstraints:@[
-												  [_stopRecording.widthAnchor constraintEqualToConstant:buttonWidth],
-												  [_stopRecording.heightAnchor constraintEqualToConstant:buttonWidth],
-												  ]];
 		
 		[_wrapperView addSubview:_stopRecording];
 		
 		[NSLayoutConstraint activateConstraints:@[
-												  constraint,
-												  [_wrapperView.topAnchor constraintGreaterThanOrEqualToAnchor:self.rootViewController.view.topAnchor],
+												  _topConstraint,
 												  [_wrapperView.centerXAnchor constraintEqualToAnchor:self.rootViewController.view.centerXAnchor],
 												  [_wrapperView.heightAnchor constraintEqualToConstant:buttonWidth * 1.2222222222],
 												  
@@ -262,13 +267,53 @@ const CGFloat buttonWidth = 44;
 		[UIView animateWithDuration:0.75 delay:0.0 usingSpringWithDamping:500 initialSpringVelocity:0.0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 			self.alpha = 1.0;
 		} completion:nil];
-
-//		[UIView animateWithDuration:0.6 delay:0.15 usingSpringWithDamping:500 initialSpringVelocity:0.0 options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
-//			[_wrapperView layoutIfNeeded];
-//		} completion:nil];
 	}
 	
 	return self;
+}
+
+- (void)makeKeyWindow
+{
+	if(self.isKeyWindow)
+	{
+		return;
+	}
+	
+	_prevKeyWindow = self.windowScene._keyWindow;
+	
+	[super makeKeyWindow];
+}
+
+- (void)_restoreKeyWindow
+{
+	[_prevKeyWindow makeKeyWindow];
+	_prevKeyWindow = nil;
+}
+
+- (void)becomeKeyWindow
+{
+	[super becomeKeyWindow];
+}
+
+- (void)resignKeyWindow
+{
+	[super resignKeyWindow];
+}
+
+- (void)_updateTopConstraint
+{
+	_topConstraint.constant = self.safeAreaInsets.top < 30 ? 0 : buttonWidth * -0.2722222222;
+	[self layoutIfNeeded];
+}
+
+- (void)safeAreaInsetsDidChange
+{
+	[self _updateTopConstraint];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+	_xyRecord.toggled = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
@@ -279,26 +324,86 @@ const CGFloat buttonWidth = 44;
 
 - (void)settings:(UIButton*)button
 {
+	auto settingsController = [[DTXRecSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	auto navigationController = [[UINavigationController alloc] initWithRootViewController:settingsController];
+	navigationController.presentationController.delegate = self;
 	
+	[self.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)toggleXYRecording:(_DTXCaptureControlButton*)button
 {
 	NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording = !NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
-	button.toggled = !button.toggled;
 }
 
 - (void)takeScreenshot:(UIButton*)button
+{
+	[DTXUIInteractionRecorder addTakeScreenshot];
+}
+
+static __weak UIAlertAction* __okAction;
+
+- (void)_takeScreenshotTextDidChange:(UITextField*)textField
+{
+	if(textField.text.length > 0)
+	{
+		__okAction.enabled = YES;
+	}
+	else
+	{
+		__okAction.enabled = NO;
+	}
+}
+
+- (void)takeScreenshotLongPress:(UILongPressGestureRecognizer*)lgr
+{
+	if(lgr.state != UIGestureRecognizerStateBegan)
+	{
+		return;
+	}
+	
+	UIAlertController* screenshot = [UIAlertController alertControllerWithTitle:@"Screenshot Name" message:nil preferredStyle:UIAlertControllerStyleAlert];
+	[screenshot addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		textField.placeholder = @"Name";
+		[textField addTarget:self action:@selector(_takeScreenshotTextDidChange:) forControlEvents:UIControlEventEditingChanged];
+		[self makeKeyWindow];
+		[textField becomeFirstResponder];
+	}];
+	
+	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[DTXUIInteractionRecorder addTakeScreenshotWithName:screenshot.textFields.firstObject.text];
+		[self _restoreKeyWindow];
+		
+	}];
+	okAction.enabled = NO;
+	
+	[screenshot addAction:okAction];
+	[screenshot addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[self _restoreKeyWindow];
+	}]];
+	
+	[self.rootViewController presentViewController:screenshot animated:YES completion:^{
+		[screenshot.textFields.firstObject becomeFirstResponder];
+	}];
+	
+	__okAction = okAction;
+}
+
+- (void)visualizeTakeScreenshotWithName:(NSString*)name
 {
 	_wrapperView.alpha = 0.0;
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
 		dispatch_async(dispatch_get_main_queue(), ^{
-			UIView* snapshotView = [self.screen snapshotViewAfterScreenUpdates:YES];
+			UIView* _snapshotView = [self.screen snapshotViewAfterScreenUpdates:YES];
+			
+			UIView* snapshotView = [UIView new];
 			snapshotView.clipsToBounds = YES;
 			snapshotView.layer.borderWidth = 20.0;
 			snapshotView.layer.borderColor = UIColor.labelColor.CGColor;
 			snapshotView.layer.cornerRadius = 30.0;
+			snapshotView.frame = self.bounds;
+			[snapshotView addSubview:_snapshotView];
 			
 			UIView* transitionView = [[UIView alloc] initWithFrame:self.bounds];
 			transitionView.userInteractionEnabled = NO;
@@ -307,8 +412,7 @@ const CGFloat buttonWidth = 44;
 			[self addSubview:transitionView];
 			[self sendSubviewToBack:transitionView];
 			
-			[DTXUIInteractionRecorder addTakeScreenshot];
-			[UIView animateWithDuration:0.2 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+			[UIView animateWithDuration:0.1 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 				transitionView.backgroundColor = UIColor.whiteColor;
 			} completion:^(BOOL finished) {
 				AudioServicesPlayAlertSoundWithCompletion((SystemSoundID)1108, nil);
@@ -316,24 +420,24 @@ const CGFloat buttonWidth = 44;
 				[self addSubview:snapshotView];
 				[self sendSubviewToBack:snapshotView];
 				
-				[UIView animateWithDuration:0.8 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+				[UIView animateWithDuration:0.4 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 					snapshotView.transform = CGAffineTransformMakeScale(SCREEN_PERCENT, SCREEN_PERCENT);
 					snapshotView.center = CGPointMake(MAX(20, self.safeAreaInsets.left) + self.bounds.size.width * (SCREEN_PERCENT / 2.0), self.bounds.size.height * (1.0 - SCREEN_PERCENT / 2.0) - MAX(20, self.safeAreaInsets.bottom));
 				} completion:^(BOOL finished) {
-					[UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+					[UIView animateWithDuration:0.25 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 						snapshotView.center = CGPointMake(- self.bounds.size.width * SCREEN_PERCENT, snapshotView.center.y);
 					} completion:^(BOOL finished) {
 						[snapshotView removeFromSuperview];
 						
 						_wrapperView.alpha = 0.0;
 						
-						[UIView animateWithDuration:0.5 delay:0.1 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+						[UIView animateWithDuration:0.25 delay:0.1 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 							_wrapperView.alpha = 0.75;
 						} completion:nil];
 					}];
 				}];
 				
-				[UIView animateWithDuration:0.7 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+				[UIView animateWithDuration:0.35 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 					transitionView.backgroundColor = UIColor.clearColor;
 				} completion:^(BOOL finished) {
 					[transitionView removeFromSuperview];
@@ -348,6 +452,25 @@ const CGFloat buttonWidth = 44;
 	[UIView performSystemAnimation:UISystemAnimationDelete onViews:@[self] options:0 animations:nil completion:^(BOOL finished) {
 		[DTXUIInteractionRecorder endRecording];
 	}];
+}
+
+- (void)dealloc
+{
+	[NSUserDefaults.standardUserDefaults removeObserver:self forKeyPath:NSStringFromSelector(@selector(dtx_attemptXYRecording))];
+}
+
+#pragma mark UIAdaptivePresentationControllerDelegate
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
+{
+	if(traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact)
+	{
+		return UIModalPresentationOverFullScreen;
+	}
+	else
+	{
+		return UIModalPresentationFormSheet;
+	}
 }
 
 @end
