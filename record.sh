@@ -3,7 +3,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 CLI="${SCRIPTPATH}/Build/DetoxRecorderCLI"
 FRAMEWORK_BINARY="${SCRIPTPATH}/Build/DetoxRecorder.framework/DetoxRecorder"
 
-if [ ! -f "${FRAMEWORK_BINARY}" ]; then
+if [ ! -f "${FRAMEWORK_BINARY}" ] || [ ! -f "${CLI}" ]; then
 	${SCRIPTPATH}/build.sh &> /dev/null
 fi
 

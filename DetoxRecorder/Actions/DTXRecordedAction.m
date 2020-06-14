@@ -16,7 +16,7 @@
 #import "_DTXTakeScreenshotAction.h"
 #import "_DTXLongPressAction.h"
 #import "_DTXAdjustSliderAction.h"
-#import "NSString+DTXQuotedStringForJS.h"
+#import "NSString+QuotedStringForJS.h"
 
 DTXRecordedActionType const DTXRecordedActionTypeTap = @"tap";
 DTXRecordedActionType const DTXRecordedActionTypeLongPress = @"longPress";
@@ -147,7 +147,7 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 	[rv appendString:[[self.actionArgs dtx_mapObjectsUsingBlock:^id _Nonnull(id _Nonnull obj, NSUInteger idx) {
 		if([obj isKindOfClass:NSString.class])
 		{
-			return [obj _dtx_quotedStringRepresentationForJS];
+			return [obj dtx_quotedStringRepresentationForJS];
 		}
 		else if([obj isKindOfClass:NSDictionary.class])
 		{

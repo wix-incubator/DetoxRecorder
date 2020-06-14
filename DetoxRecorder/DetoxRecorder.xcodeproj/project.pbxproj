@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		390FF62E24968B620022BF11 /* NSString+QuotedStringForJS.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */; };
+		390FF62F24968B620022BF11 /* NSString+QuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */; };
 		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
@@ -56,7 +58,6 @@
 		39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013972473CD0900784C84 /* NSArray+Utils.m */; };
 		39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013982473CD0900784C84 /* NSArray+Utils.h */; };
 		39F5AD042461A28400FB7F18 /* DetoxRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD022461A28400FB7F18 /* DetoxRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */; };
 		39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */; };
 		39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */; };
 		39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */; };
@@ -87,6 +88,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+QuotedStringForJS.h"; path = "ObjCHelpers/NSString+QuotedStringForJS.h"; sourceTree = "<group>"; };
+		390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+QuotedStringForJS.m"; path = "ObjCHelpers/NSString+QuotedStringForJS.m"; sourceTree = "<group>"; };
 		392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+TapCapture.m"; sourceTree = "<group>"; };
 		392F3551225F6882003E8CF2 /* UIInputCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInputCapture.h; sourceTree = "<group>"; };
 		392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+GestureCapture.h"; sourceTree = "<group>"; };
@@ -125,8 +128,6 @@
 		397CA762247EE076005E8A71 /* GBCli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBCli.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBCli.h; sourceTree = "<group>"; };
 		397CA763247EE076005E8A71 /* GBOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GBOptionsHelper.m; path = ObjCCLIInfra/GBCli/GBCli/src/GBOptionsHelper.m; sourceTree = "<group>"; };
 		397CA764247EE076005E8A71 /* GBSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBSettings.h; path = ObjCCLIInfra/GBCli/GBCli/src/GBSettings.h; sourceTree = "<group>"; };
-		399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+DTXQuotedStringForJS.h"; sourceTree = "<group>"; };
-		399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTXQuotedStringForJS.m"; sourceTree = "<group>"; };
 		39AE548C2490FA3A0093BFEE /* _DTXAdjustSliderAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXAdjustSliderAction.h; sourceTree = "<group>"; };
 		39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXAdjustSliderAction.m; sourceTree = "<group>"; };
 		39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UISlider+RecorderUtils.h"; sourceTree = "<group>"; };
@@ -183,18 +184,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		392F353B225F6851003E8CF2 = {
+		390FF62B249686100022BF11 /* EventCapture */ = {
 			isa = PBXGroup;
 			children = (
-				39AE549A2492464C0093BFEE /* Settings */,
-				39449C3F2462E78100B967FC /* Utils */,
-				39C201A4226D471100E8CE30 /* Actions */,
-				399B890B226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.h */,
-				399B890C226D6BBE00AE7F98 /* NSString+DTXQuotedStringForJS.m */,
-				392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */,
-				392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */,
-				392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */,
-				392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */,
 				392F3557225F6882003E8CF2 /* UIControl+TapCapture.h */,
 				392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */,
 				392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */,
@@ -203,6 +195,21 @@
 				392F3554225F6882003E8CF2 /* UIInputCapture.m */,
 				39C7DF582262692A002BABAE /* UIScrollView+ScrollToTopCapture.h */,
 				39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */,
+			);
+			path = EventCapture;
+			sourceTree = "<group>";
+		};
+		392F353B225F6851003E8CF2 = {
+			isa = PBXGroup;
+			children = (
+				39AE549A2492464C0093BFEE /* Settings */,
+				390FF62B249686100022BF11 /* EventCapture */,
+				39449C3F2462E78100B967FC /* Utils */,
+				39C201A4226D471100E8CE30 /* Actions */,
+				392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */,
+				392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */,
+				392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */,
+				392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */,
 				39F5AD022461A28400FB7F18 /* DetoxRecorder.h */,
 				39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */,
 				39F5AD032461A28400FB7F18 /* Info.plist */,
@@ -226,6 +233,8 @@
 				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
 				39C013982473CD0900784C84 /* NSArray+Utils.h */,
 				39C013972473CD0900784C84 /* NSArray+Utils.m */,
+				390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */,
+				390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */,
 				39C0135D2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h */,
 				39C0135F2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m */,
 				39C013952473CC9100784C84 /* Swiftier.h */,
@@ -338,6 +347,7 @@
 				39C013962473CC9100784C84 /* Swiftier.h in Headers */,
 				39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */,
 				39F5AD042461A28400FB7F18 /* DetoxRecorder.h in Headers */,
+				390FF62E24968B620022BF11 /* NSString+QuotedStringForJS.h in Headers */,
 				39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */,
 				39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */,
 				39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */,
@@ -491,8 +501,8 @@
 				39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */,
 				39C0137B2473CC8000784C84 /* UIPickerView+RecorderUtils.m in Sources */,
 				39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */,
+				390FF62F24968B620022BF11 /* NSString+QuotedStringForJS.m in Sources */,
 				39F5AD0E2461A29E00FB7F18 /* UIInputCapture.m in Sources */,
-				39F5AD092461A28F00FB7F18 /* NSString+DTXQuotedStringForJS.m in Sources */,
 				39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */,
 				39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */,
 				39F5AD122461A2AF00FB7F18 /* _DTXTapAction.m in Sources */,

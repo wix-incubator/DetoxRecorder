@@ -8,7 +8,7 @@
 
 #import "DTXRecordedElement.h"
 #import "UIView+DTXDescendants.h"
-#import "NSString+DTXQuotedStringForJS.h"
+#import "NSString+QuotedStringForJS.h"
 
 DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeById = @"by.id";
 DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByType = @"by.type";
@@ -31,7 +31,7 @@ DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByLabel = @"by.
 	[rv appendString:[[self.matcherArgs dtx_mapObjectsUsingBlock:^id _Nonnull(id  _Nonnull obj, NSUInteger idx) {
 		if([obj isKindOfClass:NSString.class])
 		{
-			return [obj _dtx_quotedStringRepresentationForJS];
+			return [obj dtx_quotedStringRepresentationForJS];
 		}
 		
 		return [obj description];
