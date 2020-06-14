@@ -41,7 +41,7 @@ static BOOL DTXUpdateScrollAction(_DTXScrollAction* action, UIScrollView* scroll
 		d = ABS(dx);
 	}
 	
-	action.actionArgs = @[@(ABS(d)), dir];
+	action.actionArgs = @[@(DTXDoubleWithMaxFractionLength(ABS(d), 3)), dir];
 	
 	return YES;
 }
@@ -79,13 +79,13 @@ static BOOL DTXUpdateScrollAction(_DTXScrollAction* action, UIScrollView* scroll
 	return DTXUpdateScrollAction(self, scrollView, self.originOffset, newOffset);
 }
 
-- (void)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement
+- (BOOL)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement
 {
 	ASSERT_ALLOWS_UPDATES
 	
 	if([targetElement elementSuperviewChainContainsElement:self.element] == NO)
 	{
-		return;
+		return NO;
 	}
 	
 	self.isScrollToVisible = YES;
@@ -96,6 +96,8 @@ static BOOL DTXUpdateScrollAction(_DTXScrollAction* action, UIScrollView* scroll
 	self.actionArgs = args;
 
 	self.targetElement = targetElement;
+	
+	return YES;
 }
 
 - (NSString*)detoxDescription;

@@ -22,7 +22,8 @@
 		if(atPoint)
 		{
 			CGPoint pt = [[event touchesForView:view].anyObject locationInView:view];
-			self.actionArgs = @[@{@"x": @(pt.x), @"y": @(pt.y)}];
+			
+			self.actionArgs = @[@{@"x": @(DTXDoubleWithMaxFractionLength(pt.x, 3)), @"y": @(DTXDoubleWithMaxFractionLength(pt.y, 3))}];
 		}
 		else
 		{

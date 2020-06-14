@@ -45,7 +45,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
 + (nullable instancetype)pickerViewValueChangeActionWithView:(UIPickerView*)pickerView component:(NSInteger)component event:(nullable UIEvent*)event;
 
 - (BOOL)updateScrollActionWithScrollView:(UIScrollView*)scrollView fromDeltaOriginOffset:(CGPoint)deltaOriginOffset toNewOffset:(CGPoint)newOffset;
-- (void)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement;
+- (BOOL)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement;
 
 + (void)resetScreenshotCounter;
 + (instancetype)takeScreenshotAction;

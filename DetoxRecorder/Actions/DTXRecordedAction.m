@@ -122,12 +122,14 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 {
 	[self doesNotRecognizeSelector:_cmd];
 	
-	return false;
+	return NO;
 }
 
-- (void)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement
+- (BOOL)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement
 {
 	[self doesNotRecognizeSelector:_cmd];
+	
+	return NO;
 }
 
 - (NSString*)detoxDescription;
