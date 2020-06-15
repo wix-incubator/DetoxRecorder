@@ -14,7 +14,11 @@
 
 #define IGNORE_RECORDING_WINDOW(view) if(view.window == captureControlWindow) { return; }
 
-@interface _DTXVisualizedView : UIView @end
+@interface _DTXVisualizedView : UIView
+
+@property (nonatomic, strong) NSArray<UIImageView*>* imageViews;
+
+@end
 @implementation _DTXVisualizedView @end
 
 @implementation DTXUIInteractionRecorder
@@ -218,9 +222,21 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 static NSTimeInterval lastRecordedEventTimestamp;
 #define IGNORE_IF_FROM_LAST_EVENT if(event != nil && event.timestamp == lastRecordedEventTimestamp) { return; } else { lastRecordedEventTimestamp = event.timestamp; }
 
-+ (UIView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageName:(NSString*)systemImageName
++ (_DTXVisualizedView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageNames:(NSArray<NSString*>*)systemImageNames applyConstraints:(BOOL)applyConstraints
 {
-	return [self _visualizerViewForView:view action:action systemImageName:systemImageName imageViewTransform:CGAffineTransformIdentity];
+	NSMutableArray* transforms = [NSMutableArray new];
+	NSValue* transform = [NSValue valueWithCGAffineTransform:CGAffineTransformIdentity];
+	
+	[systemImageNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		[transforms addObject:transform];
+	}];
+	
+	return [self _visualizerViewForView:view action:action systemImageNames:systemImageNames imageViewTransforms:transforms applyConstraints:applyConstraints];
+}
+
++ (_DTXVisualizedView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageName:(NSString*)systemImageName
+{
+	return [self _visualizerViewForView:view action:action systemImageNames:@[systemImageName] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:CGAffineTransformIdentity]] applyConstraints:YES];
 }
 
 static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* anyById, BOOL* anyByLabel, BOOL* anyByClass, BOOL* anyByIndex, BOOL* hasAncestorChain)
@@ -243,7 +259,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	_traverseElementMatchersAndFill(element.ancestorElement, anyById, anyByLabel, anyByClass, anyByIndex, hasAncestorChain);
 }
 
-+ (UIView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageName:(NSString*)systemImageName imageViewTransform:(CGAffineTransform)transform
++ (_DTXVisualizedView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageNames:(NSArray<NSString*>*)systemImageNames imageViewTransforms:(NSArray<NSValue* /*CGAffineTransform*/>*)transforms applyConstraints:(BOOL)applyConstraints
 {
 	_DTXVisualizedView* visualizer = [_DTXVisualizedView new];
 	
@@ -282,15 +298,18 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	visualizer.layer.borderColor = color.CGColor;
 	[captureControlWindow.rootViewController.view addSubview:visualizer];
 	
-	if(systemImageName)
-	{
+	NSMutableArray<UIImageView*>* imageViews = [NSMutableArray new];
+	[systemImageNames enumerateObjectsUsingBlock:^(NSString * _Nonnull systemImageName, NSUInteger idx, BOOL * _Nonnull stop) {
 		CGFloat minImageSize = MIN(30, MIN(CGRectGetWidth(frame) * 0.75, CGRectGetHeight(frame) * 0.75));
 		
 		UIImage* image = [UIImage systemImageNamed:systemImageName withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:MAX(minImageSize, MIN(CGRectGetWidth(frame) * 0.45, CGRectGetHeight(frame) * 0.45)) weight:UIImageSymbolWeightMedium]];
 		UIImageView* imageView = [[UIImageView alloc] initWithImage:image];
-		imageView.translatesAutoresizingMaskIntoConstraints = NO;
+		if(applyConstraints)
+		{
+			imageView.translatesAutoresizingMaskIntoConstraints = NO;
+		}
 		imageView.tintColor = UIColor.whiteColor;
-		imageView.transform = transform;
+		imageView.transform = transforms[idx].CGAffineTransformValue;
 		
 		if(CGRectContainsRect(CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame)), (CGRect){0, 0, image.size}))
 		{
@@ -303,63 +322,23 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 		
 		[visualizer addSubview:imageView];
 		
-		[NSLayoutConstraint activateConstraints:@[
-			[imageView.topAnchor constraintEqualToAnchor:visualizer.topAnchor],
-			[imageView.bottomAnchor constraintEqualToAnchor:visualizer.bottomAnchor],
-			[imageView.leadingAnchor constraintEqualToAnchor:visualizer.leadingAnchor],
-			[imageView.trailingAnchor constraintEqualToAnchor:visualizer.trailingAnchor],
-		]];
-	}
+		if(applyConstraints)
+		{
+			[NSLayoutConstraint activateConstraints:@[
+				[imageView.topAnchor constraintEqualToAnchor:visualizer.topAnchor],
+				[imageView.bottomAnchor constraintEqualToAnchor:visualizer.bottomAnchor],
+				[imageView.leadingAnchor constraintEqualToAnchor:visualizer.leadingAnchor],
+				[imageView.trailingAnchor constraintEqualToAnchor:visualizer.trailingAnchor],
+			]];
+		}
+		
+		[imageViews addObject:imageView];
+	}];
 	
-	if(systemImageName == nil && action.actionType == DTXRecordedActionTypeReplaceText)
+	if(imageViews.count > 0)
 	{
-		visualizer.alpha = 0.5;
-		visualizer.backgroundColor = [color colorWithAlphaComponent:0.1];
-		UIView* sq1 = [UIView new];
-		sq1.translatesAutoresizingMaskIntoConstraints = NO;
-		sq1.alpha = 0.7;
-		sq1.layer.cornerRadius = MIN(4, MIN(visualizer.frame.size.width, visualizer.frame.size.height) / 2);
-		sq1.layer.borderWidth = 2.0;
-		sq1.layer.borderColor = color.CGColor;
-		
-		UIView* sq2 = [UIView new];
-		sq2.translatesAutoresizingMaskIntoConstraints = NO;
-		sq2.alpha = 0.7;
-		sq2.layer.cornerRadius = MIN(4, MIN(visualizer.frame.size.width, visualizer.frame.size.height) / 2);
-		sq2.layer.borderWidth = 2.0;
-		sq2.layer.borderColor = color.CGColor;
-		
-		UIView* sq3 = [UIView new];
-		sq3.translatesAutoresizingMaskIntoConstraints = NO;
-		sq3.alpha = 0.7;
-		sq3.layer.cornerRadius = MIN(4, MIN(visualizer.frame.size.width, visualizer.frame.size.height) / 2);
-		sq3.layer.borderWidth = 2.0;
-		sq3.layer.borderColor = color.CGColor;
-		
-		UIStackView* sv = [UIStackView new];
-		sv.translatesAutoresizingMaskIntoConstraints = NO;
-		[sv addArrangedSubview:sq1];
-		[sv addArrangedSubview:sq2];
-		[sv addArrangedSubview:sq3];
-		sv.distribution = UIStackViewDistributionFillEqually;
-		sv.alignment = UIStackViewAlignmentCenter;
-		sv.spacing = 4;
-	
-		[visualizer addSubview:sv];
-		
-		[NSLayoutConstraint activateConstraints:@[
-												  [sv.centerXAnchor constraintEqualToAnchor:visualizer.centerXAnchor],
-												  [sv.centerYAnchor constraintEqualToAnchor:visualizer.centerYAnchor],
-												  [sq1.widthAnchor constraintEqualToConstant:10],
-												  [sq1.heightAnchor constraintEqualToConstant:10],
-												  [sq2.widthAnchor constraintEqualToAnchor:sq1.widthAnchor],
-												  [sq2.heightAnchor constraintEqualToAnchor:sq1.heightAnchor],
-												  [sq3.widthAnchor constraintEqualToAnchor:sq1.widthAnchor],
-												  [sq3.heightAnchor constraintEqualToAnchor:sq1.heightAnchor],
-												  ]];
+		visualizer.imageViews = imageViews;
 	}
-	
-//	[visualizer layoutIfNeeded];
 	
 	return visualizer;
 }
@@ -412,19 +391,49 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	}];
 }
 
-+ (void)_fadeVisualizerView:(UIView*)view direction:(CGFloat)dir
++ (void)_animateScrollVisualizerView:(_DTXVisualizedView*)view direction:(CGPoint)dir
 {
-	CGFloat y = dir < 0 ? CGRectGetMinY(view.frame) : CGRectGetMaxY(view.frame);
-	CGRect newFrame = CGRectMake(CGRectGetMinX(view.frame), y, CGRectGetWidth(view.frame), 0);
+	__block CGFloat startingY = 0.0;
 	
 	[UIView performWithoutAnimation:^{
+		view.clipsToBounds = YES;
+		[view layoutIfNeeded];
+		if(view.imageViews.firstObject != view.imageViews.lastObject)
+		{
+			startingY = 15;
+			view.imageViews.firstObject.backgroundColor = UIColor.brownColor;
+			view.imageViews.lastObject.frame = view.bounds;
+			view.imageViews.lastObject.contentMode = UIViewContentModeTop;
+		}
+		
+		view.imageViews.firstObject.frame = CGRectMake(0, startingY, CGRectGetWidth(view.bounds), CGRectGetHeight(view.bounds) - startingY);
+		
 		[view layoutIfNeeded];
 	}];
 	
-	[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		view.frame = newFrame;
-		view.alpha = 0.0;
-		[view layoutIfNeeded];
+	CGFloat x = dir.x < 0 ? CGRectGetMinX(view.bounds) : CGRectGetMaxX(view.bounds);
+	CGFloat y = dir.y < 0 ? CGRectGetMinY(view.bounds) + startingY : CGRectGetMaxY(view.bounds);
+	
+	CGRect newFrame = view.bounds;
+	
+	if(dir.y != 0)
+	{
+		newFrame = CGRectMake(CGRectGetMinX(view.bounds), y, CGRectGetWidth(view.bounds), 0);
+		view.imageViews.firstObject.contentMode = dir.y < 0 ? UIViewContentModeBottom : UIViewContentModeTop;
+	}
+	else if(dir.x != 0)
+	{
+		newFrame = CGRectMake(x, CGRectGetMinY(view.bounds), 0, CGRectGetHeight(view.bounds));
+	}
+	
+	[UIView animateKeyframesWithDuration:0.5 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
+		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:1.0 animations:^{
+			view.imageViews.firstObject.frame = newFrame;
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.5 animations:^{
+			view.alpha = 0.0;
+			[view layoutIfNeeded];
+		}];
 	} completion:^(BOOL finished) {
 		[view removeFromSuperview];
 	}];
@@ -440,14 +449,14 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 + (void)_visualizeTapAtView:(UIView*)view withAction:(DTXRecordedAction*)action
 {
 	BOOL xy = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:xy ? @"hand.draw.fill" : @"hand.point.right.fill" imageViewTransform:xy ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-M_PI_2)];
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[xy ? @"hand.draw.fill" : @"hand.point.right.fill"] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:xy ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-M_PI_2)]] applyConstraints:YES];
 	
 	[self _blinkVisualizerView:visualizer];
 }
 
 + (void)_visualizeLongPressAtView:(UIView*)view withAction:(DTXRecordedAction*)action
 {
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"hand.point.left.fill" imageViewTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[@"hand.point.left.fill"] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:CGAffineTransformMakeRotation(-M_PI_2)]] applyConstraints:YES];
 	
 	[self _slowFlashVisualizerView:visualizer];
 }
@@ -557,30 +566,42 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	[self addScrollEvent:scrollView fromOriginOffset:originOffset toNewOffset:scrollView.contentOffset withEvent:event];
 }
 
-static inline CGFloat DTXDirectionOfScroll(DTXRecordedAction* action)
+static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 {
 	if([action.actionArgs.lastObject isEqualToString:@"up"])
 	{
-		return -1;
+		return CGPointMake(0, -1);
+	}
+	if([action.actionArgs.lastObject isEqualToString:@"down"])
+	{
+		return CGPointMake(0, 1);
+	}
+	if([action.actionArgs.lastObject isEqualToString:@"left"])
+	{
+		return CGPointMake(-1, 0);
+	}
+	if([action.actionArgs.lastObject isEqualToString:@"right"])
+	{
+		return CGPointMake(1, 0);
 	}
 	
-	return 1;
+	return CGPointZero;
 }
 
 + (void)_visualizeScrollOfView:(UIView*)view action:(DTXRecordedAction*)action
 {
-	CGFloat direction = DTXDirectionOfScroll(action);
+	CGPoint direction = DTXDirectionOfScroll(action);
 	
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:direction < 0 ? @"arrow.up" : @"arrow.down"];
+	_DTXVisualizedView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[direction.y < 0 ? @"arrow.up" : direction.y > 0 ? @"arrow.down" : direction.x < 0 ? @"arrow.left" : direction.x > 0 ? @"arrow.right" : @"arrow.2.circlepath"] applyConstraints:NO];
 	
-	[self _fadeVisualizerView:visualizer direction:direction];
+	[self _animateScrollVisualizerView:visualizer direction:direction];
 }
 
 + (void)_visualizeScrollToTopOfView:(UIView*)view action:(DTXRecordedAction*)action
 {
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"arrow.up.to.line"];
+	_DTXVisualizedView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[@"arrow.up", @"minus"] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:CGAffineTransformIdentity], [NSValue valueWithCGAffineTransform:CGAffineTransformMakeScale(2.0, 1.0)]] applyConstraints:NO];
 	
-	[self _fadeVisualizerView:visualizer direction:-1];
+	[self _animateScrollVisualizerView:visualizer direction:CGPointMake(0, -1)];
 }
 
 + (void)_visualizeScrollCancelOfView:(UIView*)view action:(DTXRecordedAction*)action
