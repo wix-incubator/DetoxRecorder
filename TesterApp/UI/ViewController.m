@@ -32,20 +32,29 @@
 	
 }
 
-- (IBAction)tapView:(id)sender
+- (IBAction)tapView:(UITapGestureRecognizer*)sender
 {
-	
+	[UIView animateKeyframesWithDuration:0.25 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeCubicPaced animations:^{
+		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.5 animations:^{
+			sender.view.transform = CGAffineTransformMakeScale(0.85, 0.85);
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.5 animations:^{
+			sender.view.transform = CGAffineTransformIdentity;
+		}];
+	} completion:nil];
 }
 
 - (IBAction)longPressView:(UILongPressGestureRecognizer*)sender
 {
 	if (sender.state == UIGestureRecognizerStateEnded) {
-		NSLog(@"UIGestureRecognizerStateEnded");
-		//Do Whatever You want on End of Gesture
+		[UIView animateWithDuration:0.2 animations:^{
+			sender.view.transform = CGAffineTransformIdentity;
+		}];
 	}
 	else if (sender.state == UIGestureRecognizerStateBegan){
-		NSLog(@"UIGestureRecognizerStateBegan.");
-		//Do Whatever You want on Began of Gesture
+		[UIView animateWithDuration:0.2 animations:^{
+			sender.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
+		}];
 	}
 }
 

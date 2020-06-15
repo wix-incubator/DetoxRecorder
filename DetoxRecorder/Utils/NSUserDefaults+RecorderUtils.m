@@ -39,4 +39,14 @@
 	[self setBool:dtxrec_coalesceScrollEvents forKey:@"dtxrec_coalesceScrollEvents"];
 }
 
+- (BOOL)dtxrec_disableVisualizations
+{
+	return [self boolForKey:@"dtxrec_disableVisualizations"];
+}
+
+- (void)dtxrec_setDisableVisualizations:(BOOL)dtxrec_disableVisualizations
+{
+	[self setBool:dtxrec_disableVisualizations forKey:@"dtxrec_disableVisualizations"];
+}
+
 @end

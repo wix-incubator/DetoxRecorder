@@ -38,6 +38,7 @@
 		_settings = @[
 			@{@"Precise Tap Coordinates": NSStringFromSelector(@selector(dtxrec_attemptXYRecording))},
 			@{@"Coalesce Scroll Events": NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents))},
+			@{@"Disable Visualizations": NSStringFromSelector(@selector(dtxrec_disableVisualizations))},
 		];
 	}
 	

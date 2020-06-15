@@ -261,6 +261,11 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (_DTXVisualizedView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageNames:(NSArray<NSString*>*)systemImageNames imageViewTransforms:(NSArray<NSValue* /*CGAffineTransform*/>*)transforms applyConstraints:(BOOL)applyConstraints
 {
+	if(NSUserDefaults.standardUserDefaults.dtxrec_disableVisualizations)
+	{
+		return nil;
+	}
+	
 	_DTXVisualizedView* visualizer = [_DTXVisualizedView new];
 	
 	UIColor* color;
