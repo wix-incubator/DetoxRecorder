@@ -218,7 +218,7 @@ const CGFloat buttonWidth = 44;
 		[_settings addTarget:self action:@selector(settings:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		_xyRecord = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		[NSUserDefaults.standardUserDefaults addObserver:self forKeyPath:NSStringFromSelector(@selector(dtx_attemptXYRecording)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
+		[NSUserDefaults.standardUserDefaults addObserver:self forKeyPath:NSStringFromSelector(@selector(dtxrec_attemptXYRecording)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
 		
 		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.draw.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateSelected];
 		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.point.right.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
@@ -313,7 +313,7 @@ const CGFloat buttonWidth = 44;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-	_xyRecord.toggled = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
+	_xyRecord.toggled = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording;
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
@@ -333,7 +333,7 @@ const CGFloat buttonWidth = 44;
 
 - (void)toggleXYRecording:(_DTXCaptureControlButton*)button
 {
-	NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording = !NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
+	NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording = !NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording;
 }
 
 - (void)takeScreenshot:(UIButton*)button
@@ -456,7 +456,7 @@ static __weak UIAlertAction* __okAction;
 
 - (void)dealloc
 {
-	[NSUserDefaults.standardUserDefaults removeObserver:self forKeyPath:NSStringFromSelector(@selector(dtx_attemptXYRecording))];
+	[NSUserDefaults.standardUserDefaults removeObserver:self forKeyPath:NSStringFromSelector(@selector(dtxrec_attemptXYRecording))];
 }
 
 #pragma mark UIAdaptivePresentationControllerDelegate

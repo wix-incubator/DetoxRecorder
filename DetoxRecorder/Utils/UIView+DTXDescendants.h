@@ -10,8 +10,8 @@
 
 @interface UIView (DTXDescendants)
 
-+ (NSMutableArray<UIView*>*)dtx_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtx_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtx_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate;
 
 @end

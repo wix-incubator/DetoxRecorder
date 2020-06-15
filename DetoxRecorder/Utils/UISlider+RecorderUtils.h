@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UISlider (RecorderUtils)
 
-@property (nonatomic, readonly, getter=dtx_normalizedSliderPosition) double dtx_normalizedSliderPosition;
+@property (nonatomic, readonly, getter=dtxrec_normalizedSliderPosition) double dtxrec_normalizedSliderPosition;
 
 @end
 

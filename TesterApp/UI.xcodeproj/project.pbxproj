@@ -20,6 +20,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		390FF6362497C8DB0022BF11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39C0139C2473CDCE00784C84 /* DetoxRecorder.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 397CA713247EB41B005E8A71;
+			remoteInfo = DetoxRecorderCLI;
+		};
 		39C013A02473CDCF00784C84 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 39C0139C2473CDCE00784C84 /* DetoxRecorder.xcodeproj */;
@@ -103,13 +110,13 @@
 			children = (
 				398E234C225B882D004AC2D1 /* AppDelegate.h */,
 				398E234D225B882D004AC2D1 /* AppDelegate.m */,
-				398E234F225B882D004AC2D1 /* ViewController.h */,
-				398E2350225B882D004AC2D1 /* ViewController.m */,
 				398E2352225B882D004AC2D1 /* Main.storyboard */,
 				398E2355225B882F004AC2D1 /* Assets.xcassets */,
 				398E2357225B882F004AC2D1 /* LaunchScreen.storyboard */,
 				398E235A225B882F004AC2D1 /* Info.plist */,
 				398E235B225B882F004AC2D1 /* main.m */,
+				398E234F225B882D004AC2D1 /* ViewController.h */,
+				398E2350225B882D004AC2D1 /* ViewController.m */,
 				398E2366225B9310004AC2D1 /* Tab1ViewController.h */,
 				398E2367225B9310004AC2D1 /* Tab1ViewController.m */,
 				398E2369225B9320004AC2D1 /* Tab2ViewController.h */,
@@ -122,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				39C013A12473CDCF00784C84 /* DetoxRecorder.framework */,
+				390FF6372497C8DB0022BF11 /* DetoxRecorderCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,6 +202,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		390FF6372497C8DB0022BF11 /* DetoxRecorderCLI */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DetoxRecorderCLI;
+			remoteRef = 390FF6362497C8DB0022BF11 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		39C013A12473CDCF00784C84 /* DetoxRecorder.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;

@@ -124,7 +124,7 @@ static NSMutableString* DTXBestEffortAccessibilityIdentifierForView(UIView* view
 	
 	if(identifier.length > 0)
 	{
-		NSArray* found = [UIView dtx_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier]];
+		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -148,7 +148,7 @@ static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSI
 	
 	if(label.length > 0)
 	{
-		NSArray* found = [UIView dtx_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
+		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -167,7 +167,7 @@ static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* labe
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]]];
 	}
 	
-	NSArray* found = [UIView dtx_findViewsInHierarchy:view.window passingPredicate:predicate];
+	NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:predicate];
 	IDX_IF_NEEDED;
 	
 	return rv;

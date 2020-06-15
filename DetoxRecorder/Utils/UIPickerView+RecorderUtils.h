@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIPickerView (RecorderUtils)
 
-- (nullable NSString*)dtx_valueForComponent:(NSInteger)component;
-- (NSInteger)dtx_componentForColumnView:(UIView*)view;
-- (BOOL)dtx_isPartOfDatePicker;
+- (nullable NSString*)dtxrec_valueForComponent:(NSInteger)component;
+- (NSInteger)dtxrec_componentForColumnView:(UIView*)view;
+- (BOOL)dtxrec_isPartOfDatePicker;
 
 @end
 

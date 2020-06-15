@@ -12,7 +12,7 @@
 
 @implementation UIPickerView (RecorderUtils)
 
-- (NSString*)dtx_valueForComponent:(NSInteger)component
+- (NSString*)dtxrec_valueForComponent:(NSInteger)component
 {
 	NSString* value = nil;
 	
@@ -34,7 +34,7 @@
 		}
 		else
 		{
-			UILabel* label = (id)[UIView dtx_findViewsInHierarchy:view passingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+			UILabel* label = (id)[UIView dtxrec_findViewsInHierarchy:view passingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
 				return [evaluatedObject isKindOfClass:UILabel.class];
 			}]].firstObject;
 			value = label.text;
@@ -44,7 +44,7 @@
 	return value;
 }
 
-- (NSInteger)dtx_componentForColumnView:(UIView*)view
+- (NSInteger)dtxrec_componentForColumnView:(UIView*)view
 {
 	NSInteger component = 0;
 	for(component = 0; component < self.numberOfComponents; component++)
@@ -58,7 +58,7 @@
 	return component;
 }
 
-- (BOOL)dtx_isPartOfDatePicker
+- (BOOL)dtxrec_isPartOfDatePicker
 {
 	return [self isKindOfClass:NSClassFromString(@"_UIDatePickerView")];
 }

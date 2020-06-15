@@ -18,7 +18,7 @@
 	if(self)
 	{
 		self.actionType = DTXRecordedActionTypeSliderAdjust;
-		self.actionArgs = @[@(DTXDoubleWithMaxFractionLength(slider.dtx_normalizedSliderPosition, 3))];
+		self.actionArgs = @[@(slider.dtxrec_normalizedSliderPosition)];
 	}
 	
 	return self;

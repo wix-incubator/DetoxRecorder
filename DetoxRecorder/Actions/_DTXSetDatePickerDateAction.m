@@ -18,7 +18,7 @@
 	if(self)
 	{
 		self.actionType = DTXRecordedActionTypeDatePickerDateChange;
-		self.actionArgs = @[datePicker.dtx_dateStringForDetox, datePicker.dtx_dateFormatForDetox];
+		self.actionArgs = @[datePicker.dtxrec_dateStringForDetox, datePicker.dtxrec_dateFormatForDetox];
 	}
 	
 	return self;

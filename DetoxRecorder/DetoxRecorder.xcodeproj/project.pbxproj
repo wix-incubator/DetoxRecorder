@@ -23,6 +23,10 @@
 /* Begin PBXBuildFile section */
 		390FF62E24968B620022BF11 /* NSString+QuotedStringForJS.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */; };
 		390FF62F24968B620022BF11 /* NSString+QuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */; };
+		390FF63A2497CB3A0022BF11 /* UITableView+SelectionCapture.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF6382497CB3A0022BF11 /* UITableView+SelectionCapture.h */; };
+		390FF63B2497CB3A0022BF11 /* UITableView+SelectionCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF6392497CB3A0022BF11 /* UITableView+SelectionCapture.m */; };
+		390FF63E249820190022BF11 /* NSObject+AttachedObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF63C249820190022BF11 /* NSObject+AttachedObjects.h */; };
+		390FF63F249820190022BF11 /* NSObject+AttachedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF63D249820190022BF11 /* NSObject+AttachedObjects.m */; };
 		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
@@ -90,6 +94,10 @@
 /* Begin PBXFileReference section */
 		390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+QuotedStringForJS.h"; path = "ObjCHelpers/NSString+QuotedStringForJS.h"; sourceTree = "<group>"; };
 		390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+QuotedStringForJS.m"; path = "ObjCHelpers/NSString+QuotedStringForJS.m"; sourceTree = "<group>"; };
+		390FF6382497CB3A0022BF11 /* UITableView+SelectionCapture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+SelectionCapture.h"; sourceTree = "<group>"; };
+		390FF6392497CB3A0022BF11 /* UITableView+SelectionCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SelectionCapture.m"; sourceTree = "<group>"; };
+		390FF63C249820190022BF11 /* NSObject+AttachedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+AttachedObjects.h"; path = "ObjCHelpers/NSObject+AttachedObjects.h"; sourceTree = "<group>"; };
+		390FF63D249820190022BF11 /* NSObject+AttachedObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AttachedObjects.m"; path = "ObjCHelpers/NSObject+AttachedObjects.m"; sourceTree = "<group>"; };
 		392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+TapCapture.m"; sourceTree = "<group>"; };
 		392F3551225F6882003E8CF2 /* UIInputCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInputCapture.h; sourceTree = "<group>"; };
 		392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+GestureCapture.h"; sourceTree = "<group>"; };
@@ -195,6 +203,8 @@
 				392F3554225F6882003E8CF2 /* UIInputCapture.m */,
 				39C7DF582262692A002BABAE /* UIScrollView+ScrollToTopCapture.h */,
 				39C7DF5722626929002BABAE /* UIScrollView+ScrollToTopCapture.m */,
+				390FF6382497CB3A0022BF11 /* UITableView+SelectionCapture.h */,
+				390FF6392497CB3A0022BF11 /* UITableView+SelectionCapture.m */,
 			);
 			path = EventCapture;
 			sourceTree = "<group>";
@@ -233,6 +243,8 @@
 				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
 				39C013982473CD0900784C84 /* NSArray+Utils.h */,
 				39C013972473CD0900784C84 /* NSArray+Utils.m */,
+				390FF63C249820190022BF11 /* NSObject+AttachedObjects.h */,
+				390FF63D249820190022BF11 /* NSObject+AttachedObjects.m */,
 				390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */,
 				390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */,
 				39C0135D2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h */,
@@ -343,6 +355,8 @@
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
 				39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */,
+				390FF63A2497CB3A0022BF11 /* UITableView+SelectionCapture.h in Headers */,
+				390FF63E249820190022BF11 /* NSObject+AttachedObjects.h in Headers */,
 				39F5AD292461F70A00FB7F18 /* _DTXScrollToAction.h in Headers */,
 				39C013962473CC9100784C84 /* Swiftier.h in Headers */,
 				39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */,
@@ -510,8 +524,10 @@
 				39C0138F2473CC8000784C84 /* UIApplication+EnableAccessibility.m in Sources */,
 				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
 				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,
+				390FF63F249820190022BF11 /* NSObject+AttachedObjects.m in Sources */,
 				39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */,
 				39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */,
+				390FF63B2497CB3A0022BF11 /* UITableView+SelectionCapture.m in Sources */,
 				39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */,
 				39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */,
 				39F5AD132461A2AF00FB7F18 /* _DTXScrollAction.m in Sources */,

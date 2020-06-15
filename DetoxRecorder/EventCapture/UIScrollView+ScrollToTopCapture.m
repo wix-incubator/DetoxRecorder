@@ -21,9 +21,9 @@ static CGPoint newContentOffset;
 
 @implementation UIScrollView (ScrollToTopCapture)
 
-- (BOOL)_dtx_scrollToTopIfPossible:(BOOL)arg1
+- (BOOL)_dtxrec_scrollToTopIfPossible:(BOOL)arg1
 {
-	BOOL rv = [self _dtx_scrollToTopIfPossible:arg1];
+	BOOL rv = [self _dtxrec_scrollToTopIfPossible:arg1];
 	
 	if(rv)
 	{
@@ -34,21 +34,21 @@ static CGPoint newContentOffset;
 	return rv;
 }
 
-- (void)_dtx_setContentOffset:(struct CGPoint)arg1 animated:(_Bool)arg2 animationCurve:(int)arg3 animationAdjustsForContentOffsetDelta:(_Bool)arg4 animation:(id)arg5
+- (void)_dtxrec_setContentOffset:(struct CGPoint)arg1 animated:(_Bool)arg2 animationCurve:(int)arg3 animationAdjustsForContentOffsetDelta:(_Bool)arg4 animation:(id)arg5
 {
 	newContentOffset = arg1;
 	
-	[self _dtx_setContentOffset:arg1 animated:arg2 animationCurve:arg3 animationAdjustsForContentOffsetDelta:arg4 animation:arg5];
+	[self _dtxrec_setContentOffset:arg1 animated:arg2 animationCurve:arg3 animationAdjustsForContentOffsetDelta:arg4 animation:arg5];
 }
 
 + (void)load
 {
 	Method m = class_getInstanceMethod(self, @selector(_scrollToTopIfPossible:));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtx_scrollToTopIfPossible:));
+	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_scrollToTopIfPossible:));
 	method_exchangeImplementations(m, m2);
 	
 	m = class_getInstanceMethod(self, @selector(_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:));
-	m2 = class_getInstanceMethod(self, @selector(_dtx_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:));
+	m2 = class_getInstanceMethod(self, @selector(_dtxrec_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:));
 	method_exchangeImplementations(m, m2);
 }
 

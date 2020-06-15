@@ -131,9 +131,9 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 	return rv;
 }
 
-- (void)_dtx_sendActionsForEvents:(UIControlEvents)arg1 withEvent:(UIEvent *)arg2
+- (void)_dtxrec_sendActionsForEvents:(UIControlEvents)arg1 withEvent:(UIEvent *)arg2
 {
-	[self _dtx_sendActionsForEvents:arg1 withEvent:arg2];
+	[self _dtxrec_sendActionsForEvents:arg1 withEvent:arg2];
 	
 	if([self isKindOfClass:_DTXCaptureControlButton.class])
 	{
@@ -194,7 +194,7 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 + (void)load
 {
 	Method m = class_getInstanceMethod(self, @selector(_sendActionsForEvents:withEvent:));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtx_sendActionsForEvents:withEvent:));
+	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_sendActionsForEvents:withEvent:));
 	method_exchangeImplementations(m, m2);
 }
 

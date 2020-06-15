@@ -22,6 +22,8 @@
 	[super awakeFromNib];
 	
 	_components = @[@[@"a", @"b", @"c"], @[@"1", @"2", @"3"], @[@"!", @"@", @"#"]];
+	
+	self.tabBarItem.accessibilityIdentifier = @"ControlsTab";
 }
 
 - (void)viewDidLoad
@@ -65,6 +67,16 @@
 - (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
 	return _components[component][row];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return indexPath.section == 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	
 }
 
 @end

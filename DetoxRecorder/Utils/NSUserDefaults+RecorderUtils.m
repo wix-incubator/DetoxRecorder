@@ -14,29 +14,29 @@
 + (void)load
 {
 	@autoreleasepool {
-		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtx_attemptXYRecording": @NO}];
-		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtx_coalesceScrollEvents": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_attemptXYRecording": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @NO}];
 	}
 }
 
-- (BOOL)dtx_attemptXYRecording
+- (BOOL)dtxrec_attemptXYRecording
 {
-	return [self boolForKey:@"dtx_attemptXYRecording"];
+	return [self boolForKey:@"dtxrec_attemptXYRecording"];
 }
 
-- (void)dtx_setAttemptXYRecording:(BOOL)dtx_attemptXYRecording
+- (void)dtxrec_setAttemptXYRecording:(BOOL)dtxrec_attemptXYRecording
 {
-	[self setBool:dtx_attemptXYRecording forKey:@"dtx_attemptXYRecording"];
+	[self setBool:dtxrec_attemptXYRecording forKey:@"dtxrec_attemptXYRecording"];
 }
 
-- (BOOL)dtx_coalesceScrollEvents
+- (BOOL)dtxrec_coalesceScrollEvents
 {
-	return [self boolForKey:@"dtx_coalesceScrollEvents"];
+	return [self boolForKey:@"dtxrec_coalesceScrollEvents"];
 }
 
-- (void)dtx_setCoalesceScrollEvents:(BOOL)dtx_coalesceScrollEvents
+- (void)dtxrec_setCoalesceScrollEvents:(BOOL)dtxrec_coalesceScrollEvents
 {
-	[self setBool:dtx_coalesceScrollEvents forKey:@"dtx_coalesceScrollEvents"];
+	[self setBool:dtxrec_coalesceScrollEvents forKey:@"dtxrec_coalesceScrollEvents"];
 }
 
 @end

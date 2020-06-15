@@ -36,8 +36,8 @@
 		[self.tableView registerClass:_DTXRecSettingsCell.class forCellReuseIdentifier:@"SettingCell"];
 		
 		_settings = @[
-			@{@"Precise Tap Coordinates": NSStringFromSelector(@selector(dtx_attemptXYRecording))},
-			@{@"Coalesce Scroll Events": NSStringFromSelector(@selector(dtx_coalesceScrollEvents))},
+			@{@"Precise Tap Coordinates": NSStringFromSelector(@selector(dtxrec_attemptXYRecording))},
+			@{@"Coalesce Scroll Events": NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents))},
 		];
 	}
 	

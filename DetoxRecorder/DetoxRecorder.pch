@@ -9,3 +9,4 @@
 #import "Swiftier.h"
 #import "NSUserDefaults+RecorderUtils.h"
 #import "NSArray+Utils.h"
+#import "NSObject+AttachedObjects.h"

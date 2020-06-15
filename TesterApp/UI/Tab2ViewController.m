@@ -21,8 +21,7 @@
 {
 	[super awakeFromNib];
 	
-	self.tabBarItem.accessibilityIdentifier = @"Tab2";
-	self.tabBarItem.title = @"Leo 2";
+	self.tabBarItem.accessibilityIdentifier = @"ScrollTab";
 	
 	_scrollView.panGestureRecognizer.delegate = nil;
 }

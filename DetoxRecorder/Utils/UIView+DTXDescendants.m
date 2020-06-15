@@ -16,7 +16,7 @@
 
 @implementation UIView (DTXDescendants)
 
-+ (void)_dtx_appendViewsRecursivelyFromArray:(NSArray<UIView*>*)views passingPredicate:(NSPredicate*)predicate storage:(NSMutableArray<UIView*>*)storage
++ (void)_dtxrec_appendViewsRecursivelyFromArray:(NSArray<UIView*>*)views passingPredicate:(NSPredicate*)predicate storage:(NSMutableArray<UIView*>*)storage
 {
 	if(views.count == 0)
 	{
@@ -31,22 +31,22 @@
 		
 		if(obj.isAccessibilityElement == NO)
 		{
-			[self _dtx_appendViewsRecursivelyFromArray:obj.subviews passingPredicate:predicate storage:storage];
+			[self _dtxrec_appendViewsRecursivelyFromArray:obj.subviews passingPredicate:predicate storage:storage];
 		}
 	}];
 }
 
-+ (NSMutableArray<UIView*>*)dtx_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate
 {
 	NSMutableArray<UIView*>* rv = [NSMutableArray new];
 	
-	[self _dtx_appendViewsRecursivelyFromArray:windows passingPredicate:predicate storage:rv];
-	[self _dtx_sortViewsByCoords:rv];
+	[self _dtxrec_appendViewsRecursivelyFromArray:windows passingPredicate:predicate storage:rv];
+	[self _dtxrec_sortViewsByCoords:rv];
 	
 	return rv;
 }
 
-+ (NSMutableArray<UIView*>*)dtx_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate
 {
 	NSArray<UIWindow*>* windows;
 	if (@available(iOS 13.0, *))
@@ -58,25 +58,25 @@
 		windows = UIApplication.sharedApplication.windows;
 	}
 	
-	return [self dtx_findViewsInWindows:windows passingPredicate:predicate];
+	return [self dtxrec_findViewsInWindows:windows passingPredicate:predicate];
 }
 
-+ (NSMutableArray<UIView*>*)dtx_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate
 {
-	return [self dtx_findViewsInHierarchy:hierarchy includingRoot:YES passingPredicate:predicate];
+	return [self dtxrec_findViewsInHierarchy:hierarchy includingRoot:YES passingPredicate:predicate];
 }
 
-+ (NSMutableArray<UIView*>*)dtx_findViewsInHierarchy:(UIView*)hierarchy includingRoot:(BOOL)includingRoot passingPredicate:(NSPredicate*)predicate
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy includingRoot:(BOOL)includingRoot passingPredicate:(NSPredicate*)predicate
 {
 	NSMutableArray<UIView*>* rv = [NSMutableArray new];
 	
-	[self _dtx_appendViewsRecursivelyFromArray:includingRoot ? @[hierarchy] : hierarchy.subviews passingPredicate:predicate storage:rv];
-	[self _dtx_sortViewsByCoords:rv];
+	[self _dtxrec_appendViewsRecursivelyFromArray:includingRoot ? @[hierarchy] : hierarchy.subviews passingPredicate:predicate storage:rv];
+	[self _dtxrec_sortViewsByCoords:rv];
 	
 	return rv;
 }
 
-+ (void)_dtx_sortViewsByCoords:(NSMutableArray<UIView*>*)views
++ (void)_dtxrec_sortViewsByCoords:(NSMutableArray<UIView*>*)views
 {
 	[views sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:nil ascending:YES comparator:^NSComparisonResult(UIView* _Nonnull obj1, UIView* _Nonnull obj2) {
 		CGRect frame1 = obj1.accessibilityFrame;

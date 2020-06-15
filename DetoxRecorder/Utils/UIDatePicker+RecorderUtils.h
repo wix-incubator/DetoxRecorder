@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIDatePicker (RecorderUtils)
 
-- (NSString*)dtx_dateFormatForDetox;
-- (NSString*)dtx_dateStringForDetox;
+- (NSString*)dtxrec_dateFormatForDetox;
+- (NSString*)dtxrec_dateStringForDetox;
 
 @end
 

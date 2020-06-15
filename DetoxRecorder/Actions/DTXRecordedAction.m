@@ -132,6 +132,32 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 	return NO;
 }
 
+static NSDictionary* _DTXDeepDiveOnDictionary(NSDictionary* d)
+{
+	NSMutableDictionary* rv = [NSMutableDictionary new];
+	
+	[d enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+		if([obj isKindOfClass:NSNumber.class])
+		{
+			//Turn to decimal number to preserve accuracy when printing using NSJSONSerialization 🤦‍♂️
+			rv[key] = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lf", DTXDoubleWithMaxFractionLength([obj doubleValue], 3)]];
+			
+			return;
+		}
+		
+		if([obj isKindOfClass:NSDictionary.class])
+		{
+			rv[key] = _DTXDeepDiveOnDictionary(obj);
+			
+			return;
+		}
+		
+		rv[key] = obj;
+	}];
+	
+	return rv;
+}
+
 - (NSString*)detoxDescription;
 {
 	NSMutableString* rv = @"await ".mutableCopy;
@@ -147,13 +173,19 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 	[rv appendFormat:@".%@(", self.actionType];
 	
 	[rv appendString:[[self.actionArgs dtx_mapObjectsUsingBlock:^id _Nonnull(id _Nonnull obj, NSUInteger idx) {
+		if([obj isKindOfClass:NSNumber.class])
+		{
+			return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lf", DTXDoubleWithMaxFractionLength([obj doubleValue], 3)]];
+		}
 		if([obj isKindOfClass:NSString.class])
 		{
 			return [obj dtx_quotedStringRepresentationForJS];
 		}
 		else if([obj isKindOfClass:NSDictionary.class])
 		{
-			return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:obj options:0 error:NULL] encoding:NSUTF8StringEncoding];
+			NSDictionary* fixed = _DTXDeepDiveOnDictionary(obj);
+			
+			return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:fixed options:0 error:NULL] encoding:NSUTF8StringEncoding];
 		}
 		
 		return [obj description];

@@ -11,6 +11,7 @@
 @interface Tab1ViewController ()
 {
 	IBOutlet UITextField* _textField;
+	IBOutlet UITextView* _textView;
 }
 
 @end
@@ -21,15 +22,24 @@
 {
 	[super awakeFromNib];
 	
-	self.tabBarItem.accessibilityIdentifier = @"Tab1";
-	self.tabBarItem.title = @"Leo 1";
+	self.tabBarItem.accessibilityIdentifier = @"TextTab";
 }
 
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	
-	self.tabBarController.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:nil action:nil], [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:nil action:nil]];
+	self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:nil action:nil], [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:nil action:nil]];
+}
+
+- (void)viewLayoutMarginsDidChange
+{
+	CGFloat inset = MAX(MAX(self.view.safeAreaInsets.left, self.view.layoutMargins.left / 3),
+	MAX(self.view.safeAreaInsets.right, self.view.layoutMargins.right / 3));
+	
+	_textView.textContainerInset = UIEdgeInsetsMake(_textView.textContainerInset.top, inset, _textView.textContainerInset.bottom, inset);
+	
+	[super viewLayoutMarginsDidChange];
 }
 
 - (IBAction)startEditing:(id)sender

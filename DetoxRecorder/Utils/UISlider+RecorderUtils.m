@@ -10,7 +10,7 @@
 
 @implementation UISlider (RecorderUtils)
 
-- (double)dtx_normalizedSliderPosition
+- (double)dtxrec_normalizedSliderPosition
 {
 	return (self.value - self.minimumValue) / self.maximumValue;
 }

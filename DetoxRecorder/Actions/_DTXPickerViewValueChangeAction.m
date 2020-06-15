@@ -19,7 +19,7 @@
 	{
 		self.actionType = DTXRecordedActionTypePickerViewValueChange;
 		
-		NSString* value = [pickerView dtx_valueForComponent:component];
+		NSString* value = [pickerView dtxrec_valueForComponent:component];
 		if(value == nil)
 		{
 			return nil;

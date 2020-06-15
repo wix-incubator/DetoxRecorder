@@ -17,7 +17,7 @@
 
 @implementation UIApplication (EnableAccessibility)
 
-+ (void)dtx_enableAccessibilityForSimulator
++ (void)dtxrec_enableAccessibilityForSimulator
 {
 	NSLog(@"Enabling accessibility for automation on Simulator.");
 	static NSString *path =
@@ -40,7 +40,7 @@
 + (void)load
 {
 	@autoreleasepool {
-		[self dtx_enableAccessibilityForSimulator];
+		[self dtxrec_enableAccessibilityForSimulator];
 	}
 }
 

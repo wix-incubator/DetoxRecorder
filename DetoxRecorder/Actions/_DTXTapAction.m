@@ -16,14 +16,20 @@
 	
 	if(self)
 	{
-		BOOL atPoint = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording && event != nil;
+		BOOL atPoint = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording && event != nil;
 		
 		self.actionType = DTXRecordedActionTypeTap;
 		if(atPoint)
 		{
-			CGPoint pt = [[event touchesForView:view].anyObject locationInView:view];
+			NSSet<UITouch*>* touches = [event touchesForView:view];
+			if(touches == nil)
+			{
+				touches = event.allTouches;
+			}
 			
-			self.actionArgs = @[@{@"x": @(DTXDoubleWithMaxFractionLength(pt.x, 3)), @"y": @(DTXDoubleWithMaxFractionLength(pt.y, 3))}];
+			CGPoint pt = [touches.anyObject locationInView:view];
+			
+			self.actionArgs = @[@{@"x": @(pt.x), @"y": @(pt.y)}];
 		}
 		else
 		{

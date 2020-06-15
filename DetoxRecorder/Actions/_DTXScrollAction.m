@@ -41,7 +41,7 @@ static BOOL DTXUpdateScrollAction(_DTXScrollAction* action, UIScrollView* scroll
 		d = ABS(dx);
 	}
 	
-	action.actionArgs = @[@(DTXDoubleWithMaxFractionLength(ABS(d), 3)), dir];
+	action.actionArgs = @[@(ABS(d)), dir];
 	
 	return YES;
 }

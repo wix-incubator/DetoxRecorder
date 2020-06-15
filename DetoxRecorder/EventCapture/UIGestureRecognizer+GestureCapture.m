@@ -37,7 +37,7 @@ static void* DTXScrollViewDecelerationObserver = &DTXScrollViewDecelerationObser
 
 static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 
-- (void)_dtx_setDecelerationObserver:(id)newObserver
+- (void)_dtxrec_setDecelerationObserver:(id)newObserver
 {
 	id prevObserver = objc_getAssociatedObject(self, DTXScrollViewDecelerationObserver);
 	if(prevObserver)
@@ -48,28 +48,28 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 	objc_setAssociatedObject(self, DTXScrollViewDecelerationObserver, newObserver, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSValue*)_dtx_scrollOffsetValueAtGestureBegin
+- (NSValue*)_dtxrec_scrollOffsetValueAtGestureBegin
 {
 	return objc_getAssociatedObject(self, DTXScrollViewOffsetAtBegin);
 }
 
-- (void)_dtx_setScrollOffsetValueAtGestureBegin:(NSValue*)value
+- (void)_dtxrec_setScrollOffsetValueAtGestureBegin:(NSValue*)value
 {
 	objc_setAssociatedObject(self, DTXScrollViewOffsetAtBegin, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSDate*)_dtx_longPressDateAtGestureBegin
+- (NSDate*)_dtxrec_longPressDateAtGestureBegin
 {
 	return objc_getAssociatedObject(self, DTXLongPressDateAtBegin);
 }
 
-- (void)_dtx_setLongPressDateAtGestureBegin:(NSDate*)value
+- (void)_dtxrec_setLongPressDateAtGestureBegin:(NSDate*)value
 {
 	objc_setAssociatedObject(self, DTXLongPressDateAtBegin, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
-- (void)_dtx_updateGestureForActiveEvents
+- (void)_dtxrec_updateGestureForActiveEvents
 {
 	BOOL awaitingScrollViewInformation = NO;
 	
@@ -82,12 +82,12 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 				UITableView* tv = [self.view valueForKey:@"pickerTable"];
 				UIPickerView* pickerView = [tv _pickerView];
 				
-				if(pickerView.dtx_isPartOfDatePicker)
+				if(pickerView.dtxrec_isPartOfDatePicker)
 				{
 					goto afterPickerView;
 				}
 				
-				NSInteger component = [pickerView dtx_componentForColumnView:tv._containerView];
+				NSInteger component = [pickerView dtxrec_componentForColumnView:tv._containerView];
 				
 				__block id observer;
 				observer = [NSNotificationCenter.defaultCenter addObserverForName:@"_UIScrollViewAnimationEndedNotification" object:tv queue:nil usingBlock:^(NSNotification * _Nonnull note) {
@@ -112,12 +112,12 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 		if(self.state == UIGestureRecognizerStateBegan)
 		{
 			//Remove previous deceleration observer if user continued dragging while scroll view was decelerating.
-			[self _dtx_setDecelerationObserver:nil];
+			[self _dtxrec_setDecelerationObserver:nil];
 			
 			//For some reason UIGestureRecognizerStateBegan is called twice for scroll view pan gesture regonizers.
-			if([self _dtx_scrollOffsetValueAtGestureBegin] == nil)
+			if([self _dtxrec_scrollOffsetValueAtGestureBegin] == nil)
 			{
-				[self _dtx_setScrollOffsetValueAtGestureBegin:@(((UIScrollView*)self.view).contentOffset)];
+				[self _dtxrec_setScrollOffsetValueAtGestureBegin:@(((UIScrollView*)self.view).contentOffset)];
 			}
 		}
 		else if(self.state == UIGestureRecognizerStateEnded)
@@ -132,12 +132,12 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 		{
 			UIPickerView* pickerView = [self.view valueForKey:@"pickerView"];
 			
-			if(pickerView.dtx_isPartOfDatePicker)
+			if(pickerView.dtxrec_isPartOfDatePicker)
 			{
 				goto afterPickerView;
 			}
 			
-			NSInteger component = [pickerView dtx_componentForColumnView:self.view];
+			NSInteger component = [pickerView dtxrec_componentForColumnView:self.view];
 			UITableView* tv = [pickerView tableViewForColumn:component];
 			
 			__block id observer;
@@ -151,7 +151,7 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 	}
 	
 afterPickerView:
-	[self _dtx_updateGestureForActiveEvents];
+	[self _dtxrec_updateGestureForActiveEvents];
 	
 	if([self isKindOfClass:UILongPressGestureRecognizer.class])
 	{
@@ -164,23 +164,23 @@ afterPickerView:
 		
 		switch (self.state) {
 			case UIGestureRecognizerStatePossible:
-				[self _dtx_setLongPressDateAtGestureBegin:NSDate.date];
+				[self _dtxrec_setLongPressDateAtGestureBegin:NSDate.date];
 				break;
 			case UIGestureRecognizerStateChanged:
 			case UIGestureRecognizerStateFailed:
 			case UIGestureRecognizerStateCancelled:
 			case UIGestureRecognizerStateEnded:
-				[self _dtx_setLongPressDateAtGestureBegin:nil];
+				[self _dtxrec_setLongPressDateAtGestureBegin:nil];
 				break;
 			case UIGestureRecognizerStateBegan:
 			{
-				NSDate* date = [self _dtx_longPressDateAtGestureBegin];
+				NSDate* date = [self _dtxrec_longPressDateAtGestureBegin];
 				if(date != nil)
 				{
 					//[(UILongPressGestureRecognizer*)self minimumPressDuration]
 					[DTXUIInteractionRecorder addGestureRecognizerLongPress:self duration:[NSDate.date timeIntervalSinceDate:date] withEvent:nil];
 				}
-				[self _dtx_setLongPressDateAtGestureBegin:nil];
+				[self _dtxrec_setLongPressDateAtGestureBegin:nil];
 				
 			}	break;
 			default:
@@ -192,7 +192,7 @@ afterPickerView:
 	{
 		UIScrollView* scrollView = (id)self.view;
 		
-		CGPoint contentOffsetAtBegin = [[self _dtx_scrollOffsetValueAtGestureBegin] CGPointValue];
+		CGPoint contentOffsetAtBegin = [[self _dtxrec_scrollOffsetValueAtGestureBegin] CGPointValue];
 		
 		if(scrollView.isDecelerating == NO)
 		{
@@ -201,15 +201,15 @@ afterPickerView:
 		else
 		{
 			id observer = [NSNotificationCenter.defaultCenter addObserverForName:@"_UIScrollViewDidEndDeceleratingNotification" object:scrollView queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-				[self _dtx_setScrollOffsetValueAtGestureBegin:nil];
+				[self _dtxrec_setScrollOffsetValueAtGestureBegin:nil];
 				
 				[DTXUIInteractionRecorder addScrollEvent:scrollView fromOriginOffset:contentOffsetAtBegin withEvent:self._activeEvents.anyObject];
 				
 				
-				[self _dtx_setDecelerationObserver:nil];
+				[self _dtxrec_setDecelerationObserver:nil];
 			}];
 			
-			[self _dtx_setDecelerationObserver:observer];
+			[self _dtxrec_setDecelerationObserver:observer];
 		}
 		
 //		NSLog(@"😍 %@ isDecel: %@", [scrollView valueForKey:@"_decelerationLnFactorV"], @(scrollView.isDecelerating));
@@ -219,7 +219,7 @@ afterPickerView:
 + (void)load
 {
 	Method m = class_getInstanceMethod(self, @selector(_updateGestureForActiveEvents));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtx_updateGestureForActiveEvents));
+	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_updateGestureForActiveEvents));
 	method_exchangeImplementations(m, m2);
 }
 
@@ -230,27 +230,27 @@ static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTap
 @interface UIGestureRecognizer (RNGestureCapture) @end
 @implementation UIGestureRecognizer (RNGestureCapture)
 
-- (void)_dtx_rn_touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)_dtxrec_rn_touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
 	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @(touches.count == 1), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self _dtx_rn_touchesBegan:touches withEvent:event];
+	[self _dtxrec_rn_touchesBegan:touches withEvent:event];
 }
 
-- (void)_dtx_rn_touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)_dtxrec_rn_touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-	[self _dtx_rn_touchesCancelled:touches withEvent:event];
+	[self _dtxrec_rn_touchesCancelled:touches withEvent:event];
 	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)_dtx_rn_touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)_dtxrec_rn_touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-	[self _dtx_rn_touchesMoved:touches withEvent:event];
+	[self _dtxrec_rn_touchesMoved:touches withEvent:event];
 //	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)_dtx_rn_touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)_dtxrec_rn_touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-	[self _dtx_rn_touchesEnded:touches withEvent:event];
+	[self _dtxrec_rn_touchesEnded:touches withEvent:event];
 	
 	BOOL hasTapGesture = [objc_getAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture) boolValue];
 	if(hasTapGesture && touches.count == 1)
@@ -269,19 +269,19 @@ static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTap
 	if(RNGestureRecognizerClass != nil)
 	{
 		Method m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesBegan:withEvent:));
-		Method m2 = class_getInstanceMethod(self, @selector(_dtx_rn_touchesBegan:withEvent:));
+		Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesBegan:withEvent:));
 		method_exchangeImplementations(m, m2);
 		
 		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesCancelled:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtx_rn_touchesCancelled:withEvent:));
+		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesCancelled:withEvent:));
 		method_exchangeImplementations(m, m2);
 		
 		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesMoved:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtx_rn_touchesMoved:withEvent:));
+		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesMoved:withEvent:));
 		method_exchangeImplementations(m, m2);
 		
 		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesEnded:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtx_rn_touchesEnded:withEvent:));
+		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesEnded:withEvent:));
 		method_exchangeImplementations(m, m2);
 	}
 }

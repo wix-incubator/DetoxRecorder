@@ -401,7 +401,6 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 		if(view.imageViews.firstObject != view.imageViews.lastObject)
 		{
 			startingY = 15;
-			view.imageViews.firstObject.backgroundColor = UIColor.brownColor;
 			view.imageViews.lastObject.frame = view.bounds;
 			view.imageViews.lastObject.contentMode = UIViewContentModeTop;
 		}
@@ -448,7 +447,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)_visualizeTapAtView:(UIView*)view withAction:(DTXRecordedAction*)action
 {
-	BOOL xy = NSUserDefaults.standardUserDefaults.dtx_attemptXYRecording;
+	BOOL xy = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording;
 	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[xy ? @"hand.draw.fill" : @"hand.point.right.fill"] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:xy ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-M_PI_2)]] applyConstraints:YES];
 	
 	[self _blinkVisualizerView:visualizer];
@@ -537,7 +536,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 + (BOOL)_coalesceScrollViewEvent:(UIScrollView*)scrollView fromDeltaOriginOffset:(CGPoint)deltaOriginOffset toNewOffset:(CGPoint)newOffset
 {
 	return DTXUpdateAction(^BOOL(DTXRecordedAction *prevAction, BOOL* remove) {
-		if(NSUserDefaults.standardUserDefaults.dtx_coalesceScrollEvents == NO)
+		if(NSUserDefaults.standardUserDefaults.dtxrec_coalesceScrollEvents == NO)
 		{
 			return NO;
 		}
