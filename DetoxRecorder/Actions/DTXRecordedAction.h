@@ -18,6 +18,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeLongPress;
 extern DTXRecordedActionType const DTXRecordedActionTypeScroll;
 extern DTXRecordedActionType const DTXRecordedActionTypeScrollTo;
 extern DTXRecordedActionType const DTXRecordedActionTypeReplaceText;
+extern DTXRecordedActionType const DTXRecordedActionTypeClearText;
 extern DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange;
 extern DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange;
 extern DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust;

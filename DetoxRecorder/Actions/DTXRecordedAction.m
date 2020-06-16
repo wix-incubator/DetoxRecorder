@@ -23,6 +23,7 @@ DTXRecordedActionType const DTXRecordedActionTypeLongPress = @"longPress";
 DTXRecordedActionType const DTXRecordedActionTypeScroll = @"scroll";
 DTXRecordedActionType const DTXRecordedActionTypeScrollTo = @"scrollTo";
 DTXRecordedActionType const DTXRecordedActionTypeReplaceText = @"replaceText";
+DTXRecordedActionType const DTXRecordedActionTypeClearText = @"clearText";
 DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange = @"setDatePickerDate";
 DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange = @"setColumnToValue";
 DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust = @"adjustSliderToPosition";
@@ -172,7 +173,7 @@ static NSDictionary* _DTXDeepDiveOnDictionary(NSDictionary* d)
 	
 	[rv appendFormat:@".%@(", self.actionType];
 	
-	[rv appendString:[[self.actionArgs dtx_mapObjectsUsingBlock:^id _Nonnull(id _Nonnull obj, NSUInteger idx) {
+	NSArray* arguments = [self.actionArgs dtx_mapObjectsUsingBlock:^id _Nonnull(id _Nonnull obj, NSUInteger idx) {
 		if([obj isKindOfClass:NSNumber.class])
 		{
 			return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%lf", DTXDoubleWithMaxFractionLength([obj doubleValue], 3)]];
@@ -189,7 +190,11 @@ static NSDictionary* _DTXDeepDiveOnDictionary(NSDictionary* d)
 		}
 		
 		return [obj description];
-	}] componentsJoinedByString:@", "]];
+	}];
+	if(arguments.count > 0)
+	{
+		[rv appendString:[arguments componentsJoinedByString:@", "]];
+	}
 	
 	[rv appendString:@");"];
 	

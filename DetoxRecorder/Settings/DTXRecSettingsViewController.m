@@ -21,7 +21,9 @@
 
 @implementation DTXRecSettingsViewController
 {
-	NSArray<NSDictionary<NSString*,NSString*>*>* _settings;
+	NSArray<NSArray<NSDictionary<NSString*,NSString*>*>*>* _settings;
+	NSArray<NSString*>* _settingHeaders;
+	NSArray<NSString*>* _settingFooters;
 }
 
 - (instancetype)initWithStyle:(UITableViewStyle)style
@@ -35,10 +37,24 @@
 		
 		[self.tableView registerClass:_DTXRecSettingsCell.class forCellReuseIdentifier:@"SettingCell"];
 		
+		_settingHeaders = @[
+			@"Recording Settings",
+			@"Visualization"
+		];
+		
+		_settingFooters = @[
+			@"When enabled, consecutive scroll actions will be coalesced into a single action.",
+			@"When enabled, there will be no visualization for recorded actions."
+		];
+		
 		_settings = @[
-			@{@"Precise Tap Coordinates": NSStringFromSelector(@selector(dtxrec_attemptXYRecording))},
-			@{@"Coalesce Scroll Events": NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents))},
-			@{@"Disable Visualizations": NSStringFromSelector(@selector(dtxrec_disableVisualizations))},
+			@[
+				@{@"Precise Tap Coordinates": NSStringFromSelector(@selector(dtxrec_attemptXYRecording))},
+				@{@"Coalesce Scroll Events": NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents))}
+			],
+			@[
+				@{@"Disable Visualizations": NSStringFromSelector(@selector(dtxrec_disableVisualizations))},
+			]
 		];
 	}
 	
@@ -53,27 +69,52 @@
 - (void)_switchTapped:(UISwitch*)sender
 {
 	UITableViewCell* cell = (id)sender.superview;
-	NSString* userDefaultsKey = _settings[[self.tableView indexPathForCell:cell].row][cell.textLabel.text];
+	NSIndexPath* ip = [self.tableView indexPathForCell:cell];
+	NSString* userDefaultsKey = _settings[ip.section][ip.row][cell.textLabel.text];
 	
 	[NSUserDefaults.standardUserDefaults setBool:sender.on forKey:userDefaultsKey];
 }
 
-//- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//	return @"Detox Recorder Settings";
-//}
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	NSString* rv = _settingHeaders[section];
+	
+	if([rv isKindOfClass:NSNull.class])
+	{
+		return nil;
+	}
+	
+	return rv;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+	NSString* rv = _settingFooters[section];
+	
+	if([rv isKindOfClass:NSNull.class])
+	{
+		return nil;
+	}
+	
+	return rv;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return _settings.count;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return _settings.count;
+	return _settings[section].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	auto cell = [tableView dequeueReusableCellWithIdentifier:@"SettingCell"];
-	cell.textLabel.text = _settings[indexPath.row].allKeys.firstObject;
+	cell.textLabel.text = _settings[indexPath.section][indexPath.row].allKeys.firstObject;
 	
-	NSString* userDefaultsKey = _settings[indexPath.row][cell.textLabel.text];
+	NSString* userDefaultsKey = _settings[indexPath.section][indexPath.row][cell.textLabel.text];
 	
 	UISwitch* sw = [UISwitch new];
 	sw.on = [NSUserDefaults.standardUserDefaults boolForKey:userDefaultsKey];

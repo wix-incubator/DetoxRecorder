@@ -16,8 +16,15 @@
 	
 	if(self)
 	{
-		self.actionType = DTXRecordedActionTypeReplaceText;
-		self.actionArgs = @[text];
+		if(text.length > 0)
+		{
+			self.actionType = DTXRecordedActionTypeReplaceText;
+			self.actionArgs = @[text];
+		}
+		else
+		{
+			self.actionType = DTXRecordedActionTypeClearText;
+		}
 	}
 	
 	return self;

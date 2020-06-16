@@ -118,13 +118,20 @@ static NSMutableString* _DTXBestEffortAccessibilityIdentifierForView(UIView* vie
 
 #define IDX_IF_NEEDED if(found.count > 1) { *idx = [found indexOfObject:view]; } else { *idx = NSNotFound; }
 
-static NSMutableString* DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits, NSInteger* idx)
+//static NSPredicate* _DTXAncestorPredicateForElement(DTXRecordedElement* element)
+//{
+//
+//}
+
+static NSMutableString* DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
 	NSMutableString* identifier = _DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits);
 	
 	if(identifier.length > 0)
 	{
-		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier]];
+		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier];
+		
+		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:predicate];
 		IDX_IF_NEEDED;
 	}
 	
@@ -142,7 +149,7 @@ static NSMutableString* _DTXBestEffortAccessibilityLabelForView(UIView* view)
 	return [view accessibilityLabel].mutableCopy;
 }
 
-static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSInteger* idx)
+static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
 	NSMutableString* label = _DTXBestEffortAccessibilityLabelForView(view);
 	
@@ -157,7 +164,7 @@ static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSI
 
 //static
 
-static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* label, NSInteger* idx)
+static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* label, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
 	NSMutableString* rv = NSStringFromClass(view.class).mutableCopy;
 	
@@ -209,16 +216,20 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		
 		ancestorElement = [self elementWithView:segmentControl allowHierarchyTraversal:NO];
 	}
+	else if([view.superview isKindOfClass:UITableViewCell.class])
+	{
+		ancestorElement = [self elementWithView:view.superview allowHierarchyTraversal:NO];
+	}
 	
 	NSInteger byTypeIdx = NSNotFound;
-	NSString* byId = DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits, &byTypeIdx);
-	NSString* byLabel = DTXBestEffortAccessibilityLabelForView(view, &byTypeIdx);
+	NSString* byId = DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits, &byTypeIdx, ancestorElement);
+	NSString* byLabel = DTXBestEffortAccessibilityLabelForView(view, &byTypeIdx, ancestorElement);
 	NSString* byType = nil;
 	BOOL enforceByType = [view isKindOfClass:NSClassFromString(@"_UIButtonBarButton")];
 	
 	if(byId.length == 0 && (byLabel.length == 0 || enforceByType == YES))
 	{
-		byType = DTXBestEffortByClassForView(view, byLabel, &byTypeIdx);
+		byType = DTXBestEffortByClassForView(view, byLabel, &byTypeIdx, ancestorElement);
 	}
 	
 	if(byId.length == 0 && byLabel.length == 0 && byType.length == 0)
@@ -262,7 +273,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		rv.matchers = matchers;
 	}
 	
-	if(byTypeIdx != NSNotFound)
+	if(byTypeIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
 	{
 		rv.requiresAtIndex = YES;
 		rv.atIndex = byTypeIdx;

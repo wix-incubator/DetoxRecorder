@@ -135,6 +135,12 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 {
 	[self _dtxrec_sendActionsForEvents:arg1 withEvent:arg2];
 	
+	if([self isKindOfClass:NSClassFromString(@"_UITextFieldClearButton")])
+	{
+		//Text field clear button
+		return;
+	}
+	
 	if([self isKindOfClass:_DTXCaptureControlButton.class])
 	{
 		return;
