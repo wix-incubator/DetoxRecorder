@@ -161,6 +161,18 @@ func applesimutilsProcess() -> Process {
 	return applesimutilsProcess
 }
 
+func nmProcess() -> Process {
+	let nmProcess = Process()
+	nmProcess.executableURL = URL(fileURLWithPath: "/usr/bin/nm")
+	return nmProcess
+}
+
+func otoolProcess() -> Process {
+	let otoolProcess = Process()
+	otoolProcess.executableURL = URL(fileURLWithPath: "/usr/bin/otool")
+	return otoolProcess
+}
+
 func prepareappBundleId(bundleId: String?, config: String?, simulatorId: String) -> String {
 	if let bundleId = bundleId {
 		return bundleId
@@ -181,12 +193,8 @@ func prepareappBundleId(bundleId: String?, config: String?, simulatorId: String)
 			LNUsagePrintMessageAndExit(prependMessage: "Failed installing app: \(error.localizedDescription)", logLevel: .error)
 		}
 		
-		guard let data = try? Data(contentsOf: URL(fileURLWithPath: appPath).appendingPathComponent("Info.plist")), let infoPlist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else {
+		guard let bundle = Bundle(path: appPath), let foundBundleId = bundle.bundleIdentifier else {
 			LNUsagePrintMessageAndExit(prependMessage: "Unable to read the app's Info.plist", logLevel: .error)
-		}
-		
-		guard let foundBundleId = infoPlist["CFBundleIdentifier"] as? String else {
-			LNUsagePrintMessageAndExit(prependMessage: "Unable to find “CFBundleIdentifier” key in the app's Info.plist", logLevel: .error)
 		}
 		
 		return foundBundleId
@@ -205,18 +213,22 @@ func ensureSimulatorBooted(_ simulatorId: String) {
 		
 		object = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
 	} catch {
-		LNUsagePrintMessageAndExit(prependMessage: "applesimutils failed obtaining information about the simulator.", logLevel: .error)
+		LNUsagePrintMessageAndExit(prependMessage: "applesimutils failed obtaining information about the simulator", logLevel: .error)
 	}
 	
 	guard let device = object.first else {
-		LNUsagePrintMessageAndExit(prependMessage: "No device found with simulator identifier \(simulatorId).", logLevel: .error)
+		LNUsagePrintMessageAndExit(prependMessage: "No simulator found with identifier “\(simulatorId)”", logLevel: .error)
 	}
 		
 	if device["state"]! as! String != "Booted" {
 		let bootProcess = xcrunSimctlProcess()
 		bootProcess.simctlArguments = ["boot", simulatorId]
-		bootProcess.launch()
-		bootProcess.waitUntilExit()
+		
+		do {
+			try bootProcess.launchAndWaitUntilExitAndReturnOutput()
+		} catch {
+			LNUsagePrintMessageAndExit(prependMessage: "Failed launching device with identifier “\(simulatorId)”: \(error.localizedDescription)", logLevel: .error)
+		}
 	}
 }
 
@@ -255,6 +267,23 @@ func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 	return foundSimId
 }
 
+func executableContainsMagicSymbol(_ url: URL) -> Bool {
+	let process = nmProcess()
+	process.arguments = ["-U", url.standardized.path]
+	
+	let anotherProcess = otoolProcess()
+	anotherProcess.arguments = ["-L", url.standardized.path]
+	
+	do {
+		let symbols = try process.launchAndWaitUntilExitAndReturnOutput()
+		let linkedFrameworks = try anotherProcess.launchAndWaitUntilExitAndReturnOutput()
+		
+		return symbols.contains("DTXUIInteractionRecorder") || linkedFrameworks.contains("DetoxRecorder")
+	} catch {
+		return false
+	}
+}
+
 let parser = LNUsageParseArguments()
 
 guard parser.object(forKey: "record") != nil else {
@@ -285,6 +314,20 @@ guard let outputTestFile = parser.object(forKey: "outputTestFile") as? String el
 let simulatorId = prepareSimulatorId(simulatorId: simId, config: config)
 let appBundleId = prepareappBundleId(bundleId: bundleId, config: config, simulatorId: simulatorId)
 
+let shouldInsertProcess = xcrunSimctlProcess()
+let shouldInsert: Bool
+shouldInsertProcess.simctlArguments = ["get_app_container", simulatorId, appBundleId]
+do {
+	let appInstalledPath = try shouldInsertProcess.launchAndWaitUntilExitAndReturnOutput()
+	guard let appBundle = Bundle(path: appInstalledPath), let executableURL = appBundle.executableURL else {
+		throw "err"
+	}
+	
+	shouldInsert = executableContainsMagicSymbol(executableURL) == false
+} catch {
+	shouldInsert = true
+}
+
 var args = ["launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestOutputPath", outputTestFile]
 
 if let testName = parser.object(forKey: "testName") as? String {
@@ -302,7 +345,7 @@ _ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
 
 let recordProcess = xcrunSimctlProcess()
 recordProcess.simctlArguments = args
-if parser.bool(forKey: "noInsertLibraries") {
+if shouldInsert == false || parser.bool(forKey: "noInsertLibraries") == true {
 	recordProcess.environment = [:]
 } else {
 	let frameworkUrl : URL
