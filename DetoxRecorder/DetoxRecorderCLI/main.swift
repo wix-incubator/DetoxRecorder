@@ -18,8 +18,8 @@ LNUsageSetIntroStrings([
 	"If no app or simulator information is provided, the package.json will be used for obtaining the appropriate information."])
 
 LNUsageSetExampleStrings([
-	"detox recorder --bundleId \"com.example.myApp\" --simulatorId \"69D91B05-64F4-497B-A2FC-9A109B310F38\" --outputTestFile \"/Users/myname/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
-	"detox recorder --outputTestFile \"/Users/myname/Desktop/RecordedTest.js\" --record",
+	"detox recorder --bundleId \"com.example.myApp\" --simulatorId \"69D91B05-64F4-497B-A2FC-9A109B310F38\" --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
+	"detox recorder --configuration \"ios.sim.release\" --record"
 ])
 
 LNUsageSetOptions([
@@ -30,10 +30,8 @@ LNUsageSetOptions([
 	LNUsageOption(name: "configuration", shortcut: "c", valueRequirement: .required, description: "The Detox configuration to use (optional, required if either app or simulator information is not provided"),
 	LNUsageOption.empty(),
 	LNUsageOption(name: "bundleId", shortcut: "b", valueRequirement: .required, description: "The app bundle identifier of an existing app to record (optional)"),
-	LNUsageOption(name: "appPath", shortcut: "app", valueRequirement: .required, description: "The path of an app bundle to install before recording (optional)"),
 	LNUsageOption.empty(),
 	LNUsageOption(name: "simulatorId", shortcut: "s", valueRequirement: .required, description: "The simulator identifier to use for recording (optional)"),
-	LNUsageOption.empty(),
 ])
 
 LNUsageSetHiddenOptions([
@@ -44,6 +42,14 @@ LNUsageSetHiddenOptions([
 
 extension String: LocalizedError {
     public var errorDescription: String? { return self }
+	
+	func capitalizingFirstLetter() -> String {
+		return prefix(1).capitalized + dropFirst()
+	}
+	
+	mutating func capitalizeFirstLetter() {
+		self = self.capitalizingFirstLetter()
+	}
 }
 
 extension Process {
@@ -52,28 +58,34 @@ extension Process {
 			return Array(arguments![1..<arguments!.count])
 		}
 		set(simctlArguments) {
+			var arguments = ["simctl"]
 			if let simctlArguments = simctlArguments {
-				arguments!.replaceSubrange(1..<arguments!.count, with: simctlArguments)
-			} else {
-				arguments?.removeSubrange(1..<arguments!.count)
+				arguments.append(contentsOf: simctlArguments)
 			}
+			
+			self.arguments = arguments
 		}
 	}
 	
-	func launchWaitUntilExitAndReturnOutput() -> String {
+	@discardableResult
+	func launchAndWaitUntilExitAndReturnOutput() throws -> String {
 		let out = Pipe()
-//		let err = Pipe()
+		let err = Pipe()
 		standardOutput = out
-//		standardError = err
+		standardError = err
 		
 		launch()
 		
-//		let errFileHandle = err.fileHandleForReading
+		let errFileHandle = err.fileHandleForReading
 		let readFileHandle = out.fileHandleForReading
-//		let error = String(data: errFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
+		let error = String(data: errFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
 		let response = String(data: readFileHandle.readDataToEndOfFile(), encoding: .utf8)!.trimmingCharacters(in: .newlines)
 
 		waitUntilExit()
+		
+		if(terminationStatus != 0) {
+			throw error
+		}
 		
 		return response
 	}
@@ -100,6 +112,18 @@ class DetoxRecorderCLI
 			LNUsagePrintMessageAndExit(prependMessage: error.localizedDescription, logLevel: .error)
 		}
 	}()
+	
+	static func detoxConfig(_ configName: String) -> [String: Any] {
+		guard let configs = DetoxRecorderCLI.detoxPackageJson["configurations"] as? [String: Any] else {
+			LNUsagePrintMessageAndExit(prependMessage: "Key “configurations” is not found or unreadable in package.json", logLevel: .error)
+		}
+		
+		guard let config = configs[configName] as? [String: Any] else {
+			LNUsagePrintMessageAndExit(prependMessage: "Configuration “\(configName)” is not found or unreadable in package.json", logLevel: .error)
+		}
+		
+		return config
+	}
 }
 
 func whichURLFor(binaryName: String) throws -> URL {
@@ -107,7 +131,7 @@ func whichURLFor(binaryName: String) throws -> URL {
 	whichProcess.executableURL = URL(fileURLWithPath: "/usr/bin/which")
 	whichProcess.arguments = [binaryName]
 	
-	let response = whichProcess.launchWaitUntilExitAndReturnOutput()
+	let response = (try? whichProcess.launchAndWaitUntilExitAndReturnOutput()) ?? ""
 	if response.count == 0 {
 		throw "\(binaryName) not found"
 	}
@@ -117,6 +141,7 @@ func whichURLFor(binaryName: String) throws -> URL {
 
 func xcrunSimctlProcess() -> Process {
 	let xcrunSimctlProcess = Process()
+	xcrunSimctlProcess.currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 	do {
 		xcrunSimctlProcess.executableURL = try whichURLFor(binaryName: "xcrun")
 	} catch {
@@ -136,25 +161,49 @@ func applesimutilsProcess() -> Process {
 	return applesimutilsProcess
 }
 
-func prepareappBundleId(bundleId: String?, appPath: String?, config: String?) -> String {
+func prepareappBundleId(bundleId: String?, config: String?, simulatorId: String) -> String {
 	if let bundleId = bundleId {
 		return bundleId
-	} else if let _ /*appPath*/ = appPath {
-		//TODO: Install path, get bundle identifier and return it
 	} else {
-		//TODO: Extract from config, install and use
+		guard let appPath = DetoxRecorderCLI.detoxConfig(config!)["binaryPath"] as? String else {
+			LNUsagePrintMessageAndExit(prependMessage: "Key “binaryPath” either not found or in unsupported format as found in package.json for the “\(config!)” configuration", logLevel: .error)
+		}
+		
+		guard FileManager.default.fileExists(atPath: appPath) else {
+			LNUsagePrintMessageAndExit(prependMessage: "Key “binaryPath” points to a path that does not exist", logLevel: .error)
+		}
+		
+		let simctlInstall = xcrunSimctlProcess()
+		simctlInstall.simctlArguments = ["install", simulatorId, appPath]
+		do {
+			_ = try simctlInstall.launchAndWaitUntilExitAndReturnOutput()
+		} catch {
+			LNUsagePrintMessageAndExit(prependMessage: "Failed installing app: \(error.localizedDescription)", logLevel: .error)
+		}
+		
+		guard let data = try? Data(contentsOf: URL(fileURLWithPath: appPath).appendingPathComponent("Info.plist")), let infoPlist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else {
+			LNUsagePrintMessageAndExit(prependMessage: "Unable to read the app's Info.plist", logLevel: .error)
+		}
+		
+		guard let foundBundleId = infoPlist["CFBundleIdentifier"] as? String else {
+			LNUsagePrintMessageAndExit(prependMessage: "Unable to find “CFBundleIdentifier” key in the app's Info.plist", logLevel: .error)
+		}
+		
+		return foundBundleId
 	}
-	
-	return ""
 }
 
 func ensureSimulatorBooted(_ simulatorId: String) {
 	let process = applesimutilsProcess()
 	process.arguments = ["--list", "--byId", simulatorId]
-	let jsonString = process.launchWaitUntilExitAndReturnOutput()
+	let jsonString = try? process.launchAndWaitUntilExitAndReturnOutput()
 	let object : [[String: Any]]
 	do {
-		object = try JSONSerialization.jsonObject(with: jsonString.data(using: .utf8)!, options: []) as! [[String: Any]]
+		guard let jsonString = jsonString, let data = jsonString.data(using: .utf8) else {
+			throw "err"
+		}
+		
+		object = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
 	} catch {
 		LNUsagePrintMessageAndExit(prependMessage: "applesimutils failed obtaining information about the simulator.", logLevel: .error)
 	}
@@ -177,8 +226,33 @@ func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 		return simulatorId
 	}
 	
-	//TODO: Extract from config
-	return ""
+	guard let deviceJson = DetoxRecorderCLI.detoxConfig(config!)["device"] as? [String: String] else {
+		LNUsagePrintMessageAndExit(prependMessage: "Key “device” either not found or in unsupported format as found in package.json for the “\(config!)” configuration", logLevel: .error)
+	}
+	
+	var arguments: [String] = ["--list"]
+	deviceJson.forEach { key, value in
+		arguments.append("--by\(key.capitalizingFirstLetter())")
+		arguments.append(value)
+	}
+	
+	let process = applesimutilsProcess()
+	process.arguments = arguments
+	let listResponseJson = (try? process.launchAndWaitUntilExitAndReturnOutput()) ?? ""
+	guard let listResponse = try? JSONSerialization.jsonObject(with: listResponseJson.data(using: .utf8)!, options: []) as? [[String: Any]], listResponse.count != 0 else {
+		LNUsagePrintMessageAndExit(prependMessage: "Unable to find simulator as described in package.json for the “\(config!)” configuration", logLevel: .error)
+	}
+	
+	guard listResponse.count == 1 else {
+		LNUsagePrintMessageAndExit(prependMessage: "Multiple simulators matched to description in package.json for the “\(config!)” configuration; ensure a more specific query", logLevel: .error)
+	}
+	
+	guard let simulator = listResponse.first, let foundSimId = simulator["udid"] as? String else {
+		LNUsagePrintMessageAndExit(prependMessage: "Unabled to parse simulator data returned from applesimutils", logLevel: .error)
+	}
+	
+	ensureSimulatorBooted(foundSimId)
+	return foundSimId
 }
 
 let parser = LNUsageParseArguments()
@@ -188,17 +262,16 @@ guard parser.object(forKey: "record") != nil else {
 }
 
 let bundleId = parser.object(forKey: "bundleId") as? String
-let appPath = parser.object(forKey: "appPath") as? String
 let simId = parser.object(forKey: "simulatorId") as? String
 
 let config = parser.object(forKey: "configuration") as? String
 
-guard ((bundleId != nil || appPath != nil) && simId != nil) || config != nil else {
-	if bundleId == nil && appPath == nil && config == nil {
-		LNUsagePrintMessageAndExit(prependMessage: "You must either provide an app bundle identifier, an app bundle path or a Detox configuration.", logLevel: .error)
+guard (bundleId != nil && simId != nil) || config != nil else {
+	if bundleId == nil && config == nil {
+		LNUsagePrintMessageAndExit(prependMessage: "You must either provide an app bundle identifier or a Detox configuration.", logLevel: .error)
 	}
 	
-	if simId == nil && appPath == nil {
+	if simId == nil && config == nil {
 		LNUsagePrintMessageAndExit(prependMessage: "You must either provide a simulator identifier or a Detox configuration.", logLevel: .error)
 	}
 	
@@ -209,8 +282,8 @@ guard let outputTestFile = parser.object(forKey: "outputTestFile") as? String el
 	LNUsagePrintMessageAndExit(prependMessage: "You must provide an output test file path.", logLevel: .error)
 }
 
-let appBundleId = prepareappBundleId(bundleId: bundleId, appPath: appPath, config: config)
 let simulatorId = prepareSimulatorId(simulatorId: simId, config: config)
+let appBundleId = prepareappBundleId(bundleId: bundleId, config: config, simulatorId: simulatorId)
 
 var args = ["launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestOutputPath", outputTestFile]
 
@@ -225,8 +298,7 @@ if parser.bool(forKey: "noExit") {
 let terminateProcess = xcrunSimctlProcess()
 terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
 
-terminateProcess.launch()
-terminateProcess.waitUntilExit()
+_ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
 
 let recordProcess = xcrunSimctlProcess()
 recordProcess.simctlArguments = args
@@ -241,7 +313,9 @@ if parser.bool(forKey: "noInsertLibraries") {
 	}
 	recordProcess.environment = ["SIMCTL_CHILD_DYLD_INSERT_LIBRARIES": frameworkUrl.appendingPathComponent("DetoxRecorder").standardized.path]
 }
-recordProcess.launch()
-recordProcess.waitUntilExit()
 
-LNUsagePrintArguments(logLevel: .stdOut)
+do {
+	try recordProcess.launchAndWaitUntilExitAndReturnOutput()
+} catch {
+	LNUsagePrintMessageAndExit(prependMessage: "Failed starting recording: \(error.localizedDescription)", logLevel: .error)
+}
