@@ -766,6 +766,12 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 	[self _visualizeReturnTapInView:textInput action:action];
 }
 
++ (void)addDeviceShake
+{
+	DTXAddAction([DTXRecordedAction shakeDeviceAction]);
+	[captureControlWindow visualizeShakeDevice];
+}
+
 + (void)addTakeScreenshot
 {
 	[self addTakeScreenshotWithName:nil];

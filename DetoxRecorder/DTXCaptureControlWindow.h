@@ -17,5 +17,6 @@
 @interface DTXCaptureControlWindow : UIWindow
 
 - (void)visualizeTakeScreenshotWithName:(NSString*)name;
+- (void)visualizeShakeDevice;
 
 @end

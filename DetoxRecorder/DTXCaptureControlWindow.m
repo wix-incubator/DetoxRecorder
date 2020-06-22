@@ -389,6 +389,36 @@ static __weak UIAlertAction* __okAction;
 	__okAction = okAction;
 }
 
+- (void)visualizeShakeDevice
+{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[UIView animateKeyframesWithDuration:0.25 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
+				[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.25 animations:^{
+					CGRect frame = self.frame;
+					frame.origin.y -= 20;
+					self.frame = frame;
+				}];
+				[UIView addKeyframeWithRelativeStartTime:0.25 relativeDuration:0.25 animations:^{
+					CGRect frame = self.frame;
+					frame.origin.y += 40;
+					self.frame = frame;
+				}];
+				[UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.25 animations:^{
+					CGRect frame = self.frame;
+					frame.origin.y -= 50;
+					self.frame = frame;
+				}];
+				[UIView addKeyframeWithRelativeStartTime:0.75 relativeDuration:0.25 animations:^{
+					CGRect frame = self.frame;
+					frame.origin.y += 30;
+					self.frame = frame;
+				}];
+			} completion:nil];
+		});
+	});
+}
+
 - (void)visualizeTakeScreenshotWithName:(NSString*)name
 {
 	_wrapperView.alpha = 0.0;

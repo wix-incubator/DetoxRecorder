@@ -45,6 +45,9 @@
 		39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */; };
 		39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */; };
 		39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */; };
+		39BA9FB224A112D500681E72 /* ShakeCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BA9FB024A112D500681E72 /* ShakeCapture.m */; };
+		39BA9FB524A11A2400681E72 /* _DTXShakeDeviceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39BA9FB324A11A2400681E72 /* _DTXShakeDeviceAction.h */; };
+		39BA9FB624A11A2400681E72 /* _DTXShakeDeviceAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BA9FB424A11A2400681E72 /* _DTXShakeDeviceAction.m */; };
 		39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */; };
 		39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013402472EB8E00784C84 /* _DTXLongPressAction.m */; };
 		39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C0135C2473CC8000784C84 /* DTXAppleInternals.h */; };
@@ -143,6 +146,9 @@
 		39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXRecSettingsViewController.h; sourceTree = "<group>"; };
 		39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTXRecSettingsViewController.m; sourceTree = "<group>"; };
 		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
+		39BA9FB024A112D500681E72 /* ShakeCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShakeCapture.m; sourceTree = "<group>"; };
+		39BA9FB324A11A2400681E72 /* _DTXShakeDeviceAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXShakeDeviceAction.h; sourceTree = "<group>"; };
+		39BA9FB424A11A2400681E72 /* _DTXShakeDeviceAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXShakeDeviceAction.m; sourceTree = "<group>"; };
 		39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXLongPressAction.h; sourceTree = "<group>"; };
 		39C013402472EB8E00784C84 /* _DTXLongPressAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXLongPressAction.m; sourceTree = "<group>"; };
 		39C0135C2473CC8000784C84 /* DTXAppleInternals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXAppleInternals.h; sourceTree = "<group>"; };
@@ -195,6 +201,7 @@
 		390FF62B249686100022BF11 /* EventCapture */ = {
 			isa = PBXGroup;
 			children = (
+				39BA9FB024A112D500681E72 /* ShakeCapture.m */,
 				392F3557225F6882003E8CF2 /* UIControl+TapCapture.h */,
 				392F3550225F6882003E8CF2 /* UIControl+TapCapture.m */,
 				392F3552225F6882003E8CF2 /* UIGestureRecognizer+GestureCapture.h */,
@@ -329,6 +336,8 @@
 				39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */,
 				39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */,
 				39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */,
+				39BA9FB324A11A2400681E72 /* _DTXShakeDeviceAction.h */,
+				39BA9FB424A11A2400681E72 /* _DTXShakeDeviceAction.m */,
 				39EB26B6226D5A1000621FBA /* _DTXTakeScreenshotAction.h */,
 				39EB26B7226D5A1000621FBA /* _DTXTakeScreenshotAction.m */,
 				394535B7226D4E4A00F08C55 /* _DTXTapAction.h */,
@@ -366,6 +375,7 @@
 				39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */,
 				39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */,
 				39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */,
+				39BA9FB524A11A2400681E72 /* _DTXShakeDeviceAction.h in Headers */,
 				39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */,
 				39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */,
 				39AE548E2490FA3A0093BFEE /* _DTXAdjustSliderAction.h in Headers */,
@@ -508,12 +518,14 @@
 				39C013422472EB8E00784C84 /* _DTXLongPressAction.m in Sources */,
 				39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */,
 				39F5AD152461A2AF00FB7F18 /* _DTXTakeScreenshotAction.m in Sources */,
+				39BA9FB224A112D500681E72 /* ShakeCapture.m in Sources */,
 				39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */,
 				39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */,
 				39AE548F2490FA3A0093BFEE /* _DTXAdjustSliderAction.m in Sources */,
 				39C0138E2473CC8000784C84 /* UIDatePicker+RecorderUtils.m in Sources */,
 				39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */,
 				39C0137B2473CC8000784C84 /* UIPickerView+RecorderUtils.m in Sources */,
+				39BA9FB624A11A2400681E72 /* _DTXShakeDeviceAction.m in Sources */,
 				39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */,
 				390FF62F24968B620022BF11 /* NSString+QuotedStringForJS.m in Sources */,
 				39F5AD0E2461A29E00FB7F18 /* UIInputCapture.m in Sources */,

@@ -88,4 +88,18 @@
 	
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+	if(motion == UIEventSubtypeMotionShake)
+	{
+		[UIView animateWithDuration:0.5 animations:^{
+			self.view.backgroundColor = UIColor.systemRedColor;
+		} completion:^(BOOL finished) {
+			[UIView animateWithDuration:0.5 animations:^{
+				self.view.backgroundColor = UIColor.systemBackgroundColor;
+			}];
+		}];
+	}
+}
+
 @end

@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput;
 + (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput;
 
++ (void)addDeviceShake;
+
 + (void)addTakeScreenshot;
 + (void)addTakeScreenshotWithName:(nullable NSString*)screenshotName;
 

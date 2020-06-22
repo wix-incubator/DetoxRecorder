@@ -23,6 +23,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange;
 extern DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange;
 extern DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust;
 extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
+extern DTXRecordedActionType const DTXRecordedActionTypeDeviceShake;
 
 @interface DTXRecordedAction : NSObject
 
@@ -47,6 +48,8 @@ extern DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot;
 
 - (BOOL)updateScrollActionWithScrollView:(UIScrollView*)scrollView fromDeltaOriginOffset:(CGPoint)deltaOriginOffset toNewOffset:(CGPoint)newOffset;
 - (BOOL)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement;
+
++ (instancetype)shakeDeviceAction;
 
 + (void)resetScreenshotCounter;
 + (instancetype)takeScreenshotAction;

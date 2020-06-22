@@ -16,6 +16,7 @@
 #import "_DTXTakeScreenshotAction.h"
 #import "_DTXLongPressAction.h"
 #import "_DTXAdjustSliderAction.h"
+#import "_DTXShakeDeviceAction.h"
 #import "NSString+QuotedStringForJS.h"
 
 DTXRecordedActionType const DTXRecordedActionTypeTap = @"tap";
@@ -28,6 +29,7 @@ DTXRecordedActionType const DTXRecordedActionTypeDatePickerDateChange = @"setDat
 DTXRecordedActionType const DTXRecordedActionTypePickerViewValueChange = @"setColumnToValue";
 DTXRecordedActionType const DTXRecordedActionTypeSliderAdjust = @"adjustSliderToPosition";
 DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreenshot";
+DTXRecordedActionType const DTXRecordedActionTypeDeviceShake = @"shake";
 
 @implementation DTXRecordedAction
 
@@ -64,6 +66,11 @@ DTXRecordedActionType const DTXRecordedActionTypeTakeScreenshot = @"takeScreensh
 + (void)resetScreenshotCounter
 {
 	[_DTXTakeScreenshotAction resetScreenshotCounter];
+}
+
++ (instancetype)shakeDeviceAction
+{
+	return [_DTXShakeDeviceAction new];
 }
 
 +(instancetype)takeScreenshotAction
