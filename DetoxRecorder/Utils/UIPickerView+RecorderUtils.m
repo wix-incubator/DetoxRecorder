@@ -7,7 +7,7 @@
 //
 
 #import "UIPickerView+RecorderUtils.h"
-#import "UIView+DTXDescendants.h"
+#import "UIView+RecorderUtils.h"
 #import "DTXAppleInternals.h"
 
 @implementation UIPickerView (RecorderUtils)

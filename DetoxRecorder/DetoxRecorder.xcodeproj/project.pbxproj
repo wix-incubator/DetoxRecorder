@@ -62,8 +62,8 @@
 		39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013742473CC8000784C84 /* UIApplication+EnableAccessibility.h */; };
 		39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013752473CC8000784C84 /* UIDatePicker+RecorderUtils.h */; };
 		39C013922473CC8000784C84 /* UIPickerView+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */; };
-		39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013772473CC8000784C84 /* UIView+DTXDescendants.h */; };
-		39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013782473CC8000784C84 /* UIView+DTXDescendants.m */; };
+		39C013932473CC8000784C84 /* UIView+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013772473CC8000784C84 /* UIView+RecorderUtils.h */; };
+		39C013942473CC8000784C84 /* UIView+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013782473CC8000784C84 /* UIView+RecorderUtils.m */; };
 		39C013962473CC9100784C84 /* Swiftier.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013952473CC9100784C84 /* Swiftier.h */; };
 		39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C013972473CD0900784C84 /* NSArray+Utils.m */; };
 		39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C013982473CD0900784C84 /* NSArray+Utils.h */; };
@@ -166,8 +166,8 @@
 		39C013742473CC8000784C84 /* UIApplication+EnableAccessibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+EnableAccessibility.h"; sourceTree = "<group>"; };
 		39C013752473CC8000784C84 /* UIDatePicker+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+RecorderUtils.h"; sourceTree = "<group>"; };
 		39C013762473CC8000784C84 /* UIPickerView+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+RecorderUtils.h"; sourceTree = "<group>"; };
-		39C013772473CC8000784C84 /* UIView+DTXDescendants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DTXDescendants.h"; sourceTree = "<group>"; };
-		39C013782473CC8000784C84 /* UIView+DTXDescendants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DTXDescendants.m"; sourceTree = "<group>"; };
+		39C013772473CC8000784C84 /* UIView+RecorderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RecorderUtils.h"; sourceTree = "<group>"; };
+		39C013782473CC8000784C84 /* UIView+RecorderUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RecorderUtils.m"; sourceTree = "<group>"; };
 		39C013952473CC9100784C84 /* Swiftier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Swiftier.h; path = ObjCHelpers/Swiftier.h; sourceTree = "<group>"; };
 		39C013972473CD0900784C84 /* NSArray+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Utils.m"; path = "ObjCHelpers/NSArray+Utils.m"; sourceTree = "<group>"; };
 		39C013982473CD0900784C84 /* NSArray+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Utils.h"; path = "ObjCHelpers/NSArray+Utils.h"; sourceTree = "<group>"; };
@@ -272,8 +272,8 @@
 				39C0135E2473CC8000784C84 /* UIPickerView+RecorderUtils.m */,
 				39AE54902490FAE10093BFEE /* UISlider+RecorderUtils.h */,
 				39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */,
-				39C013772473CC8000784C84 /* UIView+DTXDescendants.h */,
-				39C013782473CC8000784C84 /* UIView+DTXDescendants.m */,
+				39C013772473CC8000784C84 /* UIView+RecorderUtils.h */,
+				39C013782473CC8000784C84 /* UIView+RecorderUtils.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -370,7 +370,7 @@
 				39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */,
 				39454C2424AA3CBF00761A51 /* _DTXCodeCommentAction.h in Headers */,
 				39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */,
-				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
+				39C013932473CC8000784C84 /* UIView+RecorderUtils.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
 				39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */,
@@ -531,7 +531,7 @@
 				39F5AD152461A2AF00FB7F18 /* _DTXTakeScreenshotAction.m in Sources */,
 				39BA9FB224A112D500681E72 /* ShakeCapture.m in Sources */,
 				39C013992473CD0900784C84 /* NSArray+Utils.m in Sources */,
-				39C013942473CC8000784C84 /* UIView+DTXDescendants.m in Sources */,
+				39C013942473CC8000784C84 /* UIView+RecorderUtils.m in Sources */,
 				39AE548F2490FA3A0093BFEE /* _DTXAdjustSliderAction.m in Sources */,
 				39C0138E2473CC8000784C84 /* UIDatePicker+RecorderUtils.m in Sources */,
 				39C0137C2473CC8000784C84 /* NSUserDefaults+RecorderUtils.m in Sources */,

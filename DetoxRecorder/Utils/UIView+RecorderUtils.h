@@ -1,5 +1,5 @@
 //
-//  UIView+DTXDescendants.h
+//  UIView+RecorderUtils.h
 //  DetoxRecorder
 //
 //  Created by Leo Natan (Wix) on 4/18/19.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIView (DTXDescendants)
+@interface UIView (RecorderUtils)
 
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate;
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate;

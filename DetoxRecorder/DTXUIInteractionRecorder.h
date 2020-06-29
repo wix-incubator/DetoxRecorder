@@ -33,9 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addTapWithView:(UIView*)view withEvent:(nullable UIEvent*)event;
 + (void)addControlTapWithControl:(UIControl*)control withEvent:(nullable UIEvent*)event;
 + (void)addGestureRecognizerTap:(UITapGestureRecognizer*)tgr withEvent:(nullable UIEvent*)event;
-+ (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event;
++ (void)addRNGestureRecognizerTapWithTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event;
 
++ (void)addLongPressWithView:(UIView*)view duration:(NSTimeInterval)duration withEvent:(nullable UIEvent*)event;
 + (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(nullable UIEvent*)event;
++ (void)addRNGestureRecognizerLongPressWithTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event;
 
 + (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset withEvent:(nullable UIEvent*)event;
 + (void)addScrollEvent:(UIScrollView*)scrollView fromOriginOffset:(CGPoint)originOffset toNewOffset:(CGPoint)newOffset withEvent:(nullable UIEvent*)event;

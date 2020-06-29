@@ -15,6 +15,7 @@ typedef NSString* DTXRecordedElementMatcherType NS_TYPED_ENUM;
 extern DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeById;
 extern DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByType;
 extern DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByLabel;
+extern DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByText;
 
 @interface DTXRecordedElementMatcher : NSObject
 

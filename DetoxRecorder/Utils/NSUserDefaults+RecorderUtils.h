@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, setter=dtxrec_setCoalesceScrollEvents:) BOOL dtxrec_coalesceScrollEvents;
 @property (nonatomic, assign, setter=dtxrec_setDisableVisualizations:) BOOL dtxrec_disableVisualizations;
 @property (nonatomic, assign, setter=dtxrec_setDisableAnimations:) BOOL dtxrec_disableAnimations;
+@property (nonatomic, assign, setter=dtxrec_setRNLongPressDelay:) NSTimeInterval dtxrec_rnLongPressDelay;
 
 @end
 

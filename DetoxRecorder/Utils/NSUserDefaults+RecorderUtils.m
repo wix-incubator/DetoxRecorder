@@ -16,6 +16,7 @@
 	@autoreleasepool {
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_attemptXYRecording": @NO}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_rnLongPressDelay": @0.5}];
 	}
 }
 
@@ -57,6 +58,16 @@
 - (void)dtxrec_setDisableAnimations:(BOOL)dtxrec_disableAnimations
 {
 	[self setBool:dtxrec_disableAnimations forKey:@"dtxrec_disableAnimations"];
+}
+
+- (NSTimeInterval)dtxrec_rnLongPressDelay
+{
+	return [self doubleForKey:@"dtxrec_rnLongPressDelay"];
+}
+
+- (void)dtxrec_setRNLongPressDelay:(NSTimeInterval)dtxrec_rnLongPressDelay
+{
+	[self setDouble:dtxrec_rnLongPressDelay forKey:@"dtxrec_rnLongPressDelay"];
 }
 
 @end

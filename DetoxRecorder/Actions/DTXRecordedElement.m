@@ -7,12 +7,13 @@
 //
 
 #import "DTXRecordedElement.h"
-#import "UIView+DTXDescendants.h"
+#import "UIView+RecorderUtils.h"
 #import "NSString+QuotedStringForJS.h"
 
 DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeById = @"by.id";
 DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByType = @"by.type";
 DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByLabel = @"by.label";
+DTXRecordedElementMatcherType const DTXRecordedElementMatcherTypeByText = @"by.text";
 
 @interface DTXRecordedElementMatcher ()
 
@@ -149,6 +150,19 @@ static NSMutableString* _DTXBestEffortAccessibilityLabelForView(UIView* view)
 	return [view accessibilityLabel].mutableCopy;
 }
 
+static NSMutableString* DTXBestEffortTextForView(UIView* view, NSInteger* idx, DTXRecordedElement* ancestorElement)
+{
+	NSMutableString* text = [view valueForKey:@"text"];
+	
+	if(text.length > 0)
+	{
+		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"text == %@", text]];
+		IDX_IF_NEEDED;
+	}
+	
+	return text;
+}
+
 static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
 	NSMutableString* label = _DTXBestEffortAccessibilityLabelForView(view);
@@ -162,14 +176,16 @@ static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSI
 	return label;
 }
 
-//static
-
-static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* label, NSInteger* idx, DTXRecordedElement* ancestorElement)
+static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* text, NSString* label, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
 	NSMutableString* rv = NSStringFromClass(view.class).mutableCopy;
 	
 	NSPredicate* predicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", view.class];
-	if(label.length > 0)
+	if(text.length > 0)
+	{
+		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"text == %@", text]]];
+	}
+	else if(label.length > 0)
 	{
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]]];
 	}
@@ -221,18 +237,25 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		ancestorElement = [self elementWithView:view.superview allowHierarchyTraversal:NO];
 	}
 	
+	NSInteger byIdIdx = NSNotFound;
+	NSString* byId = DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits, &byIdIdx, ancestorElement);
+	
+	NSInteger byTextIdx = NSNotFound;
+	NSString* byText = DTXBestEffortTextForView(view, &byTextIdx, ancestorElement);
+	
+	NSInteger byLabelIdx = NSNotFound;
+	NSString* byLabel = DTXBestEffortAccessibilityLabelForView(view, &byLabelIdx, ancestorElement);
+	
 	NSInteger byTypeIdx = NSNotFound;
-	NSString* byId = DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits, &byTypeIdx, ancestorElement);
-	NSString* byLabel = DTXBestEffortAccessibilityLabelForView(view, &byTypeIdx, ancestorElement);
 	NSString* byType = nil;
 	BOOL enforceByType = [view isKindOfClass:NSClassFromString(@"_UIButtonBarButton")];
 	
-	if(byId.length == 0 && (byLabel.length == 0 || enforceByType == YES))
+	if(byId.length == 0 && (byLabel.length == 0 || byText.length == 0 || enforceByType == YES))
 	{
-		byType = DTXBestEffortByClassForView(view, byLabel, &byTypeIdx, ancestorElement);
+		byType = DTXBestEffortByClassForView(view, byText, byLabel, &byTypeIdx, ancestorElement);
 	}
 	
-	if(byId.length == 0 && byLabel.length == 0 && byType.length == 0)
+	if(byId.length == 0 && byLabel.length == 0 && byType.length == 0 && byText.length == 0)
 	{
 		return nil;
 	}
@@ -244,6 +267,26 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		matcher.matcherArgs = @[byId];
 		
 		rv.matchers = @[matcher];
+		
+		if(byIdIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		{
+			rv.requiresAtIndex = YES;
+			rv.atIndex = byIdIdx;
+		}
+	}
+	else if(enforceByType == NO && byText.length > 0)
+	{
+		DTXRecordedElementMatcher* matcher = [DTXRecordedElementMatcher new];
+		matcher.matcherType = DTXRecordedElementMatcherTypeByText;
+		matcher.matcherArgs = @[byText];
+		
+		rv.matchers = @[matcher];
+		
+		if(byTextIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		{
+			rv.requiresAtIndex = YES;
+			rv.atIndex = byTextIdx;
+		}
 	}
 	else if(enforceByType == NO && byLabel.length > 0)
 	{
@@ -252,6 +295,12 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		matcher.matcherArgs = @[byLabel];
 		
 		rv.matchers = @[matcher];
+		
+		if(byLabelIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		{
+			rv.requiresAtIndex = YES;
+			rv.atIndex = byLabelIdx;
+		}
 	}
 	else if(byType.length > 0)
 	{
@@ -261,7 +310,15 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		
 		NSMutableArray<DTXRecordedElementMatcher*>* matchers = [@[matcher] mutableCopy];
 		
-		if(byLabel.length > 0)
+		if(byText.length > 0)
+		{
+			DTXRecordedElementMatcher* matcher = [DTXRecordedElementMatcher new];
+			matcher.matcherType = DTXRecordedElementMatcherTypeByText;
+			matcher.matcherArgs = @[byText];
+			
+			[matchers addObject:matcher];
+		}
+		else if(byLabel.length > 0)
 		{
 			DTXRecordedElementMatcher* matcher = [DTXRecordedElementMatcher new];
 			matcher.matcherType = DTXRecordedElementMatcherTypeByLabel;
@@ -270,13 +327,13 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 			[matchers addObject:matcher];
 		}
 		
+		if(byTypeIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		{
+			rv.requiresAtIndex = YES;
+			rv.atIndex = byTypeIdx;
+		}
+		
 		rv.matchers = matchers;
-	}
-	
-	if(byTypeIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
-	{
-		rv.requiresAtIndex = YES;
-		rv.atIndex = byTypeIdx;
 	}
 	
 	rv.viewClass = view.class;

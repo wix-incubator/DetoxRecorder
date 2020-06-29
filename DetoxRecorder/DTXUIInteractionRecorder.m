@@ -239,7 +239,7 @@ static NSTimeInterval lastRecordedEventTimestamp;
 	return [self _visualizerViewForView:view action:action systemImageNames:@[systemImageName] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:CGAffineTransformIdentity]] applyConstraints:YES];
 }
 
-static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* anyById, BOOL* anyByLabel, BOOL* anyByClass, BOOL* anyByIndex, BOOL* hasAncestorChain)
+static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* anyById, BOOL* anyByText, BOOL* anyByLabel, BOOL* anyByClass, BOOL* anyByIndex, BOOL* hasAncestorChain)
 {
 	if(element == nil)
 	{
@@ -250,13 +250,14 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	
 	[element.matchers enumerateObjectsUsingBlock:^(DTXRecordedElementMatcher * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 		*anyById |= (obj.matcherType == DTXRecordedElementMatcherTypeById);
+		*anyByText |= (obj.matcherType == DTXRecordedElementMatcherTypeByText);
 		*anyByLabel |= (obj.matcherType == DTXRecordedElementMatcherTypeByLabel);
 		*anyByClass |= (obj.matcherType == DTXRecordedElementMatcherTypeByType);
 	}];
 	
 	*hasAncestorChain |= (element.ancestorElement != nil);
 	
-	_traverseElementMatchersAndFill(element.ancestorElement, anyById, anyByLabel, anyByClass, anyByIndex, hasAncestorChain);
+	_traverseElementMatchersAndFill(element.ancestorElement, anyById, anyByText, anyByLabel, anyByClass, anyByIndex, hasAncestorChain);
 }
 
 + (_DTXVisualizedView*)_visualizerViewForView:(UIView*)view action:(DTXRecordedAction*)action systemImageNames:(NSArray<NSString*>*)systemImageNames imageViewTransforms:(NSArray<NSValue* /*CGAffineTransform*/>*)transforms applyConstraints:(BOOL)applyConstraints
@@ -271,18 +272,23 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	UIColor* color;
 	
 	BOOL anyById = NO;
+	BOOL anyByText = NO;
 	BOOL anyByLabel = NO;
 	BOOL anyByClass = NO;
 	BOOL anyByIndex = NO;
 	BOOL hasAncestorChain = NO;
 	
-	_traverseElementMatchersAndFill(action.element, &anyById, &anyByLabel, &anyByClass, &anyByIndex, &hasAncestorChain);
+	_traverseElementMatchersAndFill(action.element, &anyById, &anyByText, &anyByLabel, &anyByClass, &anyByIndex, &hasAncestorChain);
 	
 	if(anyById == YES && anyByIndex == NO)
 	{
 		color = UIColor.systemGreenColor;
 	}
-	else if((anyByLabel == YES || anyByClass == YES) && anyByIndex == NO)
+	else if((anyByText == YES || anyByLabel == YES) && anyByClass == NO && anyByIndex == NO)
+	{
+		color = UIColor.systemYellowColor;
+	}
+	else if(anyByClass == YES && anyByIndex == NO)
 	{
 		color = UIColor.systemOrangeColor;
 	}
@@ -482,6 +488,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)_addTapWithView:(UIView*)view event:(UIEvent*)event tapGestureRecognizer:(UITapGestureRecognizer*)tgr fromRN:(BOOL)fromRN
 {
+	NSAssert(view != nil, @"View cannot be nil");
 	IGNORE_IF_FROM_LAST_EVENT
 	IGNORE_RECORDING_WINDOW(view)
 	
@@ -512,24 +519,44 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	[self _addTapWithView:tgr.view event:event tapGestureRecognizer:tgr fromRN:NO];
 }
 
-+ (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(UIEvent*)event;
++ (void)addRNGestureRecognizerTapWithTouch:(UITouch*)touch withEvent:(UIEvent*)event;
 {
+	if(touch.view == nil)
+	{
+		return;
+	}
+	
 	[self _addTapWithView:touch.view event:event tapGestureRecognizer:nil fromRN:YES];
 }
 
-+ (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(UIEvent*)event
++ (void)addRNGestureRecognizerLongPressWithTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event
 {
-	IGNORE_RECORDING_WINDOW(tgr.view)
+	if(touch.view == nil)
+	{
+		return;
+	}
 	
-	DTXRecordedAction* action = [DTXRecordedAction longPressActionWithView:tgr.view duration:duration event:event];
+	[self addLongPressWithView:touch.view duration:NSUserDefaults.standardUserDefaults.dtxrec_rnLongPressDelay withEvent:event];
+}
+
++ (void)addLongPressWithView:(UIView*)view duration:(NSTimeInterval)duration withEvent:(UIEvent*)event
+{
+	IGNORE_RECORDING_WINDOW(view)
+	
+	DTXRecordedAction* action = [DTXRecordedAction longPressActionWithView:view duration:duration event:event];
 	if(action != nil)
 	{
 		[self _enhanceLastScrollEventIfNeededForElement:action.element];
 		
 		DTXAddAction(action);
 		
-		[self _visualizeLongPressAtView:tgr.view withAction:action];
+		[self _visualizeLongPressAtView:view withAction:action];
 	}
+}
+
++ (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(UIEvent*)event
+{
+	return [self addLongPressWithView:tgr.view duration:duration withEvent:event];
 }
 
 + (void)_enhanceLastScrollEventIfNeededForElement:(DTXRecordedElement*)element

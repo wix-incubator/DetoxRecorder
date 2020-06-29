@@ -229,12 +229,29 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 @end
 
 static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTapGesture;
+static void* DTXRNGestureRecognizerLongPressTimer = &DTXRNGestureRecognizerLongPressTimer;
 
 @interface UIGestureRecognizer (RNGestureCapture) @end
 @implementation UIGestureRecognizer (RNGestureCapture)
 
+- (void)_dtxrec_clearTimer
+{
+	NSTimer* timer = objc_getAssociatedObject(self, DTXRNGestureRecognizerLongPressTimer);
+	[timer invalidate];
+	objc_setAssociatedObject(self, DTXRNGestureRecognizerLongPressTimer, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (void)_dtxrec_rn_touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+	UITouch* touch = touches.anyObject;
+	
+	NSTimer* longPressTimer = [NSTimer scheduledTimerWithTimeInterval:NSUserDefaults.standardUserDefaults.dtxrec_rnLongPressDelay repeats:NO block:^(NSTimer * _Nonnull timer) {
+		[DTXUIInteractionRecorder addRNGestureRecognizerLongPressWithTouch:touch withEvent:event];
+		objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		[self _dtxrec_clearTimer];
+	}];
+	
+	objc_setAssociatedObject(self, DTXRNGestureRecognizerLongPressTimer, longPressTimer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @(touches.count == 1), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	[self _dtxrec_rn_touchesBegan:touches withEvent:event];
 }
@@ -243,12 +260,14 @@ static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTap
 {
 	[self _dtxrec_rn_touchesCancelled:touches withEvent:event];
 	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	[self _dtxrec_clearTimer];
 }
 
 - (void)_dtxrec_rn_touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
 	[self _dtxrec_rn_touchesMoved:touches withEvent:event];
 //	objc_setAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//	[self _dtxrec_clearTimer];
 }
 
 - (void)_dtxrec_rn_touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -258,8 +277,10 @@ static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTap
 	BOOL hasTapGesture = [objc_getAssociatedObject(self, DTXRNGestureRecognizerHasTapGesture) boolValue];
 	if(hasTapGesture && touches.count == 1)
 	{
-		[DTXUIInteractionRecorder addRNGestureRecognizerTapTouch:touches.anyObject withEvent:event];
+		[DTXUIInteractionRecorder addRNGestureRecognizerTapWithTouch:touches.anyObject withEvent:event];
 	}
+	
+	[self _dtxrec_clearTimer];
 }
 
 + (void)load

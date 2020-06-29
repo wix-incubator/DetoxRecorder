@@ -1,12 +1,12 @@
 //
-//  UIView+DTXDescendants.m
+//  UIView+RecorderUtils.m
 //  DetoxRecorder
 //
 //  Created by Leo Natan (Wix) on 4/18/19.
 //  Copyright © 2019 Wix. All rights reserved.
 //
 
-#import "UIView+DTXDescendants.h"
+#import "UIView+RecorderUtils.h"
 
 @interface UIWindowScene ()
 
@@ -14,7 +14,7 @@
 
 @end
 
-@implementation UIView (DTXDescendants)
+@implementation UIView (RecorderUtils)
 
 + (void)_dtxrec_appendViewsRecursivelyFromArray:(NSArray<UIView*>*)views passingPredicate:(NSPredicate*)predicate storage:(NSMutableArray<UIView*>*)storage
 {
@@ -89,6 +89,22 @@
 		
 		return frame1.origin.x < frame2.origin.x ? NSOrderedAscending : frame1.origin.x > frame2.origin.x ? NSOrderedDescending : NSOrderedSame;
 	}]]];
+}
+
+- (id)text
+{
+	Class cls = NSClassFromString(@"RCTTextView");
+	if(cls != nil && [self isKindOfClass:cls])
+	{
+		return [(NSTextStorage*)[self valueForKey:@"textStorage"] string];
+	}
+	
+	return nil;
+}
+
+- (id)placeholder
+{
+	return nil;
 }
 
 @end
