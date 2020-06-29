@@ -15,14 +15,17 @@
 
 + (void)load
 {
-	SEL sel = NSSelectorFromString(@"_sendMotionEnded:");
-	Class cls = NSClassFromString(@"UIEventEnvironment");
+	SEL sel = NSSelectorFromString(@"sendEvent:");
+	Class cls = NSClassFromString(@"UIApplication");
 	Method m = class_getInstanceMethod(cls, sel);
-	void (*orig)(id, SEL, NSUInteger) = (void*)method_getImplementation(m);
-	method_setImplementation(m, imp_implementationWithBlock(^(id _self, NSUInteger zzz) {
-		orig(_self, sel, zzz);
+	void (*orig)(id, SEL, UIEvent*) = (void*)method_getImplementation(m);
+	method_setImplementation(m, imp_implementationWithBlock(^(id _self, UIEvent* event) {
+		orig(_self, sel, event);
 		
-		[DTXUIInteractionRecorder addDeviceShake];
+		if(event.subtype == UIEventSubtypeMotionShake && [[event valueForKey:@"shakeState"] unsignedIntValue] == 1)
+		{
+			[DTXUIInteractionRecorder addDeviceShake];
+		}
 	}));
 }
 

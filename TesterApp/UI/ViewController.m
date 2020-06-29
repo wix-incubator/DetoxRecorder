@@ -78,12 +78,22 @@
 	return _components[component][row];
 }
 
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+	
+}
+
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return indexPath.section == 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	
+}
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
 	
 }

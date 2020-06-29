@@ -70,21 +70,10 @@ static void* _DTXCellTouchEvent = &_DTXCellTouchEvent;
 
 + (void)load
 {
-	Method m = class_getInstanceMethod(self, @selector(_highlightRowAtIndexPath:animated:scrollPosition:usingPresentationValues:));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_highlightRowAtIndexPath:animated:scrollPosition:usingPresentationValues:));
-	method_exchangeImplementations(m, m2);
-
-	m = class_getInstanceMethod(self, @selector(touchesBegan:withEvent:));
-	m2 = class_getInstanceMethod(self, @selector(_dtxrec_touchesBegan:withEvent:));
-	method_exchangeImplementations(m, m2);
-	
-	m = class_getInstanceMethod(self, @selector(_userSelectRowAtPendingSelectionIndexPath:));
-	m2 = class_getInstanceMethod(self, @selector(_dtxrec_userSelectRowAtPendingSelectionIndexPath:));
-	method_exchangeImplementations(m, m2);
-	
-	m = class_getInstanceMethod(self, @selector(unhighlightRowAtIndexPath:animated:));
-	m2 = class_getInstanceMethod(self, @selector(_dtxrec_unhighlightRowAtIndexPath:animated:));
-	method_exchangeImplementations(m, m2);
+	DTXSwizzleMethod(self, @selector(_highlightRowAtIndexPath:animated:scrollPosition:usingPresentationValues:), @selector(_dtxrec_highlightRowAtIndexPath:animated:scrollPosition:usingPresentationValues:), NULL);
+	DTXSwizzleMethod(self, @selector(touchesBegan:withEvent:), @selector(_dtxrec_touchesBegan:withEvent:), NULL);
+	DTXSwizzleMethod(self, @selector(_userSelectRowAtPendingSelectionIndexPath:), @selector(_dtxrec_userSelectRowAtPendingSelectionIndexPath:), NULL);
+	DTXSwizzleMethod(self, @selector(unhighlightRowAtIndexPath:animated:), @selector(_dtxrec_unhighlightRowAtIndexPath:animated:), NULL);
 }
 
 @end

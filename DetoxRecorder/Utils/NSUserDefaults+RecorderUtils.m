@@ -49,4 +49,14 @@
 	[self setBool:dtxrec_disableVisualizations forKey:@"dtxrec_disableVisualizations"];
 }
 
+- (BOOL)dtxrec_disableAnimations
+{
+	return [self boolForKey:@"dtxrec_disableAnimations"];
+}
+
+- (void)dtxrec_setDisableAnimations:(BOOL)dtxrec_disableAnimations
+{
+	[self setBool:dtxrec_disableAnimations forKey:@"dtxrec_disableAnimations"];
+}
+
 @end

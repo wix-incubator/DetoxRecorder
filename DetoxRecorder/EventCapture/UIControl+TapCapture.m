@@ -199,9 +199,9 @@ __unused static NSString* translateControlEventsToString(UIControlEvents arg)
 
 + (void)load
 {
-	Method m = class_getInstanceMethod(self, @selector(_sendActionsForEvents:withEvent:));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_sendActionsForEvents:withEvent:));
-	method_exchangeImplementations(m, m2);
+	@autoreleasepool {
+		DTXSwizzleMethod(self, @selector(_sendActionsForEvents:withEvent:), @selector(_dtxrec_sendActionsForEvents:withEvent:), NULL);
+	}
 }
 
 @end

@@ -39,12 +39,14 @@
 		
 		_settingHeaders = @[
 			@"Recording Settings",
-			@"Visualization"
+			@"Visualization & Animations",
+			(id)NSNull.null
 		];
 		
 		_settingFooters = @[
 			@"When enabled, consecutive scroll actions will be coalesced into a single action.",
-			@"When enabled, there will be no visualization for recorded actions."
+			@"When enabled, there will be no visualization for recorded actions.",
+			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled."
 		];
 		
 		_settings = @[
@@ -54,6 +56,9 @@
 			],
 			@[
 				@{@"Disable Visualizations": NSStringFromSelector(@selector(dtxrec_disableVisualizations))},
+			],
+			@[
+				@{@"Minimize Other Animations": NSStringFromSelector(@selector(dtxrec_disableAnimations))},
 			]
 		];
 	}

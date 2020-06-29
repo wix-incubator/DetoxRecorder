@@ -43,13 +43,8 @@ static CGPoint newContentOffset;
 
 + (void)load
 {
-	Method m = class_getInstanceMethod(self, @selector(_scrollToTopIfPossible:));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_scrollToTopIfPossible:));
-	method_exchangeImplementations(m, m2);
-	
-	m = class_getInstanceMethod(self, @selector(_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:));
-	m2 = class_getInstanceMethod(self, @selector(_dtxrec_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:));
-	method_exchangeImplementations(m, m2);
+	DTXSwizzleMethod(self, @selector(_scrollToTopIfPossible:), @selector(_dtxrec_scrollToTopIfPossible:), NULL);
+	DTXSwizzleMethod(self, @selector(_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:), @selector(_dtxrec_setContentOffset:animated:animationCurve:animationAdjustsForContentOffsetDelta:animation:), NULL);
 }
 
 @end

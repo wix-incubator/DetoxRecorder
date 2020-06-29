@@ -68,12 +68,108 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 	objc_setAssociatedObject(self, DTXLongPressDateAtBegin, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-
-- (void)_dtxrec_updateGestureForActiveEvents
+- (void)_dtxrec_setView:(UIView*)view
 {
-	BOOL awaitingScrollViewInformation = NO;
+	[self _dtxrec_setView:view];
 	
-	if([self isKindOfClass:UITapGestureRecognizer.class] && self.state == UIGestureRecognizerStateRecognized)
+	if([self isKindOfClass:UITapGestureRecognizer.class])
+	{
+		[self addTarget:self action:@selector(_dtxrec_tapAction:)];
+	}
+	else if([self isKindOfClass:UILongPressGestureRecognizer.class])
+	{
+		if([view isKindOfClass:NSClassFromString(@"UISwitchModernVisualElement")] ||
+		   [self isKindOfClass:NSClassFromString(@"_UIDragLiftGestureRecognizer")] ||
+		   [self isKindOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")])
+		{
+			return;
+		}
+		
+		[self addTarget:self action:@selector(_dtxrec_longPressAction:)];
+	}
+	else if([self isKindOfClass:UIPanGestureRecognizer.class])
+	{
+		[self addTarget:self action:@selector(_dtxrec_panAction:)];
+	}
+}
+
+- (void)_dtxrec_panAction:(UIPanGestureRecognizer*)gr
+{
+	if([self.view isKindOfClass:NSClassFromString(@"UIPickerColumnView")])
+	{
+		if(self.state == UIGestureRecognizerStateEnded)
+		{
+			UIPickerView* pickerView = [self.view valueForKey:@"pickerView"];
+			
+			if(pickerView.dtxrec_isPartOfDatePicker)
+			{
+				return;
+			}
+			
+			NSInteger component = [pickerView dtxrec_componentForColumnView:self.view];
+			UITableView* tv = [pickerView tableViewForColumn:component];
+			
+			__block id observer;
+			observer = [NSNotificationCenter.defaultCenter addObserverForName:@"DidEndSmoothScrolling" object:tv queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+				
+				[DTXUIInteractionRecorder addPickerViewValueChangeEvent:pickerView component:component withEvent:nil];
+				
+				[NSNotificationCenter.defaultCenter removeObserver:observer];
+			}];
+		}
+	}
+	
+	if([self.view isKindOfClass:UIScrollView.class])
+	{
+		if(self.state == UIGestureRecognizerStateBegan)
+		{
+			//Remove previous deceleration observer if user continued dragging while scroll view was decelerating.
+			[self _dtxrec_setDecelerationObserver:nil];
+			
+			//For some reason UIGestureRecognizerStateBegan is called twice for scroll view pan gesture regonizers.
+			if([self _dtxrec_scrollOffsetValueAtGestureBegin] == nil)
+			{
+				[self _dtxrec_setScrollOffsetValueAtGestureBegin:@(((UIScrollView*)self.view).contentOffset)];
+			}
+		}
+		else if(self.state == UIGestureRecognizerStateEnded)
+		{
+			UIScrollView* scrollView = (id)self.view;
+			
+			CGPoint contentOffsetAtBegin = [[self _dtxrec_scrollOffsetValueAtGestureBegin] CGPointValue];
+			
+			if(scrollView.isDecelerating == NO)
+			{
+				[DTXUIInteractionRecorder addScrollEvent:scrollView fromOriginOffset:contentOffsetAtBegin withEvent:self._activeEvents.anyObject];
+			}
+			else
+			{
+				id observer = [NSNotificationCenter.defaultCenter addObserverForName:@"_UIScrollViewDidEndDeceleratingNotification" object:scrollView queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+					[self _dtxrec_setScrollOffsetValueAtGestureBegin:nil];
+					
+					[DTXUIInteractionRecorder addScrollEvent:scrollView fromOriginOffset:contentOffsetAtBegin withEvent:self._activeEvents.anyObject];
+					
+					
+					[self _dtxrec_setDecelerationObserver:nil];
+				}];
+				
+				[self _dtxrec_setDecelerationObserver:observer];
+			}
+		}
+	}
+}
+
+- (void)_dtxrec_longPressAction:(UILongPressGestureRecognizer*)gr
+{
+	if(self.state == UIGestureRecognizerStateBegan)
+	{
+		[DTXUIInteractionRecorder addGestureRecognizerLongPress:self duration:gr.minimumPressDuration withEvent:nil];
+	}
+}
+
+- (void)_dtxrec_tapAction:(UITapGestureRecognizer*)gr
+{
+	if(self.state == UIGestureRecognizerStateRecognized)
 	{
 		if([self.view isKindOfClass:NSClassFromString(@"UIPickerTableViewCell")]) //User tapped on a cell of a picker view.
 		{
@@ -84,7 +180,7 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 				
 				if(pickerView.dtxrec_isPartOfDatePicker)
 				{
-					goto afterPickerView;
+					return;
 				}
 				
 				NSInteger component = [pickerView dtxrec_componentForColumnView:tv._containerView];
@@ -101,126 +197,16 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 		else //User tapped on another view
 		{
 			[DTXUIInteractionRecorder addGestureRecognizerTap:self withEvent:self._activeEvents.anyObject];
-//		NSLog(@"🤡 %@", translateGestureRecognizerStateToString(self.state));
+			//		NSLog(@"🤡 %@", translateGestureRecognizerStateToString(self.state));
 		}
-	}
-	
-	if([self isKindOfClass:UIPanGestureRecognizer.class] && [self.view isKindOfClass:UIScrollView.class])
-	{
-//		NSLog(@"🤡 %@", translateGestureRecognizerStateToString(self.state));
-		
-		if(self.state == UIGestureRecognizerStateBegan)
-		{
-			//Remove previous deceleration observer if user continued dragging while scroll view was decelerating.
-			[self _dtxrec_setDecelerationObserver:nil];
-			
-			//For some reason UIGestureRecognizerStateBegan is called twice for scroll view pan gesture regonizers.
-			if([self _dtxrec_scrollOffsetValueAtGestureBegin] == nil)
-			{
-				[self _dtxrec_setScrollOffsetValueAtGestureBegin:@(((UIScrollView*)self.view).contentOffset)];
-			}
-		}
-		else if(self.state == UIGestureRecognizerStateEnded)
-		{
-			awaitingScrollViewInformation = YES;
-		}
-	}
-	
-	if([self isKindOfClass:UIPanGestureRecognizer.class] && [self.view isKindOfClass:NSClassFromString(@"UIPickerColumnView")])
-	{
-		if(self.state == UIGestureRecognizerStateEnded)
-		{
-			UIPickerView* pickerView = [self.view valueForKey:@"pickerView"];
-			
-			if(pickerView.dtxrec_isPartOfDatePicker)
-			{
-				goto afterPickerView;
-			}
-			
-			NSInteger component = [pickerView dtxrec_componentForColumnView:self.view];
-			UITableView* tv = [pickerView tableViewForColumn:component];
-			
-			__block id observer;
-			observer = [NSNotificationCenter.defaultCenter addObserverForName:@"DidEndSmoothScrolling" object:tv queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-				
-				[DTXUIInteractionRecorder addPickerViewValueChangeEvent:pickerView component:component withEvent:nil];
-				
-				[NSNotificationCenter.defaultCenter removeObserver:observer];
-			}];
-		}
-	}
-	
-afterPickerView:
-	[self _dtxrec_updateGestureForActiveEvents];
-	
-	if([self isKindOfClass:UILongPressGestureRecognizer.class])
-	{
-		if([self.view isKindOfClass:NSClassFromString(@"UISwitchModernVisualElement")] ||
-		   [self isKindOfClass:NSClassFromString(@"_UIDragLiftGestureRecognizer")] ||
-		   [self isKindOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")])
-		{
-			return;
-		}
-		
-		switch (self.state) {
-			case UIGestureRecognizerStatePossible:
-				[self _dtxrec_setLongPressDateAtGestureBegin:NSDate.date];
-				break;
-			case UIGestureRecognizerStateChanged:
-			case UIGestureRecognizerStateFailed:
-			case UIGestureRecognizerStateCancelled:
-			case UIGestureRecognizerStateEnded:
-				[self _dtxrec_setLongPressDateAtGestureBegin:nil];
-				break;
-			case UIGestureRecognizerStateBegan:
-			{
-				NSDate* date = [self _dtxrec_longPressDateAtGestureBegin];
-				if(date != nil)
-				{
-					//[(UILongPressGestureRecognizer*)self minimumPressDuration]
-					[DTXUIInteractionRecorder addGestureRecognizerLongPress:self duration:[NSDate.date timeIntervalSinceDate:date] withEvent:nil];
-				}
-				[self _dtxrec_setLongPressDateAtGestureBegin:nil];
-				
-			}	break;
-			default:
-				break;
-		}
-	}
-	
-	if(awaitingScrollViewInformation)
-	{
-		UIScrollView* scrollView = (id)self.view;
-		
-		CGPoint contentOffsetAtBegin = [[self _dtxrec_scrollOffsetValueAtGestureBegin] CGPointValue];
-		
-		if(scrollView.isDecelerating == NO)
-		{
-			[DTXUIInteractionRecorder addScrollEvent:scrollView fromOriginOffset:contentOffsetAtBegin withEvent:self._activeEvents.anyObject];
-		}
-		else
-		{
-			id observer = [NSNotificationCenter.defaultCenter addObserverForName:@"_UIScrollViewDidEndDeceleratingNotification" object:scrollView queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-				[self _dtxrec_setScrollOffsetValueAtGestureBegin:nil];
-				
-				[DTXUIInteractionRecorder addScrollEvent:scrollView fromOriginOffset:contentOffsetAtBegin withEvent:self._activeEvents.anyObject];
-				
-				
-				[self _dtxrec_setDecelerationObserver:nil];
-			}];
-			
-			[self _dtxrec_setDecelerationObserver:observer];
-		}
-		
-//		NSLog(@"😍 %@ isDecel: %@", [scrollView valueForKey:@"_decelerationLnFactorV"], @(scrollView.isDecelerating));
 	}
 }
 
 + (void)load
 {
-	Method m = class_getInstanceMethod(self, @selector(_updateGestureForActiveEvents));
-	Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_updateGestureForActiveEvents));
-	method_exchangeImplementations(m, m2);
+//	DTXSwizzleMethod(self, @selector(_updateGestureForActiveEvents), @selector(_dtxrec_updateGestureForActiveEvents), NULL);
+	
+	DTXSwizzleMethod(self, @selector(setView:), @selector(_dtxrec_setView:), NULL);
 }
 
 @end

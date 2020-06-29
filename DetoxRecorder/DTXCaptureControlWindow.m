@@ -9,7 +9,10 @@
 #import "DTXCaptureControlWindow.h"
 #import "DTXUIInteractionRecorder.h"
 #import "DTXRecSettingsViewController.h"
+#import "NSUserDefaults+RecorderUtils.h"
 @import AudioToolbox;
+
+#define RETURN_IF_ANIMATIONS_MINIMIZED if(NSUserDefaults.standardUserDefaults.dtxrec_disableAnimations) { return; }
 
 @interface UIWindowScene ()
 
@@ -391,36 +394,58 @@ static __weak UIAlertAction* __okAction;
 
 - (void)visualizeShakeDevice
 {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[UIView animateKeyframesWithDuration:0.25 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
-				[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.25 animations:^{
-					CGRect frame = self.frame;
-					frame.origin.y -= 20;
-					self.frame = frame;
-				}];
-				[UIView addKeyframeWithRelativeStartTime:0.25 relativeDuration:0.25 animations:^{
-					CGRect frame = self.frame;
-					frame.origin.y += 40;
-					self.frame = frame;
-				}];
-				[UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.25 animations:^{
-					CGRect frame = self.frame;
-					frame.origin.y -= 50;
-					self.frame = frame;
-				}];
-				[UIView addKeyframeWithRelativeStartTime:0.75 relativeDuration:0.25 animations:^{
-					CGRect frame = self.frame;
-					frame.origin.y += 30;
-					self.frame = frame;
-				}];
-			} completion:nil];
-		});
-	});
+	RETURN_IF_ANIMATIONS_MINIMIZED
+
+	[UIView animateKeyframesWithDuration:0.25 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
+		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.25 animations:^{
+			CGRect frame = self.frame;
+			frame.origin.y -= 20;
+			self.frame = frame;
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.25 relativeDuration:0.25 animations:^{
+			CGRect frame = self.frame;
+			frame.origin.y += 40;
+			self.frame = frame;
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.5 relativeDuration:0.25 animations:^{
+			CGRect frame = self.frame;
+			frame.origin.y -= 50;
+			self.frame = frame;
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.75 relativeDuration:0.25 animations:^{
+			CGRect frame = self.frame;
+			frame.origin.y += 30;
+			self.frame = frame;
+		}];
+	} completion:nil];
 }
 
 - (void)visualizeTakeScreenshotWithName:(NSString*)name
 {
+	if(NSUserDefaults.standardUserDefaults.dtxrec_disableAnimations)
+	{
+		UIView* transitionView = [[UIView alloc] initWithFrame:self.bounds];
+		transitionView.userInteractionEnabled = NO;
+		transitionView.backgroundColor = UIColor.clearColor;
+		
+		[self addSubview:transitionView];
+		[self sendSubviewToBack:transitionView];
+		
+		[UIView animateWithDuration:0.1 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+			transitionView.backgroundColor = UIColor.whiteColor;
+		} completion:^(BOOL finished) {
+			AudioServicesPlaySystemSoundWithCompletion((SystemSoundID)1108, nil);
+			
+			[UIView animateWithDuration:0.35 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+				transitionView.backgroundColor = UIColor.clearColor;
+			} completion:^(BOOL finished) {
+				[transitionView removeFromSuperview];
+			}];
+		}];
+	}
+	
+	RETURN_IF_ANIMATIONS_MINIMIZED
+	
 	_wrapperView.alpha = 0.0;
 	
 	dispatch_async(dispatch_get_main_queue(), ^{

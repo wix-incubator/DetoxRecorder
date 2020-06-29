@@ -31,6 +31,7 @@
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
 		39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */; };
+		39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */; };
 		397CA716247EB41B005E8A71 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA715247EB41B005E8A71 /* main.swift */; };
 		397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */; };
 		397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA757247EE05D005E8A71 /* LNOptionsParser.m */; };
@@ -122,6 +123,7 @@
 		394535BC226D515000F08C55 /* _DTXScrollAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollAction.m; sourceTree = "<group>"; };
 		394535BE226D570B00F08C55 /* _DTXReplaceTextAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXReplaceTextAction.h; sourceTree = "<group>"; };
 		394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXReplaceTextAction.m; sourceTree = "<group>"; };
+		39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTXSwizzlingHelper.h; path = ObjCHelpers/DTXSwizzlingHelper.h; sourceTree = "<group>"; };
 		397CA713247EB41B005E8A71 /* DetoxRecorderCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DetoxRecorderCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CA715247EB41B005E8A71 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		397CA744247EB54A005E8A71 /* Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
+				39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */,
 				39C013982473CD0900784C84 /* NSArray+Utils.h */,
 				39C013972473CD0900784C84 /* NSArray+Utils.m */,
 				390FF63C249820190022BF11 /* NSObject+AttachedObjects.h */,
@@ -363,6 +366,7 @@
 				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
+				39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */,
 				39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */,
 				390FF63A2497CB3A0022BF11 /* UITableView+SelectionCapture.h in Headers */,
 				390FF63E249820190022BF11 /* NSObject+AttachedObjects.h in Headers */,
