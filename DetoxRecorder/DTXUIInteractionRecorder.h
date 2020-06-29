@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)addTapWithView:(UIView*)view withEvent:(nullable UIEvent*)event;
 + (void)addControlTapWithControl:(UIControl*)control withEvent:(nullable UIEvent*)event;
-+ (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(nullable UIEvent*)event;
++ (void)addGestureRecognizerTap:(UITapGestureRecognizer*)tgr withEvent:(nullable UIEvent*)event;
 + (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(nullable UIEvent*)event;
 
 + (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(nullable UIEvent*)event;

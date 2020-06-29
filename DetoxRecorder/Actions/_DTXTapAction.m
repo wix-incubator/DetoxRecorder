@@ -10,24 +10,32 @@
 
 @implementation _DTXTapAction
 
-- (instancetype)initWithView:(UIView*)view event:(UIEvent*)event isFromRN:(BOOL)isFromRN
+- (instancetype)initWithView:(UIView*)view event:(UIEvent*)event tapGestureRecognizer:(nullable UITapGestureRecognizer*)tgr isFromRN:(BOOL)isFromRN
 {
 	self = [super initWithElementView:view allowHierarchyTraversal:isFromRN];
 	
 	if(self)
 	{
-		BOOL atPoint = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording && event != nil;
+		BOOL atPoint = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording && (event != nil || tgr != nil);
 		
 		self.actionType = DTXRecordedActionTypeTap;
 		if(atPoint)
 		{
-			NSSet<UITouch*>* touches = [event touchesForView:view];
-			if(touches == nil)
+			CGPoint pt = view.center;
+			if(tgr)
 			{
-				touches = event.allTouches;
+				pt = [tgr locationInView:view];
 			}
-			
-			CGPoint pt = [touches.anyObject locationInView:view];
+			else if(event)
+			{
+				NSSet<UITouch*>* touches = [event touchesForView:view];
+				if(touches == nil)
+				{
+					touches = event.allTouches;
+				}
+				
+				pt = [touches.anyObject locationInView:view];
+			}
 			
 			self.actionArgs = @[@{@"x": @(pt.x), @"y": @(pt.y)}];
 		}

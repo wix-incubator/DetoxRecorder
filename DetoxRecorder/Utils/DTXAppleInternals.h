@@ -6,13 +6,6 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
-@interface UIGestureRecognizer ()
-
-- (void)_updateGestureForActiveEvents;
-- (NSSet<UIEvent*>*)_activeEvents;
-
-@end
-
 @interface UITableView ()
 
 - (UIView*)_containerView;

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _DTXTapAction : DTXRecordedAction
 
-- (nullable instancetype)initWithView:(UIView*)view event:(nullable UIEvent*)event isFromRN:(BOOL)isFromRN;
+- (nullable instancetype)initWithView:(UIView*)view event:(nullable UIEvent*)event tapGestureRecognizer:(nullable UITapGestureRecognizer*)tgr isFromRN:(BOOL)isFromRN;
 
 @end
 

@@ -33,9 +33,9 @@ DTXRecordedActionType const DTXRecordedActionTypeDeviceShake = @"shake";
 
 @implementation DTXRecordedAction
 
-+ (instancetype)tapActionWithView:(UIView*)view event:(UIEvent*)event isFromRN:(BOOL)isFromRN
++ (instancetype)tapActionWithView:(UIView*)view event:(nullable UIEvent*)event tapGestureRecognizer:(nullable UITapGestureRecognizer*)tgr isFromRN:(BOOL)isFromRN
 {
-	return [[_DTXTapAction alloc] initWithView:view event:event isFromRN:isFromRN];
+	return [[_DTXTapAction alloc] initWithView:view event:event tapGestureRecognizer:tgr isFromRN:isFromRN];
 }
 
 + (nullable instancetype)longPressActionWithView:(UIView*)view duration:(NSTimeInterval)duration event:(nullable UIEvent*)event

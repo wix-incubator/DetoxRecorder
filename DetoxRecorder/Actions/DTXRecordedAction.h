@@ -36,7 +36,7 @@ extern DTXRecordedActionType const DTXRecordedActionTypeDeviceShake;
 
 @property (nonatomic, readonly, getter=isCancelled) BOOL cancelled;
 
-+ (nullable instancetype)tapActionWithView:(UIView*)view event:(nullable UIEvent*)event isFromRN:(BOOL)isFromRN;
++ (instancetype)tapActionWithView:(UIView*)view event:(nullable UIEvent*)event tapGestureRecognizer:(nullable UITapGestureRecognizer*)tgr isFromRN:(BOOL)isFromRN;
 + (nullable instancetype)longPressActionWithView:(UIView*)view duration:(NSTimeInterval)duration event:(nullable UIEvent*)event;
 + (nullable instancetype)scrollActionWithView:(UIScrollView*)scrollView originOffset:(CGPoint)originOffset newOffset:(CGPoint)newOffset event:(nullable UIEvent*)event;
 + (nullable instancetype)scrollToTopActionWithView:(UIScrollView*)scrollView event:(nullable UIEvent*)event;

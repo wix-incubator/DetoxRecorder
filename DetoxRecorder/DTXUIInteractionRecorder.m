@@ -473,12 +473,12 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	[self _blinkVisualizerView:visualizer];
 }
 
-+ (void)_addTapWithView:(UIView*)view event:(UIEvent*)event fromRN:(BOOL)fromRN
++ (void)_addTapWithView:(UIView*)view event:(UIEvent*)event tapGestureRecognizer:(UITapGestureRecognizer*)tgr fromRN:(BOOL)fromRN
 {
 	IGNORE_IF_FROM_LAST_EVENT
 	IGNORE_RECORDING_WINDOW(view)
 	
-	DTXRecordedAction* action = [DTXRecordedAction tapActionWithView:view event:event isFromRN:fromRN];
+	DTXRecordedAction* action = [DTXRecordedAction tapActionWithView:view event:event tapGestureRecognizer:tgr isFromRN:fromRN];
 	if(action != nil)
 	{
 		[self _enhanceLastScrollEventIfNeededForElement:action.element];
@@ -492,22 +492,22 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)addControlTapWithControl:(UIControl*)control withEvent:(UIEvent*)event
 {
-	[self _addTapWithView:control event:event fromRN:NO];
+	[self _addTapWithView:control event:event tapGestureRecognizer:nil fromRN:NO];
 }
 
 + (void)addTapWithView:(UIView*)view withEvent:(UIEvent*)event
 {
-	[self _addTapWithView:view event:event fromRN:NO];
+	[self _addTapWithView:view event:event tapGestureRecognizer:nil fromRN:NO];
 }
 
-+ (void)addGestureRecognizerTap:(UIGestureRecognizer*)tgr withEvent:(UIEvent*)event
++ (void)addGestureRecognizerTap:(UITapGestureRecognizer*)tgr withEvent:(UIEvent*)event
 {
-	[self _addTapWithView:tgr.view event:event fromRN:NO];
+	[self _addTapWithView:tgr.view event:event tapGestureRecognizer:tgr fromRN:NO];
 }
 
 + (void)addRNGestureRecognizerTapTouch:(UITouch*)touch withEvent:(UIEvent*)event;
 {
-	[self _addTapWithView:touch.view event:event fromRN:YES];
+	[self _addTapWithView:touch.view event:event tapGestureRecognizer:nil fromRN:YES];
 }
 
 + (void)addGestureRecognizerLongPress:(UIGestureRecognizer*)tgr duration:(NSTimeInterval)duration withEvent:(UIEvent*)event

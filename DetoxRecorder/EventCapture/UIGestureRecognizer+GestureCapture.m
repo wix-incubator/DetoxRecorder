@@ -196,16 +196,13 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 		}
 		else //User tapped on another view
 		{
-			[DTXUIInteractionRecorder addGestureRecognizerTap:self withEvent:self._activeEvents.anyObject];
-			//		NSLog(@"🤡 %@", translateGestureRecognizerStateToString(self.state));
+			[DTXUIInteractionRecorder addGestureRecognizerTap:(id)self withEvent:self._activeEvents.anyObject];
 		}
 	}
 }
 
 + (void)load
 {
-//	DTXSwizzleMethod(self, @selector(_updateGestureForActiveEvents), @selector(_dtxrec_updateGestureForActiveEvents), NULL);
-	
 	DTXSwizzleMethod(self, @selector(setView:), @selector(_dtxrec_setView:), NULL);
 }
 
