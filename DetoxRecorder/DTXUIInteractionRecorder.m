@@ -452,8 +452,15 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 
 + (void)_visualizeTapAtView:(UIView*)view withAction:(DTXRecordedAction*)action
 {
-	BOOL xy = NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording;
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[xy ? @"hand.draw.fill" : @"hand.point.right.fill"] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:xy ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-M_PI_2)]] applyConstraints:YES];
+	NSString* normalTap = @"hand.point.right.fill";
+	CGAffineTransform transform = CGAffineTransformMakeRotation(-M_PI_2);
+	if(@available(iOS 14.0, *))
+	{
+		normalTap = @"hand.tap.fill";
+		transform = CGAffineTransformIdentity;
+	}
+	
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageNames:@[normalTap] imageViewTransforms:@[[NSValue valueWithCGAffineTransform:transform]] applyConstraints:YES];
 	
 	[self _blinkVisualizerView:visualizer];
 }
@@ -610,7 +617,7 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)_visualizeScrollCancelOfView:(UIView*)view action:(DTXRecordedAction*)action
 {
-	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"arrow.2.circlepath"];
+	UIView* visualizer = [self _visualizerViewForView:view action:action systemImageName:@"hand.raised.fill"];
 	
 	[self _systemDeleteVisualizerView:visualizer];
 }
@@ -781,6 +788,12 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 {
 	DTXAddAction([DTXRecordedAction takeScreenshotActionWithName:screenshotName]);
 	[captureControlWindow visualizeTakeScreenshotWithName:screenshotName];
+}
+
++ (void)addCodeComment:(NSString*)comment
+{
+	DTXAddAction([DTXRecordedAction codeCommentAction:comment]);
+	[captureControlWindow visualizeAddComment:comment];
 }
 
 @end

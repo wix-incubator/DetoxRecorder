@@ -121,18 +121,7 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 	
 	if([self.view isKindOfClass:UIScrollView.class])
 	{
-		if(self.state == UIGestureRecognizerStateBegan)
-		{
-			//Remove previous deceleration observer if user continued dragging while scroll view was decelerating.
-			[self _dtxrec_setDecelerationObserver:nil];
-			
-			//For some reason UIGestureRecognizerStateBegan is called twice for scroll view pan gesture regonizers.
-			if([self _dtxrec_scrollOffsetValueAtGestureBegin] == nil)
-			{
-				[self _dtxrec_setScrollOffsetValueAtGestureBegin:@(((UIScrollView*)self.view).contentOffset)];
-			}
-		}
-		else if(self.state == UIGestureRecognizerStateEnded)
+		if(self.state == UIGestureRecognizerStateEnded)
 		{
 			UIScrollView* scrollView = (id)self.view;
 			
@@ -203,7 +192,38 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 
 + (void)load
 {
-	DTXSwizzleMethod(self, @selector(setView:), @selector(_dtxrec_setView:), NULL);
+	@autoreleasepool {
+		DTXSwizzleMethod(self, @selector(setView:), @selector(_dtxrec_setView:), NULL);
+	}
+}
+
+@end
+
+@interface UIScrollView (GestureCapture) @end
+@implementation UIScrollView (GestureCapture)
+
+- (void)_dtxrec_updatePanGesture
+{
+	if(self.panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+	{
+		//Remove previous deceleration observer if user continued dragging while scroll view was decelerating.
+		[self.panGestureRecognizer _dtxrec_setDecelerationObserver:nil];
+		
+		//For some reason UIGestureRecognizerStateBegan is called twice for scroll view pan gesture regonizers.
+		if([self.panGestureRecognizer _dtxrec_scrollOffsetValueAtGestureBegin] == nil)
+		{
+			[self.panGestureRecognizer _dtxrec_setScrollOffsetValueAtGestureBegin:@(self.contentOffset)];
+		}
+	}
+	
+	[self _dtxrec_updatePanGesture];
+}
+
++ (void)load
+{
+	@autoreleasepool {
+		DTXSwizzleMethod(self, @selector(_updatePanGesture), @selector(_dtxrec_updatePanGesture), NULL);
+	}
 }
 
 @end
@@ -244,28 +264,26 @@ static void* DTXRNGestureRecognizerHasTapGesture = &DTXRNGestureRecognizerHasTap
 
 + (void)load
 {
-//	[NSNotificationCenter.defaultCenter addObserverForName:@"_UIScrollViewAnimationEndedNotification" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-//		NSLog(@"🤦‍♂️ %@", note.name);
-//	}];
-	
-	Class RNGestureRecognizerClass = NSClassFromString(@"RCTTouchHandler");
-	if(RNGestureRecognizerClass != nil)
-	{
-		Method m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesBegan:withEvent:));
-		Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesBegan:withEvent:));
-		method_exchangeImplementations(m, m2);
-		
-		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesCancelled:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesCancelled:withEvent:));
-		method_exchangeImplementations(m, m2);
-		
-		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesMoved:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesMoved:withEvent:));
-		method_exchangeImplementations(m, m2);
-		
-		m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesEnded:withEvent:));
-		m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesEnded:withEvent:));
-		method_exchangeImplementations(m, m2);
+	@autoreleasepool {
+		Class RNGestureRecognizerClass = NSClassFromString(@"RCTTouchHandler");
+		if(RNGestureRecognizerClass != nil)
+		{
+			Method m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesBegan:withEvent:));
+			Method m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesBegan:withEvent:));
+			method_exchangeImplementations(m, m2);
+			
+			m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesCancelled:withEvent:));
+			m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesCancelled:withEvent:));
+			method_exchangeImplementations(m, m2);
+			
+			m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesMoved:withEvent:));
+			m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesMoved:withEvent:));
+			method_exchangeImplementations(m, m2);
+			
+			m = class_getInstanceMethod(RNGestureRecognizerClass, @selector(touchesEnded:withEvent:));
+			m2 = class_getInstanceMethod(self, @selector(_dtxrec_rn_touchesEnded:withEvent:));
+			method_exchangeImplementations(m, m2);
+		}
 	}
 }
 

@@ -32,6 +32,8 @@
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
 		39449C4F2462F81800B967FC /* _DTXPickerViewValueChangeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C4D2462F81800B967FC /* _DTXPickerViewValueChangeAction.m */; };
 		39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */; };
+		39454C2424AA3CBF00761A51 /* _DTXCodeCommentAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39454C2224AA3CBF00761A51 /* _DTXCodeCommentAction.h */; };
+		39454C2524AA3CBF00761A51 /* _DTXCodeCommentAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39454C2324AA3CBF00761A51 /* _DTXCodeCommentAction.m */; };
 		397CA716247EB41B005E8A71 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA715247EB41B005E8A71 /* main.swift */; };
 		397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */; };
 		397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA757247EE05D005E8A71 /* LNOptionsParser.m */; };
@@ -124,6 +126,8 @@
 		394535BE226D570B00F08C55 /* _DTXReplaceTextAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXReplaceTextAction.h; sourceTree = "<group>"; };
 		394535BF226D570B00F08C55 /* _DTXReplaceTextAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXReplaceTextAction.m; sourceTree = "<group>"; };
 		39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTXSwizzlingHelper.h; path = ObjCHelpers/DTXSwizzlingHelper.h; sourceTree = "<group>"; };
+		39454C2224AA3CBF00761A51 /* _DTXCodeCommentAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXCodeCommentAction.h; sourceTree = "<group>"; };
+		39454C2324AA3CBF00761A51 /* _DTXCodeCommentAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXCodeCommentAction.m; sourceTree = "<group>"; };
 		397CA713247EB41B005E8A71 /* DetoxRecorderCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DetoxRecorderCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CA715247EB41B005E8A71 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		397CA744247EB54A005E8A71 /* Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -327,6 +331,8 @@
 			children = (
 				39AE548C2490FA3A0093BFEE /* _DTXAdjustSliderAction.h */,
 				39AE548D2490FA3A0093BFEE /* _DTXAdjustSliderAction.m */,
+				39454C2224AA3CBF00761A51 /* _DTXCodeCommentAction.h */,
+				39454C2324AA3CBF00761A51 /* _DTXCodeCommentAction.m */,
 				39C0133F2472EB8E00784C84 /* _DTXLongPressAction.h */,
 				39C013402472EB8E00784C84 /* _DTXLongPressAction.m */,
 				39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */,
@@ -362,6 +368,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */,
+				39454C2424AA3CBF00761A51 /* _DTXCodeCommentAction.h in Headers */,
 				39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */,
 				39C013932473CC8000784C84 /* UIView+DTXDescendants.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
@@ -541,6 +548,7 @@
 				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
 				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,
 				390FF63F249820190022BF11 /* NSObject+AttachedObjects.m in Sources */,
+				39454C2524AA3CBF00761A51 /* _DTXCodeCommentAction.m in Sources */,
 				39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */,
 				39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */,
 				390FF63B2497CB3A0022BF11 /* UITableView+SelectionCapture.m in Sources */,

@@ -55,6 +55,8 @@ extern DTXRecordedActionType const DTXRecordedActionTypeDeviceShake;
 + (instancetype)takeScreenshotAction;
 + (instancetype)takeScreenshotActionWithName:(NSString*)screenshotName;
 
++ (instancetype)codeCommentAction:(NSString*)comment;
+
 - (NSString*)detoxDescription;
 
 @end

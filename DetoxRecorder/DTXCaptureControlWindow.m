@@ -12,8 +12,6 @@
 #import "NSUserDefaults+RecorderUtils.h"
 @import AudioToolbox;
 
-#define RETURN_IF_ANIMATIONS_MINIMIZED if(NSUserDefaults.standardUserDefaults.dtxrec_disableAnimations) { return; }
-
 @interface UIWindowScene ()
 
 + (instancetype)_keyWindowScene;
@@ -170,6 +168,7 @@ const CGFloat buttonWidth = 44;
 	_DTXCaptureControlButton* _takeScreenshot;
 	_DTXCaptureControlButton* _xyRecord;
 	_DTXCaptureControlButton* _settings;
+	_DTXCaptureControlButton* _addComment;
 	
 	NSLayoutConstraint* _topConstraint;
 	
@@ -201,7 +200,7 @@ const CGFloat buttonWidth = 44;
 		_wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
 		
 		_wrapperView.layer.cornerRadius = buttonWidth * 0.6111111111;
-		_wrapperView.alpha = 0.75;
+		_wrapperView.alpha = 0.85;
 		
 		[self.rootViewController.view addSubview:_wrapperView];
 		
@@ -217,18 +216,40 @@ const CGFloat buttonWidth = 44;
 		[_takeScreenshot addGestureRecognizer:longPress];
 		
 		_settings = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		[_settings setImage:[UIImage systemImageNamed:@"gear" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		
+		NSString* gear = @"gear";
+		if(@available(iOS 14.0, *))
+		{
+			gear = @"gearshape.fill";
+		}
+		
+		[_settings setImage:[UIImage systemImageNamed:gear withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
 		[_settings addTarget:self action:@selector(settings:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		_xyRecord = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 		[NSUserDefaults.standardUserDefaults addObserver:self forKeyPath:NSStringFromSelector(@selector(dtxrec_attemptXYRecording)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
 		
-		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.draw.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateSelected];
-		[_xyRecord setImage:[UIImage systemImageNamed:@"hand.point.right.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
-		[_xyRecord setImageTransform:CGAffineTransformMakeRotation(-M_PI_2) forState:UIControlStateNormal];
+		NSString* preciseTap = @"hand.draw.fill";
+		NSString* normalTap = @"hand.point.right.fill";
+		if(@available(iOS 14.0, *))
+		{
+			preciseTap = @"hand.point.up.braille.fill";
+			normalTap = @"hand.tap.fill";
+		}
+		
+		[_xyRecord setImage:[UIImage systemImageNamed:preciseTap withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateSelected];
+		[_xyRecord setImage:[UIImage systemImageNamed:normalTap withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		if_unavailable(iOS 14.0, *)
+		{
+			[_xyRecord setImageTransform:CGAffineTransformMakeRotation(-M_PI_2) forState:UIControlStateNormal];
+		}
 		[_xyRecord addTarget:self action:@selector(toggleXYRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
-		_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _xyRecord, _settings]];
+		_addComment = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
+		[_addComment setImage:[UIImage systemImageNamed:@"plus.bubble.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		[_addComment addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventPrimaryActionTriggered];
+		
+		_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _addComment, _xyRecord, _settings]];
 		_actionButtonsStackView.translatesAutoresizingMaskIntoConstraints = NO;
 		_actionButtonsStackView.axis = UILayoutConstraintAxisHorizontal;
 		_actionButtonsStackView.distribution = UIStackViewDistributionEqualSpacing;
@@ -346,7 +367,7 @@ const CGFloat buttonWidth = 44;
 
 static __weak UIAlertAction* __okAction;
 
-- (void)_takeScreenshotTextDidChange:(UITextField*)textField
+- (void)_alertControllerTextFieldTextDidChange:(UITextField*)textField
 {
 	if(textField.text.length > 0)
 	{
@@ -368,12 +389,12 @@ static __weak UIAlertAction* __okAction;
 	UIAlertController* screenshot = [UIAlertController alertControllerWithTitle:@"Screenshot Name" message:nil preferredStyle:UIAlertControllerStyleAlert];
 	[screenshot addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 		textField.placeholder = @"Name";
-		[textField addTarget:self action:@selector(_takeScreenshotTextDidChange:) forControlEvents:UIControlEventEditingChanged];
+		[textField addTarget:self action:@selector(_alertControllerTextFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
 		[self makeKeyWindow];
 		[textField becomeFirstResponder];
 	}];
 	
-	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"Take Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[DTXUIInteractionRecorder addTakeScreenshotWithName:screenshot.textFields.firstObject.text];
 		[self _restoreKeyWindow];
 		
@@ -392,9 +413,41 @@ static __weak UIAlertAction* __okAction;
 	__okAction = okAction;
 }
 
+- (void)addComment:(UIButton*)button
+{
+	UIAlertController* comment = [UIAlertController alertControllerWithTitle:@"Comment Text" message:nil preferredStyle:UIAlertControllerStyleAlert];
+	[comment addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+		textField.placeholder = @"Single Line Comment";
+		[textField addTarget:self action:@selector(_alertControllerTextFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
+		[self makeKeyWindow];
+		[textField becomeFirstResponder];
+	}];
+	
+	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"Add Comment" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[DTXUIInteractionRecorder addCodeComment:comment.textFields.firstObject.text];
+		[self _restoreKeyWindow];
+		
+	}];
+	okAction.enabled = NO;
+	
+	[comment addAction:okAction];
+	[comment addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		[self _restoreKeyWindow];
+	}]];
+	
+	[self.rootViewController presentViewController:comment animated:YES completion:^{
+		[comment.textFields.firstObject becomeFirstResponder];
+	}];
+	
+	__okAction = okAction;
+}
+
 - (void)visualizeShakeDevice
 {
-	RETURN_IF_ANIMATIONS_MINIMIZED
+	if(NSUserDefaults.standardUserDefaults.dtxrec_disableAnimations)
+	{
+		return;
+	}
 
 	[UIView animateKeyframesWithDuration:0.25 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
 		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.25 animations:^{
@@ -420,31 +473,59 @@ static __weak UIAlertAction* __okAction;
 	} completion:nil];
 }
 
+- (void)_shakeView:(UIView*)view
+{
+	[UIView animateKeyframesWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionAllowAnimatedContent | UIViewKeyframeAnimationOptionAllowUserInteraction animations:^{
+		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.2 animations:^{
+			view.transform = CGAffineTransformMakeRotation(M_PI / 6);
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.2 relativeDuration:0.2 animations:^{
+			view.transform = CGAffineTransformMakeRotation(- M_PI / 6);
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.4 relativeDuration:0.2 animations:^{
+			view.transform = CGAffineTransformMakeRotation(M_PI / 6);
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.6 relativeDuration:0.2 animations:^{
+			view.transform = CGAffineTransformMakeRotation(- M_PI / 6);
+		}];
+		[UIView addKeyframeWithRelativeStartTime:0.8 relativeDuration:0.2 animations:^{
+			view.transform = CGAffineTransformIdentity;
+		}];
+	} completion:nil];
+}
+
+- (void)visualizeAddComment:(NSString*)comment
+{
+	[self _shakeView:_addComment];
+}
+
 - (void)visualizeTakeScreenshotWithName:(NSString*)name
 {
 	if(NSUserDefaults.standardUserDefaults.dtxrec_disableAnimations)
 	{
+		[self _shakeView:_takeScreenshot];
+		
 		UIView* transitionView = [[UIView alloc] initWithFrame:self.bounds];
 		transitionView.userInteractionEnabled = NO;
 		transitionView.backgroundColor = UIColor.clearColor;
-		
+
 		[self addSubview:transitionView];
 		[self sendSubviewToBack:transitionView];
-		
+
 		[UIView animateWithDuration:0.1 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 			transitionView.backgroundColor = UIColor.whiteColor;
 		} completion:^(BOOL finished) {
 			AudioServicesPlaySystemSoundWithCompletion((SystemSoundID)1108, nil);
-			
+
 			[UIView animateWithDuration:0.35 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 				transitionView.backgroundColor = UIColor.clearColor;
 			} completion:^(BOOL finished) {
 				[transitionView removeFromSuperview];
 			}];
 		}];
+		
+		return;
 	}
-	
-	RETURN_IF_ANIMATIONS_MINIMIZED
 	
 	_wrapperView.alpha = 0.0;
 	

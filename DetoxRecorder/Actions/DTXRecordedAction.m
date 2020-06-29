@@ -17,6 +17,7 @@
 #import "_DTXLongPressAction.h"
 #import "_DTXAdjustSliderAction.h"
 #import "_DTXShakeDeviceAction.h"
+#import "_DTXCodeCommentAction.h"
 #import "NSString+QuotedStringForJS.h"
 
 DTXRecordedActionType const DTXRecordedActionTypeTap = @"tap";
@@ -81,6 +82,11 @@ DTXRecordedActionType const DTXRecordedActionTypeDeviceShake = @"shake";
 + (instancetype)takeScreenshotActionWithName:(NSString*)screenshotName
 {
 	return [[_DTXTakeScreenshotAction alloc] initWithName:screenshotName];
+}
+
++ (instancetype)codeCommentAction:(NSString*)comment
+{
+	return [[_DTXCodeCommentAction alloc] initWithComment:comment];
 }
 
 + (nullable instancetype)datePickerDateChangeActionWithView:(UIDatePicker*)datePicker event:(nullable UIEvent*)event

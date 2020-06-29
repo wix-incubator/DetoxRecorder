@@ -6,6 +6,18 @@
 //  Copyright © 2020 Wix. All rights reserved.
 //
 
+@interface UIScrollView ()
+
+-(void)_updatePanGesture;
+
+@end
+
+@interface UIGestureRecognizer ()
+
+- (NSSet<UIEvent*>*)_activeEvents;
+
+@end
+
 @interface UITableView ()
 
 - (UIView*)_containerView;

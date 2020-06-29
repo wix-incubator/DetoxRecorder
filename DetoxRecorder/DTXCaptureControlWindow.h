@@ -18,5 +18,6 @@
 
 - (void)visualizeTakeScreenshotWithName:(NSString*)name;
 - (void)visualizeShakeDevice;
+- (void)visualizeAddComment:(NSString*)comment;
 
 @end

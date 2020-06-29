@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addTakeScreenshot;
 + (void)addTakeScreenshotWithName:(nullable NSString*)screenshotName;
 
++ (void)addCodeComment:(NSString*)comment;
+
 @end
 
 NS_ASSUME_NONNULL_END
