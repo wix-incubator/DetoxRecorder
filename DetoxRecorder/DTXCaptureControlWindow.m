@@ -415,7 +415,7 @@ static __weak UIAlertAction* __okAction;
 
 - (void)addComment:(UIButton*)button
 {
-	UIAlertController* comment = [UIAlertController alertControllerWithTitle:@"Comment Text" message:nil preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController* comment = [UIAlertController alertControllerWithTitle:@"Code Comment" message:nil preferredStyle:UIAlertControllerStyleAlert];
 	[comment addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 		textField.placeholder = @"Single Line Comment";
 		[textField addTarget:self action:@selector(_alertControllerTextFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
