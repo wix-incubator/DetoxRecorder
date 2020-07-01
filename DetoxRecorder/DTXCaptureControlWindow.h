@@ -13,6 +13,8 @@
 @property (nonatomic, assign, getter=isDisabled) BOOL disabled;
 @property (nonatomic, assign, getter=isToggled) BOOL toggled;
 
+- (void)setImageTransform:(CGAffineTransform)transform forState:(UIControlState)state;
+
 @end
 
 @interface DTXCaptureControlWindow : UIWindow

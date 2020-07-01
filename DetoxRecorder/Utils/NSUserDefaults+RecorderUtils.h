@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, setter=dtxrec_setDisableAnimations:) BOOL dtxrec_disableAnimations;
 @property (nonatomic, assign, setter=dtxrec_setRNLongPressDelay:) NSTimeInterval dtxrec_rnLongPressDelay;
 
+@property (nonatomic, assign, setter=dtxrec_setRecordingBarMinimized:) BOOL dtxrec_recordingBarMinimized;
+
 @end
 
 NS_ASSUME_NONNULL_END

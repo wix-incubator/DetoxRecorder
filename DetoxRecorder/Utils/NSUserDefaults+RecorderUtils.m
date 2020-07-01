@@ -18,6 +18,7 @@
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_convertScrollEventsToWaitfor": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_rnLongPressDelay": @0.5}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_recordingBarMinimized": @YES}];
 	}
 }
 
@@ -79,6 +80,16 @@
 - (void)dtxrec_setRNLongPressDelay:(NSTimeInterval)dtxrec_rnLongPressDelay
 {
 	[self setDouble:dtxrec_rnLongPressDelay forKey:@"dtxrec_rnLongPressDelay"];
+}
+
+- (BOOL)dtxrec_recordingBarMinimized
+{
+	return [self boolForKey:@"dtxrec_recordingBarMinimized"];
+}
+
+- (void)dtxrec_setRecordingBarMinimized:(BOOL)dtxrec_recordingBarMinimized
+{
+	[self setBool:dtxrec_recordingBarMinimized forKey:@"dtxrec_recordingBarMinimized"];
 }
 
 @end
