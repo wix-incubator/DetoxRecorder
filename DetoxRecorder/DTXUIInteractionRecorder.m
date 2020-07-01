@@ -34,28 +34,37 @@ unsigned long long previousFileOffset;
 NSData* fileOutro;
 
 DTX_ALWAYS_INLINE
+static void _DTXTruncateFile(void)
+{
+	[currentFile truncateAtOffset:currentFileOffset error:NULL];
+}
+
+DTX_ALWAYS_INLINE
 static void _DTXWriteActionToFile(DTXRecordedAction* action)
 {
 	NSData* data = [[NSString stringWithFormat:@"\t\t%@\n", action.detoxDescription] dataUsingEncoding:NSUTF8StringEncoding];
-	[currentFile truncateAtOffset:currentFileOffset error:NULL];
+	_DTXTruncateFile();
 	[currentFile writeData:data error:NULL];
 	previousFileOffset = currentFileOffset;
 	currentFileOffset += data.length;
 }
 
 DTX_ALWAYS_INLINE
-static void _DTXWriteOutroFile()
+static void _DTXWriteOutroToFile()
 {
+	[currentFile truncateAtOffset:currentFileOffset error:NULL];
 	[currentFile writeData:fileOutro error:NULL];
 }
 
 DTX_ALWAYS_INLINE
 static void DTXAddAction(DTXRecordedAction* action)
 {
+	[DTXUIInteractionRecorder _enhanceLastScrollEventIfNeededForAction:action];
+	
 	[recordedActions addObject:action];
 	
 	_DTXWriteActionToFile(action);
-	_DTXWriteOutroFile();
+	_DTXWriteOutroToFile();
 	
 	if([delegate respondsToSelector:@selector(interactionRecorderDidAddTestCommand:)])
 	{
@@ -68,6 +77,11 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 {
 	DTXRecordedAction* action = recordedActions.lastObject;
 	
+	if(action == nil)
+	{
+		return NO;
+	}
+	
 	BOOL remove = NO;
 	BOOL rv = updateBlock(action, &remove);
 	
@@ -79,19 +93,23 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	if(rv == YES)
 	{
 		[currentFile seekToOffset:previousFileOffset error:NULL];
-		
+	
+		currentFileOffset = previousFileOffset;
 		if(remove == NO)
 		{
-			currentFileOffset = previousFileOffset;
 			_DTXWriteActionToFile(action);
 		}
+		else
+		{
+			_DTXTruncateFile();
+		}
 		
-		_DTXWriteOutroFile();
+		_DTXWriteOutroToFile();
 	}
 	
-	if(rv == YES && [delegate respondsToSelector:@selector(interactionRecorderDidReplaceUpdateTestCommandWithCommand:)])
+	if(rv == YES && [delegate respondsToSelector:@selector(interactionRecorderDidUpdateLastTestCommandWithCommand:)])
 	{
-		[delegate interactionRecorderDidReplaceUpdateTestCommandWithCommand:remove ? nil : action.detoxDescription];
+		[delegate interactionRecorderDidUpdateLastTestCommandWithCommand:remove ? nil : action.detoxDescription];
 	}
 	
 	return rv;
@@ -168,6 +186,13 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	
 	[currentFile seekToOffset:intro.length error:NULL];
 	previousFileOffset = currentFileOffset = intro.length;
+	
+#if DEBUG
+	if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXGenerateArtwork"])
+	{
+		[captureControlWindow generateScreenshotsForDocumentation];
+	}
+#endif
 }
 
 + (void)_exitIfNeeded
@@ -495,8 +520,6 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	DTXRecordedAction* action = [DTXRecordedAction tapActionWithView:view event:event tapGestureRecognizer:tgr isFromRN:fromRN];
 	if(action != nil)
 	{
-		[self _enhanceLastScrollEventIfNeededForElement:action.element];
-		
 		DTXAddAction(action);
 //		NSLog(@"📣 Tapped control: %@", control.class);
 		
@@ -546,8 +569,6 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	DTXRecordedAction* action = [DTXRecordedAction longPressActionWithView:view duration:duration event:event];
 	if(action != nil)
 	{
-		[self _enhanceLastScrollEventIfNeededForElement:action.element];
-		
 		DTXAddAction(action);
 		
 		[self _visualizeLongPressAtView:view withAction:action];
@@ -559,7 +580,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 	return [self addLongPressWithView:tgr.view duration:duration withEvent:event];
 }
 
-+ (void)_enhanceLastScrollEventIfNeededForElement:(DTXRecordedElement*)element
++ (void)_enhanceLastScrollEventIfNeededForAction:(DTXRecordedAction*)targetAction
 {
 	DTXUpdateAction(^BOOL(DTXRecordedAction *action, BOOL* remove) {
 		if(action.allowsUpdates == NO ||
@@ -568,7 +589,12 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 			return NO;
 		}
 		
-		return [action enhanceScrollActionWithTargetElement:element];
+		if(NSUserDefaults.standardUserDefaults.dtxrec_convertScrollEventsToWaitfor == NO)
+		{
+			return NO;
+		}
+		
+		return [action enhanceScrollActionWithTargetElement:targetAction.element];
 	});
 }
 
@@ -590,7 +616,7 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 			//The coalescing operation resulted in zero change, so remove the entire scroll action.
 			*remove = YES;
 			
-			return NO;
+			return YES;
 		}
 		
 		return YES;

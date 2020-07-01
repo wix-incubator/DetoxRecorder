@@ -15,7 +15,8 @@
 {
 	@autoreleasepool {
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_attemptXYRecording": @NO}];
-		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @NO}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @YES}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_convertScrollEventsToWaitfor": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_rnLongPressDelay": @0.5}];
 	}
 }
@@ -38,6 +39,16 @@
 - (void)dtxrec_setCoalesceScrollEvents:(BOOL)dtxrec_coalesceScrollEvents
 {
 	[self setBool:dtxrec_coalesceScrollEvents forKey:@"dtxrec_coalesceScrollEvents"];
+}
+
+- (BOOL)dtxrec_convertScrollEventsToWaitfor
+{
+	return [self boolForKey:@"dtxrec_convertScrollEventsToWaitfor"];
+}
+
+- (void)dtxrec_setConvertScrollEventsToWaitfor:(BOOL)dtxrec_convertScrollEventsToWaitfor
+{
+	[self setBool:dtxrec_convertScrollEventsToWaitfor forKey:@"dtxrec_convertScrollEventsToWaitfor"];
 }
 
 - (BOOL)dtxrec_disableVisualizations

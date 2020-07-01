@@ -17,9 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 - (BOOL)interactionRecorderShouldExitApp;
-- (void)interactionRecorderDidAddTestCommand:(NSString*)command;
-- (void)interactionRecorderDidReplaceUpdateTestCommandWithCommand:(nullable NSString*)command;
 - (void)interactionRecorderDidEndRecordingWithTestCommands:(NSArray<NSString*>*)testCommands;
+
+/* Live updates for test commands */
+
+- (void)interactionRecorderDidAddTestCommand:(NSString*)command;
+- (void)interactionRecorderDidUpdateLastTestCommandWithCommand:(nullable NSString*)command;
 
 @end
 

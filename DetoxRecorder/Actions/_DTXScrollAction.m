@@ -83,7 +83,7 @@ static BOOL DTXUpdateScrollAction(_DTXScrollAction* action, UIScrollView* scroll
 {
 	ASSERT_ALLOWS_UPDATES
 	
-	if([targetElement elementSuperviewChainContainsElement:self.element] == NO)
+	if([targetElement isEqualToElement:self.element] == YES || [targetElement elementSuperviewChainContainsElement:self.element] == NO)
 	{
 		return NO;
 	}
