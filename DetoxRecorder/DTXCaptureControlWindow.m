@@ -615,7 +615,7 @@ static __weak UIAlertAction* __okAction;
 	
 	[self settings:_settings];
 	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		CGRect safeBounds = UIEdgeInsetsInsetRect(self.bounds, self.safeAreaInsets);
 		CGRect drawBounds = CGRectOffset(self.bounds, 0, -self.safeAreaInsets.top);
 		

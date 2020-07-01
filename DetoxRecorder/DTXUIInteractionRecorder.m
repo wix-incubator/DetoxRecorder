@@ -323,7 +323,18 @@ static void _traverseElementMatchersAndFill(DTXRecordedElement* element, BOOL* a
 		color = UIColor.systemRedColor;
 	}
 	
-	CGRect frame = [view.window convertRect:view.bounds fromView:view];
+	CGRect safeBounds;
+	
+	if([view isKindOfClass:UIScrollView.class])
+	{
+		safeBounds = UIEdgeInsetsInsetRect(view.bounds, view.safeAreaInsets);
+	}
+	else
+	{
+		safeBounds = view.bounds;
+	}
+	
+	CGRect frame = [view.window convertRect:safeBounds fromView:view];
 	
 	visualizer.userInteractionEnabled = NO;
 	visualizer.alpha = 1.0;
