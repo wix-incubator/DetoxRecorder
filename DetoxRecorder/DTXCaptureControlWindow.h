@@ -14,10 +14,15 @@
 @property (nonatomic, assign, getter=isToggled) BOOL toggled;
 
 @end
+
 @interface DTXCaptureControlWindow : UIWindow
 
 - (void)visualizeTakeScreenshotWithName:(NSString*)name;
 - (void)visualizeShakeDevice;
 - (void)visualizeAddComment:(NSString*)comment;
+
+#if DEBUG
+- (void)generateScreenshotsForDocumentation;
+#endif
 
 @end

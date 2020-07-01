@@ -176,7 +176,7 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 		
 		_settingFooters = @[
 			@"When enabled, consecutive scroll actions will be coalesced into a single action.",
-			@"When enabled, actions performed on elements immediately after scroll within elements contained in the scroll view will enhance the scroll action to waitfor for better accuracy.",
+			@"When enabled, actions performed on elements, immediately after scrolling the containing scroll view, will enhance the scroll action to waitfor for better accuracy.",
 			@"The delay before a touch is categorized as a long press action in React Native.",
 			@"When enabled, there will be no visualization for recorded actions.",
 			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled."

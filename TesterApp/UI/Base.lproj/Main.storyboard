@@ -522,7 +522,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qH-z0-7Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3284.057971014493" y="450.66964285714283"/>
+            <point key="canvasLocation" x="3272" y="451"/>
         </scene>
         <!--Text Input-->
         <scene sceneID="oe5-e7-U8i">
@@ -607,6 +607,8 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
                         <segue destination="VEm-Sh-wlc" kind="relationship" relationship="viewControllers" id="sr4-Dn-lVY"/>
                         <segue destination="vi0-wW-vvX" kind="relationship" relationship="viewControllers" id="DoZ-eh-oLB"/>
                         <segue destination="AWS-KQ-wc2" kind="relationship" relationship="viewControllers" id="QEe-Z9-9y4"/>
+                        <segue destination="qFz-2F-WmN" kind="relationship" relationship="viewControllers" id="K2e-8P-rZY"/>
+                        <segue destination="6K5-MN-uTG" kind="relationship" relationship="viewControllers" id="o2v-na-rEb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxe-5S-g4W" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -670,8 +672,108 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
             </objects>
             <point key="canvasLocation" x="2373.913043478261" y="450.66964285714283"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="fll-Me-OJg">
+            <objects>
+                <viewController id="mqT-18-9Is" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V5M-mw-Qjo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="czR-Rh-PWq">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </mapView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="inF-mS-bfG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="czR-Rh-PWq" secondAttribute="bottom" id="SRZ-V2-6f5"/>
+                            <constraint firstItem="czR-Rh-PWq" firstAttribute="leading" secondItem="V5M-mw-Qjo" secondAttribute="leading" id="T99-s4-jT4"/>
+                            <constraint firstAttribute="trailing" secondItem="czR-Rh-PWq" secondAttribute="trailing" id="W8g-N2-Jpg"/>
+                            <constraint firstItem="czR-Rh-PWq" firstAttribute="top" secondItem="V5M-mw-Qjo" secondAttribute="top" id="rOs-Gj-jIt"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="XVh-3Z-cuC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rmt-Uo-RpT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3272" y="1128"/>
+        </scene>
+        <!--Web-->
+        <scene sceneID="8Kp-RL-cLi">
+            <objects>
+                <navigationController id="6K5-MN-uTG" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Web" image="globe" catalog="system" id="L1S-0k-Kor"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ypc-Rt-wBH">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="94a-CP-sal" kind="relationship" relationship="rootViewController" id="5Uc-o0-fne"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JWw-zK-Lhl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2374" y="1786"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="LF4-RB-F3O">
+            <objects>
+                <viewController id="94a-CP-sal" customClass="WebViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ndc-jD-Jni">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXF-bx-Ecw">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="pJf-Yw-ZQ8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="qXF-bx-Ecw" secondAttribute="trailing" id="H23-Tc-fzj"/>
+                            <constraint firstItem="qXF-bx-Ecw" firstAttribute="leading" secondItem="ndc-jD-Jni" secondAttribute="leading" id="dQi-lv-7uF"/>
+                            <constraint firstItem="qXF-bx-Ecw" firstAttribute="top" secondItem="ndc-jD-Jni" secondAttribute="top" id="pk8-xN-asb"/>
+                            <constraint firstAttribute="bottom" secondItem="qXF-bx-Ecw" secondAttribute="bottom" id="wGV-fr-Afo"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="X6z-gh-0L2"/>
+                    <connections>
+                        <outlet property="_webView" destination="qXF-bx-Ecw" id="C3V-iV-Xm4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="du5-30-uFX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3271.0144927536235" y="1785.9375"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="T0F-MT-qO0">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qFz-2F-WmN" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="vKR-nr-hWB"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XOg-dZ-ebZ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mqT-18-9Is" kind="relationship" relationship="rootViewController" id="gRx-A6-Dxg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vkx-Xw-PBN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2362" y="1128"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="globe" catalog="system" width="128" height="121"/>
+        <image name="map" catalog="system" width="128" height="110"/>
         <image name="rectangle.expand.vertical" catalog="system" width="128" height="122"/>
         <image name="rectangle.grid.3x2" catalog="system" width="128" height="101"/>
         <image name="text.cursor" catalog="system" width="128" height="121"/>

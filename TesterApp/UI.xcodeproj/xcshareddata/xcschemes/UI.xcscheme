@@ -56,14 +56,25 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-DTXRecTestName &quot;Plz davai&quot;"
+            argument = "-DTXRecTestName &quot;My recorded test&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-DTXRecTestOutputPath &quot;/Users/lnatan/Desktop/test.js&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-DTXGenerateArtwork 1"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CG_CONTEXT_SHOW_BACKTRACE"
+            value = "1"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

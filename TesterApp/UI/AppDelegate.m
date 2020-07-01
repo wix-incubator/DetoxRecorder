@@ -17,15 +17,15 @@
 
 - (BOOL)interactionRecorderShouldExitApp
 {
-	return NO;
+	return YES;
 }
 
-- (void)interactionRecorderDidEndRecordingWithTestCommands:(NSArray<NSString *> *)testCommands
-{
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		[DTXUIInteractionRecorder beginRecording];
-	});
-}
+//- (void)interactionRecorderDidEndRecordingWithTestCommands:(NSArray<NSString *> *)testCommands
+//{
+//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//		[DTXUIInteractionRecorder beginRecording];
+//	});
+//}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.

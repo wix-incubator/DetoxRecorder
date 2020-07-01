@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39454C4B24AB927600761A51 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39454C4A24AB927600761A51 /* WebViewController.m */; };
 		398E234E225B882D004AC2D1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 398E234D225B882D004AC2D1 /* AppDelegate.m */; };
 		398E2351225B882D004AC2D1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 398E2350225B882D004AC2D1 /* ViewController.m */; };
 		398E2354225B882D004AC2D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 398E2352225B882D004AC2D1 /* Main.storyboard */; };
@@ -58,6 +59,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		39454C4924AB927600761A51 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		39454C4A24AB927600761A51 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		398E2349225B882D004AC2D1 /* UI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		398E234C225B882D004AC2D1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		398E234D225B882D004AC2D1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 				398E2367225B9310004AC2D1 /* Tab1ViewController.m */,
 				398E2369225B9320004AC2D1 /* Tab2ViewController.h */,
 				398E236A225B9320004AC2D1 /* Tab2ViewController.m */,
+				39454C4924AB927600761A51 /* WebViewController.h */,
+				39454C4A24AB927600761A51 /* WebViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				398E2368225B9310004AC2D1 /* Tab1ViewController.m in Sources */,
+				39454C4B24AB927600761A51 /* WebViewController.m in Sources */,
 				398E2351225B882D004AC2D1 /* ViewController.m in Sources */,
 				398E235C225B882F004AC2D1 /* main.m in Sources */,
 				398E234E225B882D004AC2D1 /* AppDelegate.m in Sources */,

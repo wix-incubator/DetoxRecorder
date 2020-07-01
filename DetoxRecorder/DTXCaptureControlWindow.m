@@ -173,6 +173,11 @@ const CGFloat buttonWidth = 44;
 	NSLayoutConstraint* _topConstraint;
 	
 	__weak UIWindow* _prevKeyWindow;
+	
+#if DEBUG
+	BOOL _introAnimationFinished;
+	BOOL _needsArtworkGeneration;
+#endif
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -288,9 +293,17 @@ const CGFloat buttonWidth = 44;
 		_stopRecording.backgroundColor = UIColor.systemRedColor;
 		[self traitCollectionDidChange:nil];
 		
-		[UIView animateWithDuration:0.75 delay:0.0 usingSpringWithDamping:500 initialSpringVelocity:0.0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
+		[UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:500 initialSpringVelocity:0.0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
 			self.alpha = 1.0;
-		} completion:nil];
+		} completion:^(BOOL finished) {
+#if DEBUG
+			_introAnimationFinished = YES;
+			if(_needsArtworkGeneration)
+			{
+				[self _generateArtwork];
+			}
+#endif
+		}];
 	}
 	
 	return self;
@@ -608,5 +621,60 @@ static __weak UIAlertAction* __okAction;
 		return UIModalPresentationFormSheet;
 	}
 }
+
+#if DEBUG
+- (void)_generateArtwork
+{
+	self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+	
+	NSURL* url= [[[NSURL fileURLWithPath:[[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey:@"DTXSourceRoot"]] URLByAppendingPathComponent:@"../Documentation/Resources"] URLByStandardizingPath];
+	
+	UIGraphicsBeginImageContextWithOptions(_wrapperView.bounds.size, NO, 2.0);
+	[_wrapperView drawViewHierarchyInRect:_wrapperView.bounds afterScreenUpdates:YES];
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	[UIImagePNGRepresentation(image) writeToURL:[url URLByAppendingPathComponent:@"RecordingBar.png"] atomically:YES];
+	
+	const CGFloat pointSize = 6;
+	
+	[UIImagePNGRepresentation([[_takeScreenshot imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"ScreenshotButton.png"] atomically:YES];
+	[UIImagePNGRepresentation([[_addComment imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"AddCommentButton.png"] atomically:YES];
+	[UIImagePNGRepresentation([[_xyRecord imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"TapTypeButton.png"] atomically:YES];
+	[UIImagePNGRepresentation([[_settings imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"SettingsButton.png"] atomically:YES];
+	[UIImagePNGRepresentation([[_stopRecording imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"StopButton.png"] atomically:YES];
+	
+	[self settings:_settings];
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		CGRect safeBounds = UIEdgeInsetsInsetRect(self.bounds, self.safeAreaInsets);
+		CGRect drawBounds = CGRectOffset(self.bounds, 0, -self.safeAreaInsets.top);
+		
+		UIGraphicsBeginImageContextWithOptions(safeBounds.size, NO, 1.0);
+		[self drawViewHierarchyInRect:drawBounds afterScreenUpdates:YES];
+		UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		
+		[UIImagePNGRepresentation(image) writeToURL:[url URLByAppendingPathComponent:@"RecordingSettings.png"] atomically:YES];
+		
+		[self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+		
+		self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
+	});
+}
+
+- (void)generateScreenshotsForDocumentation
+{
+	if(_introAnimationFinished == YES)
+	{
+		[self _generateArtwork];
+		_needsArtworkGeneration = NO;
+		
+		return;
+	}
+	
+	_needsArtworkGeneration = YES;
+}
+#endif
 
 @end
