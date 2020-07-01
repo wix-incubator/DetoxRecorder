@@ -15,11 +15,12 @@ LNUsageSetIntroStrings([
 	"",
 	"After recording the test, add assertions that check if interface elements are in the expected state.",
 	"",
-	"If no app or simulator information is provided, the package.json will be used for obtaining the appropriate information."])
+	"If no app or simulator information is provided, the Detox configuration will be used for obtaining the appropriate information."])
 
 LNUsageSetExampleStrings([
+	"detox recorder --bundleId \"com.example.myApp\" --simulatorId booted --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
 	"detox recorder --bundleId \"com.example.myApp\" --simulatorId \"69D91B05-64F4-497B-A2FC-9A109B310F38\" --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
-	"detox recorder --configuration \"ios.sim.release\" --record"
+	"detox recorder --configuration \"ios.sim.release\" --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record"
 ])
 
 LNUsageSetOptions([
@@ -31,14 +32,20 @@ LNUsageSetOptions([
 	LNUsageOption.empty(),
 	LNUsageOption(name: "bundleId", shortcut: "b", valueRequirement: .required, description: "The app bundle identifier of an existing app to record (optional)"),
 	LNUsageOption.empty(),
-	LNUsageOption(name: "simulatorId", shortcut: "s", valueRequirement: .required, description: "The simulator identifier to use for recording (optional)"),
+	LNUsageOption(name: "simulatorId", shortcut: "s", valueRequirement: .required, description: "The simulator identifier to use for recording or \"booted\" to use the currently booted simulator (optional)"),
 ])
 
-LNUsageSetHiddenOptions([
+var hiddenOptions = [
 	LNUsageOption(name: "noExit", shortcut: "no", valueRequirement: .none, description: "Do not exit the app after completing the test recording"),
 	LNUsageOption(name: "noInsertLibraries", shortcut: "no2", valueRequirement: .none, description: "Do not use DYLD_INSERT_LIBRARIES for injecting the Detox Recorder framework; the app is responsible for loading the framework"),
 	LNUsageOption(name: "recorderFrameworkPath", shortcut: "fpath", valueRequirement: .required, description: "The Detox Recorder path to use, rather than the default"),
-])
+]
+
+#if DEBUG
+hiddenOptions.append(LNUsageOption(name: "generateArtwork", valueRequirement: .none, description: "Generates artwork for documentation"))
+#endif
+
+LNUsageSetHiddenOptions(hiddenOptions)
 
 extension String: LocalizedError {
     public var errorDescription: String? { return self }
@@ -93,7 +100,35 @@ extension Process {
 
 class DetoxRecorderCLI
 {
+/*
+	.detoxrc.js
+	.detoxrc.json
+	.detoxrc
+	detox.config.js
+	detox.config.json
+	
+	*/
 	static let detoxPackageJson : [String: Any] = {
+		let detoxConfigFiles = [".detoxrc.js", ".detoxrc.json", ".detoxrc", "detox.config.js", "detox.config.json"]
+		
+		for configFileName in detoxConfigFiles {
+			let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(configFileName)
+			
+			do {
+				let data = try Data(contentsOf: url)
+				let jsonObj = try JSONSerialization.jsonObject(with: data, options: [])
+				
+				guard let dict = jsonObj as? [String: Any] else {
+					throw "Unknown file format"
+				}
+				
+				return dict
+			}
+			catch {
+				continue
+			}
+		}
+		
 		let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("package.json")
 		do {
 			let data = try Data(contentsOf: url)
@@ -201,9 +236,13 @@ func prepareappBundleId(bundleId: String?, config: String?, simulatorId: String)
 	}
 }
 
-func ensureSimulatorBooted(_ simulatorId: String) {
+func ensureSimulatorBooted(_ simulatorId: String) -> String {
 	let process = applesimutilsProcess()
-	process.arguments = ["--list", "--byId", simulatorId]
+	if simulatorId.lowercased() != "booted" {
+		process.arguments = ["--list", "--byId", simulatorId]
+	} else {
+		process.arguments = ["--list", "--booted"]
+	}
 	let jsonString = try? process.launchAndWaitUntilExitAndReturnOutput()
 	let object : [[String: Any]]
 	do {
@@ -217,7 +256,11 @@ func ensureSimulatorBooted(_ simulatorId: String) {
 	}
 	
 	guard let device = object.first else {
-		LNUsagePrintMessageAndExit(prependMessage: "No simulator found with identifier “\(simulatorId)”", logLevel: .error)
+		if simulatorId.lowercased() != "booted" {
+			LNUsagePrintMessageAndExit(prependMessage: "No simulator found with identifier “\(simulatorId)”", logLevel: .error)
+		} else {
+			LNUsagePrintMessageAndExit(prependMessage: "No booted simulator found", logLevel: .error)
+		}
 	}
 		
 	if device["state"]! as! String != "Booted" {
@@ -230,12 +273,13 @@ func ensureSimulatorBooted(_ simulatorId: String) {
 			LNUsagePrintMessageAndExit(prependMessage: "Failed launching device with identifier “\(simulatorId)”: \(error.localizedDescription)", logLevel: .error)
 		}
 	}
+	
+	return device["udid"] as! String
 }
 
 func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 	if let simulatorId = simulatorId {
-		ensureSimulatorBooted(simulatorId)
-		return simulatorId
+		return ensureSimulatorBooted(simulatorId)
 	}
 	
 	guard let deviceJson = DetoxRecorderCLI.detoxConfig(config!)["device"] as? [String: String] else {
@@ -263,8 +307,7 @@ func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 		LNUsagePrintMessageAndExit(prependMessage: "Unabled to parse simulator data returned from applesimutils", logLevel: .error)
 	}
 	
-	ensureSimulatorBooted(foundSimId)
-	return foundSimId
+	return ensureSimulatorBooted(foundSimId)
 }
 
 func executableContainsMagicSymbol(_ url: URL) -> Bool {
@@ -337,6 +380,12 @@ if let testName = parser.object(forKey: "testName") as? String {
 if parser.bool(forKey: "noExit") {
 	args.append(contentsOf: ["-DTXRecNoExit", "1"])
 }
+
+#if DEBUG
+if parser.bool(forKey: "generateArtwork") {
+	args.append(contentsOf: ["-DTXGenerateArtwork", "1"])
+}
+#endif
 
 let terminateProcess = xcrunSimctlProcess()
 terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
