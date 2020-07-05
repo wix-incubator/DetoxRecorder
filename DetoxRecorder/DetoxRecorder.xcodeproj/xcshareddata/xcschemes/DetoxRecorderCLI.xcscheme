@@ -54,6 +54,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--help2"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--version"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

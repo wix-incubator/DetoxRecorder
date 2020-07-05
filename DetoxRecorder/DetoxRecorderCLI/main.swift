@@ -3,7 +3,7 @@
 //  DetoxRecorderCLI
 //
 //  Created by Leo Natan (Wix) on 5/27/20.
-//  Copyright © 2020 Wix. All rights reserved.
+//  Copyright © 2019-2020 Wix. All rights reserved.
 //
 
 import Foundation
@@ -33,6 +33,7 @@ LNUsageSetOptions([
 	LNUsageOption(name: "bundleId", shortcut: "b", valueRequirement: .required, description: "The app bundle identifier of an existing app to record (optional)"),
 	LNUsageOption.empty(),
 	LNUsageOption(name: "simulatorId", shortcut: "s", valueRequirement: .required, description: "The simulator identifier to use for recording or \"booted\" to use the currently booted simulator (optional)"),
+	LNUsageOption(name: "version", shortcut: "v", valueRequirement: .none, description: "Prints version")
 ])
 
 var hiddenOptions = [
@@ -328,6 +329,10 @@ func executableContainsMagicSymbol(_ url: URL) -> Bool {
 }
 
 let parser = LNUsageParseArguments()
+
+guard parser.bool(forKey: "version") == false else {
+	LNUsagePrintMessageAndExit(prependMessage: "detox-recorder version \(__version)", logLevel: .stdOut)
+}
 
 guard parser.object(forKey: "record") != nil else {
 	LNUsagePrintMessageAndExit(prependMessage: nil, logLevel: .stdOut)

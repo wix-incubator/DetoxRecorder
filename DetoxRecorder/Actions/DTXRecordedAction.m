@@ -3,7 +3,7 @@
 //  DetoxRecorder
 //
 //  Created by Leo Natan (Wix) on 4/22/19.
-//  Copyright © 2019 Wix. All rights reserved.
+//  Copyright © 2019-2020 Wix. All rights reserved.
 //
 
 #import "DTXRecordedAction.h"

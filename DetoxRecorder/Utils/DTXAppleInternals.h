@@ -3,7 +3,7 @@
 //  DetoxRecorder
 //
 //  Created by Leo Natan (Wix) on 5/6/20.
-//  Copyright © 2020 Wix. All rights reserved.
+//  Copyright © 2019-2020 Wix. All rights reserved.
 //
 
 @interface UIScrollView ()
