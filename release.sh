@@ -35,7 +35,7 @@ fi
 
 ${SCRIPTPATH}/Scripts/updateCopyright.sh
 
-rm -fr "${SCRIPTPATH}/Build"
+# rm -fr "${SCRIPTPATH}/Build"
 rm -fr "${SCRIPTPATH}/Distribution/DetoxRecorder.framework"
 rm -f "${SCRIPTPATH}/Distribution/DetoxRecorderCLI"
 
@@ -74,6 +74,6 @@ RELEASENOTESCONTENTS=$(printf '%s' "$(<"${RELEASE_NOTES_FILE}")" | php -r 'echo 
 echo -e "\033[1;34mCreating GitHub release\033[0m"
 
 API_JSON=$(printf '{"tag_name": "%s","target_commitish": "master", "name": "v%s", "body": %s, "draft": false, "prerelease": false}' "$VERSION" "$VERSION" "$RELEASENOTESCONTENTS")
-curl -H 'Authorization: token ${GITHUB_RELEASES_TOKEN}' -s --data "$API_JSON" https://api.github.com/repos/wix/DetoxRecorder/releases
+curl -H "Authorization: token ${GITHUB_RELEASES_TOKEN}" -s --data "$API_JSON" https://api.github.com/repos/wix/DetoxRecorder/releases
 
 rm -f "${RELEASE_NOTES_FILE}"
