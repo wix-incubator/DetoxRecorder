@@ -35,8 +35,6 @@ fi
 
 ${SCRIPTPATH}/Scripts/updateCopyright.sh
 
-echo -e "\033[1;34mCleaning\033[0m"
-
 rm -fr "${SCRIPTPATH}/Build"
 rm -fr "${SCRIPTPATH}/Distribution/DetoxRecorder.framework"
 rm -f "${SCRIPTPATH}/Distribution/DetoxRecorderCLI"
@@ -62,4 +60,8 @@ VERSION="${SHORT_VERSION}"."${BUILD_NUMBER}"
 
 cd "${SCRIPTPATH}/Distribution"
 npm version "${VERSION}" --allow-same-version
+
+echo -e "\033[1;34mReleasing\033[0m"
 npm publish
+
+rm -f "${RELEASE_NOTES_FILE}"
