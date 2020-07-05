@@ -68,9 +68,20 @@ When interacting with elements in your app, Detox Recorded will visualize each i
 **Note:** Detox Recorder makes this estimation according to internal heuristics it runs when observing the interacted UI element. This estimation may not be 100% accurate. Always inspect the resulting test file to ensure element matching is correct.
 
 <span style="color:green">**Green**</span> visualizations signify unique elements with a very small chance of mistaken matching in the future.
+
+![](Documentation/Resources/Green.gif)
+
 <span style="color:#fcba03">**Yellow**</span> visualizations signify elements that are unique enough at the time of recording, but have some chance of being incorrectly matched as you update your app's UI elements.
+
+![](Documentation/Resources/Yellow.gif)
+
 <span style="color:orange">**Orange**</span> visualizations signify elements that are unique enough at the time of recording, but have higher chance of being incorrectly matched as you update your app's UI elements.
+
+![](Documentation/Resources/Orange.gif)
+
 <span style="color:red">**Red**</span> visualizations signify elements that are not unique, and have high risk of being incorrectly matched in the future.
+
+![](Documentation/Resources/Red.gif)
 
 It is recommended to strive for <span style="color:green">**green**</span> elements as much as possible by adding unique identifiers to your elements. As much as possible, try to avoid having <span style="color:red">**red**</span> elements in your recordings.
 
