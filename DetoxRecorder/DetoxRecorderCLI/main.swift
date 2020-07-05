@@ -329,20 +329,24 @@ func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 }
 
 func executableContainsMagicSymbol(_ url: URL) -> Bool {
-	let process = nmProcess()
-	process.arguments = ["-U", url.standardized.path]
+	return false
 	
-	let anotherProcess = otoolProcess()
-	anotherProcess.arguments = ["-L", url.standardized.path]
+	//TODO: Test why these may not work correctly with long results.
 	
-	do {
-		let symbols = try process.launchAndWaitUntilExitAndReturnOutput()
-		let linkedFrameworks = try anotherProcess.launchAndWaitUntilExitAndReturnOutput()
-		
-		return symbols.contains("DTXUIInteractionRecorder") || linkedFrameworks.contains("DetoxRecorder")
-	} catch {
-		return false
-	}
+//	let process = nmProcess()
+//	process.arguments = ["-U", url.standardized.path]
+//
+//	let anotherProcess = otoolProcess()
+//	anotherProcess.arguments = ["-L", url.standardized.path]
+//
+//	do {
+//		let symbols = try process.launchAndWaitUntilExitAndReturnOutput()
+//		let linkedFrameworks = try anotherProcess.launchAndWaitUntilExitAndReturnOutput()
+//
+//		return symbols.contains("DTXUIInteractionRecorder") || linkedFrameworks.contains("DetoxRecorder")
+//	} catch {
+//		return false
+//	}
 }
 
 log.debug("Parsing arguments")
