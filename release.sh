@@ -8,16 +8,16 @@ if [ ! "$BRANCH" = "master" ]; then
 	exit -1
 fi
 
-if  [[ -n $(git status --porcelain) ]]; then
-  printf >&2 "\033[1;31mCannot release version because there are unstaged changes, aborting\nChanges:\033[0m\n"
-  git status --short
-  exit -1
-fi
-
-if [[ -n $(git log --branches --not --remotes) ]]; then
-  echo -e "\033[1;34mPushing pending commits to git\033[0m"
-  git push
-fi
+# if  [[ -n $(git status --porcelain) ]]; then
+#   printf >&2 "\033[1;31mCannot release version because there are unstaged changes, aborting\nChanges:\033[0m\n"
+#   git status --short
+#   exit -1
+# fi
+#
+# if [[ -n $(git log --branches --not --remotes) ]]; then
+#   echo -e "\033[1;34mPushing pending commits to git\033[0m"
+#   git push
+# fi
 
 echo -e "\033[1;34mCreating release notes\033[0m"
 
@@ -61,7 +61,19 @@ VERSION="${SHORT_VERSION}"."${BUILD_NUMBER}"
 cd "${SCRIPTPATH}/Distribution"
 npm version "${VERSION}" --allow-same-version
 
-echo -e "\033[1;34mReleasing\033[0m"
-npm publish
+# echo -e "\033[1;34mReleasing\033[0m"
+# npm publish
+
+git add -A &> /dev/null
+git commit -m "${VERSION}" &> /dev/null
+git push
+
+#Escape user input in markdown to valid JSON string using PHP 🤦‍♂️ (https://stackoverflow.com/a/13466143/983912)
+RELEASENOTESCONTENTS=$(printf '%s' "$(<"${RELEASE_NOTES_FILE}")" | php -r 'echo json_encode(file_get_contents("php://stdin"));')
+
+echo -e "\033[1;34mCreating GitHub release\033[0m"
+
+API_JSON=$(printf '{"tag_name": "%s","target_commitish": "master", "name": "v%s", "body": %s, "draft": false, "prerelease": false}' "$VERSION" "$VERSION" "$RELEASENOTESCONTENTS")
+curl -H 'Authorization: token ${GITHUB_RELEASES_TOKEN}' -s --data "$API_JSON" https://api.github.com/repos/wix/DetoxRecorder/releases
 
 rm -f "${RELEASE_NOTES_FILE}"
