@@ -58,15 +58,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--version"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--simulatorId booted"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--configuration &quot;ios.sim.release&quot;"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--simulatorId &quot;69D91B05-64F4-497B-A2FC-9A109B310F38&quot;"
@@ -82,7 +82,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--bundleId &quot;com.apple.mobilesafari&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--record"

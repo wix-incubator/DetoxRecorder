@@ -1,6 +1,6 @@
 {
   "name": "detox-recorder",
-  "version": "1.0.115",
+  "version": "1.0.116",
   "description": "Detox Recorder is a utility for recordings steps for a Detox test as you use your app in Simulator. After recording the test, add expectations that check if interface elements are in the expected state.",
   "main": "index.js",
   "scripts": {
