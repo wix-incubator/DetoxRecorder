@@ -116,7 +116,7 @@ class DetoxRecorderCLI
 	static let detoxPackageJson : [String: Any] = {
 		let detoxConfigFiles = [".detoxrc.js", ".detoxrc.json", ".detoxrc", "detox.config.js", "detox.config.json"]
 		
-		log.debug("Attempting to discover Detox config files")
+		log.debug("Attempting to discover Detox config file")
 		
 		for configFileName in detoxConfigFiles {
 			let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(configFileName)
@@ -129,7 +129,7 @@ class DetoxRecorderCLI
 					throw "Unknown file format"
 				}
 				
-				log.debug("Using file “\(configFileName)”")
+				log.debug("Using “\(configFileName)” config file")
 				
 				return dict
 			}
@@ -150,6 +150,8 @@ class DetoxRecorderCLI
 			guard let detox = dict["detox"] as? [String: Any] else {
 				throw "Unable to find “detox” object in package.json."
 			}
+			
+			log.debug("Using package.json as config file")
 			
 			return detox
 		} catch {
