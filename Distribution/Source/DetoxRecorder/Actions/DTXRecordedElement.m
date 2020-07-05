@@ -268,7 +268,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		
 		rv.matchers = @[matcher];
 		
-		if(byIdIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		if(byIdIdx != NSNotFound && ancestorElement == nil)
 		{
 			rv.requiresAtIndex = YES;
 			rv.atIndex = byIdIdx;
@@ -282,7 +282,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		
 		rv.matchers = @[matcher];
 		
-		if(byTextIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		if(byTextIdx != NSNotFound && ancestorElement == nil)
 		{
 			rv.requiresAtIndex = YES;
 			rv.atIndex = byTextIdx;
@@ -296,7 +296,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 		
 		rv.matchers = @[matcher];
 		
-		if(byLabelIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		if(byLabelIdx != NSNotFound && ancestorElement == nil)
 		{
 			rv.requiresAtIndex = YES;
 			rv.atIndex = byLabelIdx;
@@ -327,7 +327,7 @@ static NSMutableArray<NSMutableString*>* DTXGetSuperviewChain(UIView* view)
 			[matchers addObject:matcher];
 		}
 		
-		if(byTypeIdx != NSNotFound && ancestorElement != nil && ancestorElement.requiresAtIndex == YES)
+		if(byTypeIdx != NSNotFound && ancestorElement == nil)
 		{
 			rv.requiresAtIndex = YES;
 			rv.atIndex = byTypeIdx;

@@ -123,7 +123,7 @@ const CGFloat buttonWidth = 44;
 		_wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
 		_wrapperView.clipsToBounds = YES;
 		
-		_wrapperView.layer.cornerRadius = buttonWidth * 0.6111111111;
+		_wrapperView.layer.cornerRadius = (buttonWidth + 8) / 2;
 		
 		[self.rootViewController.view addSubview:_wrapperView];
 		
@@ -131,8 +131,10 @@ const CGFloat buttonWidth = 44;
 		_topConstraint.priority = UILayoutPriorityRequired;
 		[self _updateTopConstraint];
 		
+		UIImageSymbolConfiguration* buttonConfiguration = [UIImageSymbolConfiguration configurationWithPointSize:17];
+		
 		_takeScreenshot = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		[_takeScreenshot setImage:[UIImage systemImageNamed:@"camera.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		[_takeScreenshot setImage:[UIImage systemImageNamed:@"camera.fill" withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
 		[_takeScreenshot addTarget:self action:@selector(takeScreenshot:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(takeScreenshotLongPress:)];
@@ -146,7 +148,7 @@ const CGFloat buttonWidth = 44;
 			gear = @"gearshape.fill";
 		}
 		
-		[_settings setImage:[UIImage systemImageNamed:gear withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		[_settings setImage:[UIImage systemImageNamed:gear withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
 		[_settings addTarget:self action:@selector(settings:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		_xyRecord = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
@@ -160,8 +162,8 @@ const CGFloat buttonWidth = 44;
 			normalTap = @"hand.tap.fill";
 		}
 		
-		[_xyRecord setImage:[UIImage systemImageNamed:preciseTap withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateSelected];
-		[_xyRecord setImage:[UIImage systemImageNamed:normalTap withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		[_xyRecord setImage:[UIImage systemImageNamed:preciseTap withConfiguration:buttonConfiguration] forState:UIControlStateSelected];
+		[_xyRecord setImage:[UIImage systemImageNamed:normalTap withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
 		if_unavailable(iOS 14.0, *)
 		{
 			[_xyRecord setImageTransform:CGAffineTransformMakeRotation(-M_PI_2) forState:UIControlStateNormal];
@@ -169,7 +171,7 @@ const CGFloat buttonWidth = 44;
 		[_xyRecord addTarget:self action:@selector(toggleXYRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		_addComment = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		[_addComment setImage:[UIImage systemImageNamed:@"plus.bubble.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		[_addComment setImage:[UIImage systemImageNamed:@"plus.bubble.fill" withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
 		[_addComment addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
 		_stopRecording = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
@@ -200,7 +202,7 @@ const CGFloat buttonWidth = 44;
 			
 			_topConstraint,
 			[_wrapperView.centerXAnchor constraintEqualToAnchor:self.rootViewController.view.centerXAnchor],
-			[_wrapperView.heightAnchor constraintEqualToConstant:buttonWidth * 1.2222222222],
+			[_wrapperView.heightAnchor constraintEqualToConstant:buttonWidth + 8],
 			
 			_leadingConstraint,
 			_trailingConstraint,
@@ -600,7 +602,7 @@ static __weak UIAlertAction* __okAction;
 	
 	NSURL* url= [[[NSURL fileURLWithPath:[[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey:@"DTXSourceRoot"]] URLByAppendingPathComponent:@"../Documentation/Resources"] URLByStandardizingPath];
 	
-	UIGraphicsBeginImageContextWithOptions(_wrapperView.bounds.size, NO, 2.0);
+	UIGraphicsBeginImageContextWithOptions(_wrapperView.bounds.size, NO, 1.5);
 	_wrapperView.backgroundColor = [UIColor.blackColor colorWithAlphaComponent:0.25];
 	UIVisualEffect* effect = _backgroundView.effect;
 	_backgroundView.effect = nil;
