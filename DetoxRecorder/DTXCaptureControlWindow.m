@@ -33,7 +33,7 @@ const CGFloat buttonWidth = 44;
 	
 	UIVisualEffectView* _chevronEffectView;
 	UIButton* _chevronButton;
-	_DTXCaptureControlButton* _openButton;
+	UIButton* _openButton;
 	
 	UIStackView* _actionButtonsStackView;
 	UIScrollView* _actionButtonsScrollView;
@@ -93,14 +93,16 @@ const CGFloat buttonWidth = 44;
 		_chevronButton.translatesAutoresizingMaskIntoConstraints = NO;
 		[_chevronButton addTarget:self action:@selector(_minimizeBar:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
-		_openButton = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-		[_openButton setImage:[UIImage systemImageNamed:@"ellipsis" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:17]] forState:UIControlStateNormal];
+		_openButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_openButton setImage:[UIImage systemImageNamed:@"chevron.compact.left" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:40]] forState:UIControlStateNormal];
+		_openButton.transform = CGAffineTransformMakeScale(1.0, 0.7);
+		_openButton.translatesAutoresizingMaskIntoConstraints = NO;
 		[_openButton addTarget:self action:@selector(_expandBar:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		_openButton.alpha = 0.0;
 		
 		[_chevronEffectView.contentView addSubview:_chevronButton];
+		[_chevronEffectView.contentView addSubview:_openButton];
 		[_backgroundView.contentView addSubview:_chevronEffectView];
-		[_backgroundView.contentView addSubview:_openButton];
 		
 		[NSLayoutConstraint activateConstraints:@[
 			[_chevronEffectView.topAnchor constraintEqualToAnchor:_chevronButton.topAnchor],
@@ -108,11 +110,13 @@ const CGFloat buttonWidth = 44;
 			[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_chevronButton.leadingAnchor],
 			[_chevronEffectView.trailingAnchor constraintEqualToAnchor:_chevronButton.trailingAnchor],
 			
+			[_chevronEffectView.topAnchor constraintEqualToAnchor:_openButton.topAnchor],
+			[_chevronEffectView.bottomAnchor constraintEqualToAnchor:_openButton.bottomAnchor],
+			[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_openButton.leadingAnchor],
+			[_chevronEffectView.trailingAnchor constraintEqualToAnchor:_openButton.trailingAnchor],
+			
 			[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_backgroundView.leadingAnchor constant:12],
 			[_chevronEffectView.centerYAnchor constraintEqualToAnchor:_backgroundView.centerYAnchor],
-			
-			[_backgroundView.centerYAnchor constraintEqualToAnchor:_openButton.centerYAnchor],
-			[_openButton.leadingAnchor constraintEqualToAnchor:_backgroundView.leadingAnchor constant:4.0],
 		]];
 		
 		_wrapperView = [UIView new];
@@ -172,7 +176,7 @@ const CGFloat buttonWidth = 44;
 		[_stopRecording setImage:[UIImage systemImageNamed:@"stop.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:20]] forState:UIControlStateNormal];
 		[_stopRecording addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
 		
-		_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _addComment, _xyRecord, _settings, _stopRecording]];
+		_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _addComment, _xyRecord, _settings]];
 		_actionButtonsStackView.translatesAutoresizingMaskIntoConstraints = NO;
 		_actionButtonsStackView.axis = UILayoutConstraintAxisHorizontal;
 		_actionButtonsStackView.distribution = UIStackViewDistributionEqualSpacing;
@@ -180,12 +184,13 @@ const CGFloat buttonWidth = 44;
 		
 		[_wrapperView addSubview:_backgroundView];
 		[_wrapperView addSubview:_actionButtonsStackView];
+		[_wrapperView addSubview:_stopRecording];
 		
-		_widthConstraint = [_wrapperView.widthAnchor constraintEqualToConstant:buttonWidth + 8];
+		_widthConstraint = [_wrapperView.widthAnchor constraintEqualToConstant:buttonWidth + 40];
 		_widthConstraint.active = NO;
 		
 		_leadingConstraint = [_actionButtonsStackView.leadingAnchor constraintEqualToAnchor:_wrapperView.leadingAnchor constant:40.0];
-		_trailingConstraint = [_wrapperView.trailingAnchor constraintEqualToAnchor:_actionButtonsStackView.trailingAnchor constant:4.0];
+		_trailingConstraint = [_stopRecording.leadingAnchor constraintEqualToAnchor:_actionButtonsStackView.trailingAnchor constant:8.0];
 		
 		[NSLayoutConstraint activateConstraints:@[
 			[_wrapperView.topAnchor constraintEqualToAnchor:_backgroundView.topAnchor],
@@ -199,8 +204,10 @@ const CGFloat buttonWidth = 44;
 			
 			_leadingConstraint,
 			_trailingConstraint,
+			[_wrapperView.trailingAnchor constraintEqualToAnchor:_stopRecording.trailingAnchor constant:4],
 			
 			[_actionButtonsStackView.centerYAnchor constraintEqualToAnchor:_wrapperView.centerYAnchor],
+			[_stopRecording.centerYAnchor constraintEqualToAnchor:_wrapperView.centerYAnchor],
 		]];
 		
 		self.alpha = 0.0;
@@ -542,7 +549,7 @@ static __weak UIAlertAction* __okAction;
 		[_wrapperView layoutIfNeeded];
 		
 		_actionButtonsStackView.alpha = 0.0;
-		_chevronEffectView.alpha = 0.0;
+		_chevronButton.alpha = 0.0;
 		_openButton.alpha = 1.0;
 	} completion:^(BOOL finished) {
 		NSUserDefaults.standardUserDefaults.dtxrec_recordingBarMinimized = YES;
@@ -560,7 +567,7 @@ static __weak UIAlertAction* __okAction;
 		[_wrapperView layoutIfNeeded];
 		
 		_actionButtonsStackView.alpha = 1.0;
-		_chevronEffectView.alpha = 1.0;
+		_chevronButton.alpha = 1.0;
 		_openButton.alpha = 0.0;
 	} completion:^(BOOL finished) {
 		NSUserDefaults.standardUserDefaults.dtxrec_recordingBarMinimized = NO;
