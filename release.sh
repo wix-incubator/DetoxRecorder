@@ -8,16 +8,16 @@ if [ ! "$BRANCH" = "master" ]; then
 	exit -1
 fi
 
-# if  [[ -n $(git status --porcelain) ]]; then
-#   printf >&2 "\033[1;31mCannot release version because there are unstaged changes, aborting\nChanges:\033[0m\n"
-#   git status --short
-#   exit -1
-# fi
-#
-# if [[ -n $(git log --branches --not --remotes) ]]; then
-#   echo -e "\033[1;34mPushing pending commits to git\033[0m"
-#   git push
-# fi
+if  [[ -n $(git status --porcelain) ]]; then
+  printf >&2 "\033[1;31mCannot release version because there are unstaged changes, aborting\nChanges:\033[0m\n"
+  git status --short
+  exit -1
+fi
+
+if [[ -n $(git log --branches --not --remotes) ]]; then
+  echo -e "\033[1;34mPushing pending commits to git\033[0m"
+  git push
+fi
 
 echo -e "\033[1;34mCreating release notes\033[0m"
 
@@ -48,6 +48,10 @@ echo -e "\033[1;34mBuilding Detox Recorder CLI\033[0m"
 
 xcodebuild -project "${SCRIPTPATH}/DetoxRecorder/DetoxRecorder.xcodeproj" build -configuration Release -scheme DetoxRecorderCLI -sdk macosx -derivedDataPath "${SCRIPTPATH}/Build" -quiet
 cp "${SCRIPTPATH}/Build/Build/Products/Release/DetoxRecorderCLI" "${SCRIPTPATH}/Distribution"
+
+echo -e "\033[1;34mCopying sources\033[0m"
+mkdir -p "${SCRIPTPATH}/Distribution/Source"
+cp -R "${SCRIPTPATH}/DetoxRecorder" "${SCRIPTPATH}/Distribution/Source"
 
 echo -e "\033[1;34mCopying script\033[0m"
 cp "${SCRIPTPATH}/record.sh" "${SCRIPTPATH}/Distribution"
