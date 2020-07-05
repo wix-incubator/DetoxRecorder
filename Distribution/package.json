@@ -4,7 +4,7 @@
   "description": "Detox Recorder is a utility for recordings steps for a Detox test as you use your app in Simulator. After recording the test, add expectations that check if interface elements are in the expected state.",
   "main": "index.js",
   "scripts": {
-    "postinstall": "codesign -fs - DetoxRecorderCLI"
+    "postinstall": "./postinstall.sh"
   },
   "author": "Leo Natan (lnatan@wix.com)",
   "license": "MIT",
