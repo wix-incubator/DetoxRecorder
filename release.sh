@@ -66,7 +66,7 @@ cd "${SCRIPTPATH}/Distribution"
 npm version "${VERSION}" --allow-same-version
 
 # echo -e "\033[1;34mReleasing\033[0m"
-# npm publish
+npm publish
 
 git add -A &> /dev/null
 git commit -m "${VERSION}" &> /dev/null
