@@ -84,7 +84,7 @@ extension Process {
 		standardOutput = out
 		standardError = err
 		
-		log.debug("Launching \(executableURL!.path) with arguments: \(arguments ?? [])")
+		log.debug("Launching \(executableURL!.path) with arguments: \(arguments ?? []) environment: \(environment ?? [:])")
 		
 		launch()
 		
