@@ -21,7 +21,7 @@ fi
 
 echo -e "\033[1;34mCreating release notes\033[0m"
 
-RELEASE_NOTES_FILE="${SCRIPTPATH}Distribution/_tmp_release_notes.md"
+RELEASE_NOTES_FILE="${SCRIPTPATH}/Distribution/_tmp_release_notes.md"
 
 # rm -f "${RELEASE_NOTES_FILE}"
 touch "${RELEASE_NOTES_FILE}"
@@ -62,3 +62,4 @@ VERSION="${SHORT_VERSION}"."${BUILD_NUMBER}"
 
 cd "${SCRIPTPATH}/Distribution"
 npm version "${VERSION}" --allow-same-version
+npm publish
