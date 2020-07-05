@@ -53,6 +53,14 @@ detox recorder --configuration "ios.sim.release" --outputTestFile "~/Desktop/Rec
 
 You app will launch and start recording your actions to the specified test file.
 
+For an in-depth look at the command line arguments, run the following command for full documentation:
+
+```shell
+detox recorder --help
+```
+
+
+
 When interacting with elements in your app, Detox Recorded will visualize each interaction with a short animation to signal the interaction type. This visualization will be colored depending on how accurately and uniquely Detox Recorder estimates the matching of the UI element is.
 
 **Note:** Detox Recorder makes this estimation according to internal heuristics it runs when observing the interacted UI element. This estimation may not be 100% accurate. Always inspect the resulting test file to ensure element matching is correct.
