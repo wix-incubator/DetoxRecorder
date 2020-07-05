@@ -123,7 +123,7 @@ const CGFloat buttonWidth = 44;
 		_wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
 		_wrapperView.clipsToBounds = YES;
 		
-		_wrapperView.layer.cornerRadius = buttonWidth * 0.6111111111;
+		_wrapperView.layer.cornerRadius = (buttonWidth + 8) / 2;
 		
 		[self.rootViewController.view addSubview:_wrapperView];
 		
@@ -202,7 +202,7 @@ const CGFloat buttonWidth = 44;
 			
 			_topConstraint,
 			[_wrapperView.centerXAnchor constraintEqualToAnchor:self.rootViewController.view.centerXAnchor],
-			[_wrapperView.heightAnchor constraintEqualToConstant:buttonWidth * 1.2222222222],
+			[_wrapperView.heightAnchor constraintEqualToConstant:buttonWidth + 8],
 			
 			_leadingConstraint,
 			_trailingConstraint,
