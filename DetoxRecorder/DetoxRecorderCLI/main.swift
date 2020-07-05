@@ -172,7 +172,12 @@ class DetoxRecorderCLI
 	}
 }
 
+var whichCache: [String: URL] = [:]
 func whichURLFor(binaryName: String) throws -> URL {
+	if let url = whichCache[binaryName] {
+		return url
+	}
+	
 	let whichProcess = Process()
 	whichProcess.executableURL = URL(fileURLWithPath: "/usr/bin/which")
 	whichProcess.arguments = [binaryName]
@@ -182,7 +187,9 @@ func whichURLFor(binaryName: String) throws -> URL {
 		throw "\(binaryName) not found"
 	}
 	
-	return URL(fileURLWithPath: response)
+	let url = URL(fileURLWithPath: response)
+	whichCache[binaryName] = url
+	return url
 }
 
 func xcrunSimctlProcess() -> Process {
