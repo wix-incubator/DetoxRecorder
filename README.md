@@ -39,16 +39,18 @@ Detox Recorder can work with any app installed on your simulator, or use the inf
 
 Detox Recorder is operated from the command-line, using the `detox recorder` command in your app's folder. It can record interactions in any app installed on your simulator (including Apple's stock apps), or use the information in your Detox configuration file to install and launch your app.
 
-To start a recording of an already installed app, run the following command:
+**Note:** Detox Recorder produces Detox 17.0+ compatible test files.
 
-```bash
-detox recorder --bundleId "com.example.myApp" --simulatorId booted --outputTestFile "~/Desktop/RecordedTest.js" --testName "My Recorded Test" --record
-```
-
-Or, alternatively, to use your Detox configuration to determine which app to record and on which simulator, run the following command:
+To use your Detox configuration to determine which app to record and on which simulator, run the following command:
 
 ```bash
 detox recorder --configuration "ios.sim.release" --outputTestFile "~/Desktop/RecordedTest.js" --testName "My Recorded Test" --record
+```
+
+Or, alternatively, to start a recording of an already installed app, run the following command:
+
+```bash
+detox recorder --bundleId "com.example.myApp" --simulatorId booted --outputTestFile "~/Desktop/RecordedTest.js" --testName "My Recorded Test" --record
 ```
 
 You app will launch and start recording your actions to the specified test file.
@@ -59,7 +61,7 @@ For an in-depth look at the command line arguments, run the following command fo
 detox recorder --help
 ```
 
-
+### Interaction Recording
 
 When interacting with elements in your app, Detox Recorded will visualize each interaction with a short animation to signal the interaction type. This visualization will be colored depending on how accurately and uniquely Detox Recorder estimates the matching of the UI element is.
 
