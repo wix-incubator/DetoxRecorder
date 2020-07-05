@@ -8,6 +8,8 @@
 
 import Foundation
 
+let log = DetoxLog(subsystem: "DetoxRecorder", category: "CLI")
+
 LNUsageSetUtilName("detox recorder")
 
 LNUsageSetIntroStrings([
@@ -82,6 +84,8 @@ extension Process {
 		standardOutput = out
 		standardError = err
 		
+		log.debug("Launching \(executableURL!.path) with arguments: \(arguments ?? [])")
+		
 		launch()
 		
 		let errFileHandle = err.fileHandleForReading
@@ -112,6 +116,8 @@ class DetoxRecorderCLI
 	static let detoxPackageJson : [String: Any] = {
 		let detoxConfigFiles = [".detoxrc.js", ".detoxrc.json", ".detoxrc", "detox.config.js", "detox.config.json"]
 		
+		log.debug("Attempting to discover Detox config files")
+		
 		for configFileName in detoxConfigFiles {
 			let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(configFileName)
 			
@@ -122,6 +128,8 @@ class DetoxRecorderCLI
 				guard let dict = jsonObj as? [String: Any] else {
 					throw "Unknown file format"
 				}
+				
+				log.debug("Using file “\(configFileName)”")
 				
 				return dict
 			}
@@ -328,6 +336,7 @@ func executableContainsMagicSymbol(_ url: URL) -> Bool {
 	}
 }
 
+log.debug("Parsing arguments")
 let parser = LNUsageParseArguments()
 
 guard parser.bool(forKey: "version") == false else {
@@ -372,6 +381,8 @@ do {
 	}
 	
 	shouldInsert = executableContainsMagicSymbol(executableURL) == false
+	
+	log.debug("App binary requires framework injection: \(String(describing: shouldInsert))")
 } catch {
 	shouldInsert = true
 }

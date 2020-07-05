@@ -48,6 +48,7 @@
 		39AE54932490FAE10093BFEE /* UISlider+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */; };
 		39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */; };
 		39AE549E249247370093BFEE /* DTXRecSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */; };
+		39B85D5124B27B4B00EF17BB /* DTXLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B85D5024B27B4B00EF17BB /* DTXLogging.swift */; };
 		39BA9FB224A112D500681E72 /* ShakeCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BA9FB024A112D500681E72 /* ShakeCapture.m */; };
 		39BA9FB524A11A2400681E72 /* _DTXShakeDeviceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39BA9FB324A11A2400681E72 /* _DTXShakeDeviceAction.h */; };
 		39BA9FB624A11A2400681E72 /* _DTXShakeDeviceAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BA9FB424A11A2400681E72 /* _DTXShakeDeviceAction.m */; };
@@ -153,6 +154,7 @@
 		39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetoxRecorder.pch; sourceTree = "<group>"; };
 		39B85D2F24B1F70A00EF17BB /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		39B85D3024B1F85B00EF17BB /* Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Bridging-Header.h"; sourceTree = "<group>"; };
+		39B85D5024B27B4B00EF17BB /* DTXLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DTXLogging.swift; path = DTXLoggingInfra/DTXLogging.swift; sourceTree = SOURCE_ROOT; };
 		39BA9FB024A112D500681E72 /* ShakeCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShakeCapture.m; sourceTree = "<group>"; };
 		39BA9FB324A11A2400681E72 /* _DTXShakeDeviceAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXShakeDeviceAction.h; sourceTree = "<group>"; };
 		39BA9FB424A11A2400681E72 /* _DTXShakeDeviceAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXShakeDeviceAction.m; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 			children = (
 				397CA71A247EB4D8005E8A71 /* CLIInfra */,
 				397CA715247EB41B005E8A71 /* main.swift */,
+				39B85D5024B27B4B00EF17BB /* DTXLogging.swift */,
 				39B85D3024B1F85B00EF17BB /* Swift-Bridging-Header.h */,
 				39B85D2F24B1F70A00EF17BB /* version.h */,
 			);
@@ -514,6 +517,7 @@
 			files = (
 				397CA767247EE076005E8A71 /* GBCommandLineParser.m in Sources */,
 				397CA768247EE076005E8A71 /* GBOptionsHelper.m in Sources */,
+				39B85D5124B27B4B00EF17BB /* DTXLogging.swift in Sources */,
 				397CA766247EE076005E8A71 /* GBPrint.m in Sources */,
 				397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */,
 				397CA765247EE076005E8A71 /* GBSettings.m in Sources */,

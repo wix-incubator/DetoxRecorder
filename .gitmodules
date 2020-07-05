@@ -4,3 +4,6 @@
 [submodule "DetoxRecorder/DetoxRecorderCLI/ObjCCLIInfra"]
 	path = DetoxRecorder/DetoxRecorderCLI/ObjCCLIInfra
 	url = https://github.com/wix/ObjCCLIInfra.git
+[submodule "DetoxRecorder/DTXLoggingInfra"]
+	path = DetoxRecorder/DTXLoggingInfra
+	url = https://github.com/wix/DTXLoggingInfra.git
