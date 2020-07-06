@@ -34,6 +34,9 @@
 		39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */; };
 		39454C2424AA3CBF00761A51 /* _DTXCodeCommentAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39454C2224AA3CBF00761A51 /* _DTXCodeCommentAction.h */; };
 		39454C2524AA3CBF00761A51 /* _DTXCodeCommentAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39454C2324AA3CBF00761A51 /* _DTXCodeCommentAction.m */; };
+		395AD7C824B385D4002B382B /* DTXLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 395AD7C624B385D4002B382B /* DTXLogging.m */; };
+		395AD7C924B385D4002B382B /* DTXLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 395AD7C724B385D4002B382B /* DTXLogging.h */; };
+		395AD7CC24B38D04002B382B /* DTXLoggingSubsystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 395AD7CA24B385E7002B382B /* DTXLoggingSubsystem.h */; };
 		397CA716247EB41B005E8A71 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA715247EB41B005E8A71 /* main.swift */; };
 		397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */; };
 		397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA757247EE05D005E8A71 /* LNOptionsParser.m */; };
@@ -129,6 +132,9 @@
 		39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTXSwizzlingHelper.h; path = ObjCHelpers/DTXSwizzlingHelper.h; sourceTree = "<group>"; };
 		39454C2224AA3CBF00761A51 /* _DTXCodeCommentAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXCodeCommentAction.h; sourceTree = "<group>"; };
 		39454C2324AA3CBF00761A51 /* _DTXCodeCommentAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXCodeCommentAction.m; sourceTree = "<group>"; };
+		395AD7C624B385D4002B382B /* DTXLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTXLogging.m; path = DTXLoggingInfra/DTXLogging.m; sourceTree = SOURCE_ROOT; };
+		395AD7C724B385D4002B382B /* DTXLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTXLogging.h; path = DTXLoggingInfra/DTXLogging.h; sourceTree = SOURCE_ROOT; };
+		395AD7CA24B385E7002B382B /* DTXLoggingSubsystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXLoggingSubsystem.h; sourceTree = "<group>"; };
 		397CA713247EB41B005E8A71 /* DetoxRecorderCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DetoxRecorderCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CA715247EB41B005E8A71 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LNOptionsParser.swift; path = ObjCCLIInfra/LNOptionsParser.swift; sourceTree = "<group>"; };
@@ -257,6 +263,9 @@
 			isa = PBXGroup;
 			children = (
 				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
+				395AD7C724B385D4002B382B /* DTXLogging.h */,
+				395AD7C624B385D4002B382B /* DTXLogging.m */,
+				395AD7CA24B385E7002B382B /* DTXLoggingSubsystem.h */,
 				39454C1B24A91BB100761A51 /* DTXSwizzlingHelper.h */,
 				39C013982473CD0900784C84 /* NSArray+Utils.h */,
 				39C013972473CD0900784C84 /* NSArray+Utils.m */,
@@ -373,12 +382,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */,
+				395AD7C924B385D4002B382B /* DTXLogging.h in Headers */,
 				39454C2424AA3CBF00761A51 /* _DTXCodeCommentAction.h in Headers */,
 				39AE54922490FAE10093BFEE /* UISlider+RecorderUtils.h in Headers */,
 				39C013932473CC8000784C84 /* UIView+RecorderUtils.h in Headers */,
 				39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */,
 				39C013792473CC8000784C84 /* DTXAppleInternals.h in Headers */,
 				39454C1C24A91BB100761A51 /* DTXSwizzlingHelper.h in Headers */,
+				395AD7CC24B38D04002B382B /* DTXLoggingSubsystem.h in Headers */,
 				39AE549D249247370093BFEE /* DTXRecSettingsViewController.h in Headers */,
 				390FF63A2497CB3A0022BF11 /* UITableView+SelectionCapture.h in Headers */,
 				390FF63E249820190022BF11 /* NSObject+AttachedObjects.h in Headers */,
@@ -561,6 +572,7 @@
 				39F5AD0A2461A29200FB7F18 /* DTXCaptureControlWindow.m in Sources */,
 				39F5AD0C2461A29600FB7F18 /* UIControl+TapCapture.m in Sources */,
 				39F5AD132461A2AF00FB7F18 /* _DTXScrollAction.m in Sources */,
+				395AD7C824B385D4002B382B /* DTXLogging.m in Sources */,
 				39F5AD102461A2AF00FB7F18 /* DTXRecordedElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

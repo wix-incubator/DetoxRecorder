@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, class, weak) id<DTXUIInteractionRecorderDelegate> delegate;
 
-+ (void)beginRecording;
++ (void)startRecording;
 + (void)endRecording;
 
 + (void)addTapWithView:(UIView*)view withEvent:(nullable UIEvent*)event;
@@ -60,6 +60,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addTakeScreenshotWithName:(nullable NSString*)screenshotName;
 
 + (void)addCodeComment:(NSString*)comment;
+
+@end
+
+@interface DTXUIInteractionRecorder (Deprecated)
+
++ (void)beginRecording __attribute__((deprecated));
 
 @end
 

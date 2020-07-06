@@ -12,6 +12,8 @@
 #import "DTXAppleInternals.h"
 #import "NSUserDefaults+RecorderUtils.h"
 
+DTX_CREATE_LOG(InteractionController)
+
 #define IGNORE_RECORDING_WINDOW(view) if(view.window == captureControlWindow) { return; }
 
 @interface _DTXVisualizedView : UIView
@@ -59,6 +61,8 @@ static void _DTXWriteOutroToFile()
 DTX_ALWAYS_INLINE
 static void DTXAddAction(DTXRecordedAction* action)
 {
+	dtx_log_debug(@"Adding recorded action: %@", action.detoxDescription);
+	
 	[DTXUIInteractionRecorder _enhanceLastScrollEventIfNeededForAction:action];
 	
 	[recordedActions addObject:action];
@@ -87,6 +91,7 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	
 	if(remove)
 	{
+		dtx_log_debug(@"Removing last recorded action");
 		[recordedActions removeLastObject];
 	}
 	
@@ -97,6 +102,8 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 		currentFileOffset = previousFileOffset;
 		if(remove == NO)
 		{
+			dtx_log_debug(@"Updating last recorded action to: %@", action.detoxDescription);
+			
 			_DTXWriteActionToFile(action);
 		}
 		else
@@ -120,7 +127,7 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecStartRecording"] == YES)
 		{
-			[self _beginRecordingByUser:NO];
+			[self _startRecordingByUser:NO];
 		}
 	});
 }
@@ -135,9 +142,9 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	delegate = _delegate;
 }
 
-+ (void)beginRecording
++ (void)startRecording
 {
-	[self _beginRecordingByUser:YES];
+	[self _startRecordingByUser:YES];
 }
 
 + (void)_presentError:(NSError*)error completionHandler:(dispatch_block_t)handler
@@ -148,7 +155,7 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	}]];
 }
 
-+ (void)_beginRecordingByUser:(BOOL)byUser;
++ (void)_startRecordingByUser:(BOOL)byUser;
 {
 	if(captureControlWindow != nil)
 	{
@@ -167,9 +174,17 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	
 	if(testNamePath != nil)
 	{
+		dtx_log_debug(@"Starting recording to file: %@", testNamePath);
+		
 		[NSFileManager.defaultManager createFileAtPath:testNamePath contents:nil attributes:nil];
 		NSError* error = nil;
 		currentFile = [NSFileHandle fileHandleForWritingToURL:[NSURL fileURLWithPath:testNamePath] error:&error];
+		
+		if(error)
+		{
+			dtx_log_error(@"Error opening output file for writing: %@", error.localizedDescription);
+		}
+		
 		if(currentFile == nil)
 		{
 			[self _presentError:error completionHandler:^{
@@ -216,6 +231,11 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 		[self _presentError:error completionHandler:^{
 			[self _exitIfNeeded];
 		}];
+	}
+	
+	if(error)
+	{
+		dtx_log_error(@"Error closing output file: %@", error.localizedDescription);
 	}
 	
 	NSMutableArray<NSString*>* detoxCommands = nil;
@@ -858,6 +878,15 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 {
 	DTXAddAction([DTXRecordedAction codeCommentAction:comment]);
 	[captureControlWindow visualizeAddComment:comment];
+}
+
+@end
+
+@implementation DTXUIInteractionRecorder (Deprecated)
+
++ (void)beginRecording
+{
+	[self startRecording];
 }
 
 @end

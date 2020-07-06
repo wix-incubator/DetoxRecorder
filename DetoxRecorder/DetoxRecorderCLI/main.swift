@@ -371,7 +371,7 @@ guard parser.bool(forKey: "version") == false else {
 }
 
 guard parser.object(forKey: "record") != nil else {
-	LNUsagePrintMessageAndExit(prependMessage: nil, logLevel: .stdOut)
+	LNUsagePrintMessageAndExit(prependMessage: "No command specified.", logLevel: .error)
 }
 
 let bundleId = parser.object(forKey: "bundleId") as? String

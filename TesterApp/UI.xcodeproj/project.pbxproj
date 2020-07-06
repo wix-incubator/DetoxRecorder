@@ -61,6 +61,7 @@
 /* Begin PBXFileReference section */
 		39454C4924AB927600761A51 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		39454C4A24AB927600761A51 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		395AD7BE24B36B43002B382B /* UI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UI.entitlements; sourceTree = "<group>"; };
 		398E2349225B882D004AC2D1 /* UI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		398E234C225B882D004AC2D1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		398E234D225B882D004AC2D1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 		398E234B225B882D004AC2D1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				395AD7BE24B36B43002B382B /* UI.entitlements */,
 				398E234C225B882D004AC2D1 /* AppDelegate.h */,
 				398E234D225B882D004AC2D1 /* AppDelegate.m */,
 				398E2352225B882D004AC2D1 /* Main.storyboard */,
@@ -398,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = UI/UI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XPHGA2FMQQ;
 				INFOPLIST_FILE = UI/Info.plist;
@@ -408,6 +411,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.leonatan.UI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -416,6 +420,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = UI/UI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XPHGA2FMQQ;
 				INFOPLIST_FILE = UI/Info.plist;
@@ -426,6 +431,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.leonatan.UI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
