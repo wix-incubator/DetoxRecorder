@@ -119,12 +119,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="246" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="246" verticalCompressionResistancePriority="1000" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpN-zy-2fi">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="246" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="246" verticalCompressionResistancePriority="1000" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TpN-zy-2fi">
                                                     <rect key="frame" x="181" y="6" width="51" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="MySwitch"/>
                                                 </switch>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TpN-zy-2fi" firstAttribute="centerX" secondItem="vW4-wp-VE0" secondAttribute="centerX" id="A4o-67-R7q"/>
+                                                <constraint firstItem="TpN-zy-2fi" firstAttribute="centerY" secondItem="vW4-wp-VE0" secondAttribute="centerY" id="sg7-g0-9eG"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="216" id="00t-yG-TAX">

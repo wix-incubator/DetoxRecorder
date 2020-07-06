@@ -23,7 +23,7 @@
 
 const CGFloat buttonWidth = 44;
 
-@interface DTXCaptureControlWindow () <UIAdaptivePresentationControllerDelegate> @end
+@interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate> @end
 
 @implementation DTXCaptureControlWindow
 {
@@ -291,8 +291,13 @@ const CGFloat buttonWidth = 44;
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
+	if(self.rootViewController.presentedViewController != nil)
+	{
+		return [super hitTest:point withEvent:event];
+	}
+	
 	UIView* test = [super hitTest:point withEvent:event];
-	return test == self || test == self.rootViewController.view ? nil : test;
+	return (test == self || test == self.rootViewController.view) ? nil : test;
 }
 
 - (void)settings:(UIButton*)button
@@ -300,7 +305,9 @@ const CGFloat buttonWidth = 44;
 	auto settingsController = [[DTXRecSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	auto navigationController = [[UINavigationController alloc] initWithRootViewController:settingsController];
 	navigationController.navigationBar.prefersLargeTitles = NO;
-	navigationController.presentationController.delegate = self;
+	navigationController.modalPresentationStyle = UIModalPresentationPopover;
+	navigationController.popoverPresentationController.sourceView = button;
+	navigationController.popoverPresentationController.delegate = self;
 	
 	[self.rootViewController presentViewController:navigationController animated:YES completion:nil];
 }
@@ -581,17 +588,17 @@ static __weak UIAlertAction* __okAction;
 	[NSUserDefaults.standardUserDefaults removeObserver:self forKeyPath:NSStringFromSelector(@selector(dtxrec_attemptXYRecording))];
 }
 
-#pragma mark UIAdaptivePresentationControllerDelegate
+#pragma mark UIPopoverPresentationControllerDelegate
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
 	if(traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact)
 	{
-		return UIModalPresentationOverFullScreen;
+		return UIModalPresentationFullScreen;
 	}
 	else
 	{
-		return UIModalPresentationFormSheet;
+		return UIModalPresentationPopover;
 	}
 }
 

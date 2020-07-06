@@ -150,6 +150,8 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	NSArray<NSString*>* _settingHeaders;
 	NSArray<NSString*>* _settingFooters;
 	
+	UIBarButtonItem* _doneButton;
+	
 	DTXRecDurationFormatter* _dcf;
 }
 
@@ -161,7 +163,9 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	{
 		_dcf = [DTXRecDurationFormatter new];
 		
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(_done:)];
+		[self.tableView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
+		
+		_doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(_done:)];
 		self.navigationItem.title = @"Detox Recorder Settings";
 		
 		[self.tableView registerClass:_DTXRecSettingsCell.class forCellReuseIdentifier:@"SettingCell"];
@@ -323,6 +327,25 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	}
 	
 	return cell;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+	self.preferredContentSize = self.tableView.contentSize;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+	self.navigationItem.rightBarButtonItem = self.popoverPresentationController.presentingViewController.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? _doneButton : nil;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+	[super traitCollectionDidChange:previousTraitCollection];
+	
+	self.navigationItem.rightBarButtonItem = self.popoverPresentationController.presentingViewController.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? _doneButton : nil;
 }
 
 @end
