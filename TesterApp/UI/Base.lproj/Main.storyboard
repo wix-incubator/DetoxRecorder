@@ -622,7 +622,11 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
         <scene sceneID="psO-Fq-C78">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VEm-Sh-wlc" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Controls" image="rectangle.grid.3x2" catalog="system" id="Aao-EB-zrc"/>
+                    <tabBarItem key="tabBarItem" title="Controls" image="rectangle.grid.3x2" catalog="system" id="Aao-EB-zrc">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ControlsTabBarItem"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="c1O-Lt-FBD">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -641,7 +645,11 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
         <scene sceneID="zmL-TR-CTD">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vi0-wW-vvX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Text" image="text.cursor" catalog="system" id="aWM-oA-VZ0"/>
+                    <tabBarItem key="tabBarItem" title="Text" image="text.cursor" catalog="system" id="aWM-oA-VZ0">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TextTabBarItem"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Wt8-36-pNz">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -660,7 +668,11 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
         <scene sceneID="LOt-Bz-Moj">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AWS-KQ-wc2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Scroll" image="rectangle.expand.vertical" catalog="system" id="VIX-vs-0Oh"/>
+                    <tabBarItem key="tabBarItem" title="Scroll" image="rectangle.expand.vertical" catalog="system" id="VIX-vs-0Oh">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ScrollTabBarItem"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YdL-Nb-IwG">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -706,7 +718,11 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
         <scene sceneID="8Kp-RL-cLi">
             <objects>
                 <navigationController id="6K5-MN-uTG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Web" image="globe" catalog="system" id="L1S-0k-Kor"/>
+                    <tabBarItem key="tabBarItem" title="Web" image="globe" catalog="system" id="L1S-0k-Kor">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="WebTabBarItem"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ypc-Rt-wBH">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -758,7 +774,11 @@ Magnis dis parturient montes nascetur ridiculus. Quis vel eros donec ac. Nisl ve
         <scene sceneID="T0F-MT-qO0">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qFz-2F-WmN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="vKR-nr-hWB"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map" catalog="system" id="vKR-nr-hWB">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="MapTabBarItem"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XOg-dZ-ebZ">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
