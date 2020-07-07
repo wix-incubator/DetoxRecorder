@@ -37,6 +37,8 @@
 		395AD7C824B385D4002B382B /* DTXLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 395AD7C624B385D4002B382B /* DTXLogging.m */; };
 		395AD7C924B385D4002B382B /* DTXLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 395AD7C724B385D4002B382B /* DTXLogging.h */; };
 		395AD7CC24B38D04002B382B /* DTXLoggingSubsystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 395AD7CA24B385E7002B382B /* DTXLoggingSubsystem.h */; };
+		395AD7FD24B4A02C002B382B /* UIWindow+RecorderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 395AD7FB24B4A02C002B382B /* UIWindow+RecorderUtils.h */; };
+		395AD7FE24B4A02C002B382B /* UIWindow+RecorderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 395AD7FC24B4A02C002B382B /* UIWindow+RecorderUtils.m */; };
 		397CA716247EB41B005E8A71 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA715247EB41B005E8A71 /* main.swift */; };
 		397CA754247EBBCD005E8A71 /* LNOptionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */; };
 		397CA759247EE05D005E8A71 /* LNOptionsParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 397CA757247EE05D005E8A71 /* LNOptionsParser.m */; };
@@ -135,6 +137,8 @@
 		395AD7C624B385D4002B382B /* DTXLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DTXLogging.m; path = DTXLoggingInfra/DTXLogging.m; sourceTree = SOURCE_ROOT; };
 		395AD7C724B385D4002B382B /* DTXLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTXLogging.h; path = DTXLoggingInfra/DTXLogging.h; sourceTree = SOURCE_ROOT; };
 		395AD7CA24B385E7002B382B /* DTXLoggingSubsystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXLoggingSubsystem.h; sourceTree = "<group>"; };
+		395AD7FB24B4A02C002B382B /* UIWindow+RecorderUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+RecorderUtils.h"; sourceTree = "<group>"; };
+		395AD7FC24B4A02C002B382B /* UIWindow+RecorderUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+RecorderUtils.m"; sourceTree = "<group>"; };
 		397CA713247EB41B005E8A71 /* DetoxRecorderCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DetoxRecorderCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CA715247EB41B005E8A71 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		397CA753247EBBCD005E8A71 /* LNOptionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LNOptionsParser.swift; path = ObjCCLIInfra/LNOptionsParser.swift; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 				39AE54912490FAE10093BFEE /* UISlider+RecorderUtils.m */,
 				39C013772473CC8000784C84 /* UIView+RecorderUtils.h */,
 				39C013782473CC8000784C84 /* UIView+RecorderUtils.m */,
+				395AD7FB24B4A02C002B382B /* UIWindow+RecorderUtils.h */,
+				395AD7FC24B4A02C002B382B /* UIWindow+RecorderUtils.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -405,6 +411,7 @@
 				39BA9FB524A11A2400681E72 /* _DTXShakeDeviceAction.h in Headers */,
 				39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */,
 				39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */,
+				395AD7FD24B4A02C002B382B /* UIWindow+RecorderUtils.h in Headers */,
 				39AE548E2490FA3A0093BFEE /* _DTXAdjustSliderAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -564,6 +571,7 @@
 				39C0138F2473CC8000784C84 /* UIApplication+EnableAccessibility.m in Sources */,
 				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
 				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,
+				395AD7FE24B4A02C002B382B /* UIWindow+RecorderUtils.m in Sources */,
 				390FF63F249820190022BF11 /* NSObject+AttachedObjects.m in Sources */,
 				39454C2524AA3CBF00761A51 /* _DTXCodeCommentAction.m in Sources */,
 				39F5AD142461A2AF00FB7F18 /* _DTXReplaceTextAction.m in Sources */,

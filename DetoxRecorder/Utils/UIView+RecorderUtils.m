@@ -8,12 +8,6 @@
 
 #import "UIView+RecorderUtils.h"
 
-@interface UIWindowScene ()
-
-+ (instancetype)_keyWindowScene;
-
-@end
-
 @implementation UIView (RecorderUtils)
 
 + (void)_dtxrec_appendViewsRecursivelyFromArray:(NSArray<UIView*>*)views passingPredicate:(NSPredicate*)predicate storage:(NSMutableArray<UIView*>*)storage
@@ -29,10 +23,7 @@
 			[storage addObject:obj];
 		}
 		
-		if(obj.isAccessibilityElement == NO)
-		{
-			[self _dtxrec_appendViewsRecursivelyFromArray:obj.subviews passingPredicate:predicate storage:storage];
-		}
+		[self _dtxrec_appendViewsRecursivelyFromArray:obj.subviews passingPredicate:predicate storage:storage];
 	}];
 }
 
@@ -46,19 +37,19 @@
 	return rv;
 }
 
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInAllWindowsPassingPredicate:(NSPredicate*)predicate
+{
+	return [self dtxrec_findViewsInWindows:UIWindow.dtxrec_allWindows.reverseObjectEnumerator.allObjects passingPredicate:predicate];
+}
+
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate
 {
-	NSArray<UIWindow*>* windows;
-	if (@available(iOS 13.0, *))
-	{
-		windows = UIWindowScene._keyWindowScene.windows;
-	}
-	else
-	{
-		windows = UIApplication.sharedApplication.windows;
-	}
-	
-	return [self dtxrec_findViewsInWindows:windows passingPredicate:predicate];
+	return [self dtxrec_findViewsInWindows:UIWindow.dtxrec_allKeyWindowSceneWindows.reverseObjectEnumerator.allObjects passingPredicate:predicate];
+}
+
++ (NSMutableArray<UIView*>*)dtxrec_findViewsInWindowScene:(id /*UIWindowScene**/)scene passingPredicate:(NSPredicate*)predicate
+{
+	return [self dtxrec_findViewsInWindows:[UIWindow dtxrec_allWindowsForScene:scene].reverseObjectEnumerator.allObjects passingPredicate:predicate];
 }
 
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate
@@ -79,16 +70,26 @@
 + (void)_dtxrec_sortViewsByCoords:(NSMutableArray<UIView*>*)views
 {
 	[views sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:nil ascending:YES comparator:^NSComparisonResult(UIView* _Nonnull obj1, UIView* _Nonnull obj2) {
-		CGRect frame1 = obj1.accessibilityFrame;
-		CGRect frame2 = obj2.accessibilityFrame;
+		CGRect frame1 = obj1.dtxrec_accessibilityFrame;
+		CGRect frame2 = obj2.dtxrec_accessibilityFrame;
 		
 		return frame1.origin.y < frame2.origin.y ? NSOrderedAscending : frame1.origin.y > frame2.origin.y ? NSOrderedDescending : NSOrderedSame;
 	}], [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES comparator:^NSComparisonResult(UIView* _Nonnull obj1, UIView* _Nonnull obj2) {
-		CGRect frame1 = obj1.accessibilityFrame;
-		CGRect frame2 = obj2.accessibilityFrame;
+		CGRect frame1 = obj1.dtxrec_accessibilityFrame;
+		CGRect frame2 = obj2.dtxrec_accessibilityFrame;
 		
 		return frame1.origin.x < frame2.origin.x ? NSOrderedAscending : frame1.origin.x > frame2.origin.x ? NSOrderedDescending : NSOrderedSame;
 	}]]];
+}
+
+- (CGRect)dtxrec_accessibilityFrame
+{
+	CGRect accessibilityFrame = self.accessibilityFrame;
+	if(CGRectEqualToRect(accessibilityFrame, CGRectZero))
+	{
+		accessibilityFrame = [self.window.screen.coordinateSpace convertRect:self.bounds fromCoordinateSpace:self.coordinateSpace];
+	}
+	return accessibilityFrame;
 }
 
 - (id)text

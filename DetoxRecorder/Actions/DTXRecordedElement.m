@@ -90,11 +90,11 @@ static void _DTXDeepMacherDescription(NSArray<DTXRecordedElementMatcher*>* match
 
 @end
 
-static NSMutableString* _DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits)
+static NSString* _DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits)
 {
 	if(view.accessibilityIdentifier.length > 0)
 	{
-		return view.accessibilityIdentifier.mutableCopy;
+		return view.accessibilityIdentifier;
 	}
 	
 	if([NSStringFromClass(view.class) hasSuffix:@"BarButton"])
@@ -105,7 +105,7 @@ static NSMutableString* _DTXBestEffortAccessibilityIdentifierForView(UIView* vie
 	
 	if([view isKindOfClass:NSClassFromString(@"RCTCustomScrollView")])
 	{
-		return view.superview.accessibilityIdentifier.mutableCopy;
+		return view.superview.accessibilityIdentifier;
 	}
 	
 	UIView* currView = view;
@@ -114,7 +114,7 @@ static NSMutableString* _DTXBestEffortAccessibilityIdentifierForView(UIView* vie
 		currView = currView.superview;
 	}
 	
-	return currView.accessibilityIdentifier.mutableCopy;
+	return currView.accessibilityIdentifier;
 }
 
 #define IDX_IF_NEEDED if(found.count > 1) { *idx = [found indexOfObject:view]; } else { *idx = NSNotFound; }
@@ -124,15 +124,15 @@ static NSMutableString* _DTXBestEffortAccessibilityIdentifierForView(UIView* vie
 //
 //}
 
-static NSMutableString* DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits, NSInteger* idx, DTXRecordedElement* ancestorElement)
+static NSString* DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAccessibilityTraits allowedLookupTraits, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
-	NSMutableString* identifier = _DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits);
+	NSString* identifier = _DTXBestEffortAccessibilityIdentifierForView(view, allowedLookupTraits);
 	
 	if(identifier.length > 0)
 	{
 		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier];
 		
-		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:predicate];
+		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:predicate];
 		IDX_IF_NEEDED;
 	}
 	
@@ -156,7 +156,7 @@ static NSMutableString* DTXBestEffortTextForView(UIView* view, NSInteger* idx, D
 	
 	if(text.length > 0)
 	{
-		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"text == %@", text]];
+		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"text == %@", text]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -169,7 +169,7 @@ static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSI
 	
 	if(label.length > 0)
 	{
-		NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
+		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -190,7 +190,7 @@ static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* text
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]]];
 	}
 	
-	NSArray* found = [UIView dtxrec_findViewsInHierarchy:view.window passingPredicate:predicate];
+	NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:predicate];
 	IDX_IF_NEEDED;
 	
 	return rv;
