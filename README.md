@@ -25,6 +25,12 @@ Detox Recorder can work with any app installed on your simulator, or use the inf
 - Interactions with map views
 - Interactions with web views
 
+### Requirements
+
+- macOS 10.15.4 and above
+- Xcode 11.0 and above
+- [applesimutils](https://github.com/wix/AppleSimulatorUtils) 0.7.6 and above
+
 ### Installation
 
 1. If you haven't, [install Detox in your project](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md).
