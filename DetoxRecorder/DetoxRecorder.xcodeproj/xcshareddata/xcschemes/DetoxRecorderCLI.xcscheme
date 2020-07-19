@@ -66,11 +66,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--configuration &quot;ios.sim.release&quot;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--simulatorId &quot;69D91B05-64F4-497B-A2FC-9A109B310F38&quot;"
-            isEnabled = "NO">
+            argument = "--simulatorId &quot;1BE34C23-A428-4FC3-AC28-A53654A2386B&quot;"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--testName &quot;It should record&quot;"
@@ -82,14 +82,14 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--bundleId &quot;com.apple.mobilesafari&quot;"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--record"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--recorderFrameworkPath &quot;/Users/lnatan/Library/Developer/Xcode/DerivedData/UI-gojvfblahwsaaycelacmykvrnllm/Build/Products/Debug-iphonesimulator/DetoxRecorder.framework&quot;"
+            argument = "--recorderFrameworkPath &quot;/Users/lnatan/Desktop/Code/DetoxRecorder/Distribution/DetoxRecorder.framework&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

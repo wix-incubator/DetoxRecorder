@@ -7,3 +7,6 @@
 [submodule "DetoxRecorder/DTXLoggingInfra"]
 	path = DetoxRecorder/DTXLoggingInfra
 	url = https://github.com/wix/DTXLoggingInfra.git
+[submodule "DetoxRecorder/DTXSocketConnection"]
+	path = DetoxRecorder/DTXSocketConnection
+	url = https://github.com/wix/DTXSocketConnection.git

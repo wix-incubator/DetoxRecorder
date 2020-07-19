@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DTXSocketConnection
 
 let log = DetoxLog(subsystem: "DetoxRecorder", category: "CLI")
 
@@ -84,7 +85,7 @@ extension Process {
 		standardOutput = out
 		standardError = err
 		
-		log.debug("Launching \(executableURL!.path) with arguments: \(arguments ?? []) environment: \(environment ?? [:])")
+		log.info("Launching \(executableURL!.path) with arguments: \(arguments ?? []) environment: \(environment ?? [:])")
 		
 		var outData = Data()
 		out.fileHandleForReading.readabilityHandler = { fileHandle in
@@ -132,7 +133,7 @@ class DetoxRecorderCLI
 	static let detoxPackageJson : [String: Any] = {
 		let detoxConfigFiles = [".detoxrc.js", ".detoxrc.json", ".detoxrc", "detox.config.js", "detox.config.json"]
 		
-		log.debug("Attempting to discover Detox config file")
+		log.info("Attempting to discover Detox config file")
 		
 		for configFileName in detoxConfigFiles {
 			let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(configFileName)
@@ -145,7 +146,7 @@ class DetoxRecorderCLI
 					throw "Unknown file format"
 				}
 				
-				log.debug("Using “\(configFileName)” config file")
+				log.info("Using “\(configFileName)” config file")
 				
 				return dict
 			}
@@ -167,7 +168,7 @@ class DetoxRecorderCLI
 				throw "Unable to find “detox” object in package.json."
 			}
 			
-			log.debug("Using package.json as config file")
+			log.info("Using package.json as config file")
 			
 			return detox
 		} catch {
@@ -363,7 +364,7 @@ func executableContainsMagicSymbol(_ url: URL) -> Bool {
 	}
 }
 
-log.debug("Parsing arguments")
+log.info("Parsing arguments")
 let parser = LNUsageParseArguments()
 
 guard parser.bool(forKey: "version") == false else {
@@ -409,16 +410,13 @@ do {
 	
 	shouldInsert = executableContainsMagicSymbol(executableURL) == false
 	
-	log.debug("App binary requires framework injection: \(String(describing: shouldInsert))")
+	log.info("App binary requires framework injection: \(String(describing: shouldInsert))")
 } catch {
 	shouldInsert = true
 }
 
-var args = ["launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestOutputPath", outputTestFile]
-
-if let testName = parser.object(forKey: "testName") as? String {
-	args.append(contentsOf: ["-DTXRecTestName", testName])
-}
+let testName = parser.object(forKey: "testName") as? String ?? "My Recorded Test"
+var args = ["launch", simulatorId, appBundleId, "-DTXRecStartRecording", "1", "-DTXRecTestName", testName]
 
 if parser.bool(forKey: "noExit") {
 	args.append(contentsOf: ["-DTXRecNoExit", "1"])
@@ -434,6 +432,9 @@ let terminateProcess = xcrunSimctlProcess()
 terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
 
 _ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
+
+let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: outputTestFile), testName: testName)
+args.append(contentsOf: ["-DTXServiceName", recordingHandler.serviceName])
 
 let recordProcess = xcrunSimctlProcess()
 recordProcess.simctlArguments = args
@@ -454,3 +455,7 @@ do {
 } catch {
 	LNUsagePrintMessageAndExit(prependMessage: "Failed starting recording: \(error.localizedDescription).", logLevel: .error)
 }
+
+LNUsagePrintMessage(prependMessage: "Recording… (CTRL+C to stop)", logLevel: .stdOut)
+
+RunLoop.current.run(until: .distantFuture)
