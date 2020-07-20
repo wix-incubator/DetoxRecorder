@@ -199,7 +199,7 @@ func whichURLFor(binaryName: String) throws -> URL {
 	
 	let whichProcess = Process()
 	whichProcess.executableURL = URL(fileURLWithPath: shellPath)
-	whichProcess.arguments = ["-l", "-c", "\"which \(binaryName)\""]
+	whichProcess.arguments = ["-l", "-c", "which \(binaryName)"]
 	
 	let response = (try? whichProcess.launchAndWaitUntilExitAndReturnOutput()) ?? ""
 	if response.count == 0 {
