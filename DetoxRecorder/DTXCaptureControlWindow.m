@@ -545,8 +545,8 @@ static __weak UIAlertAction* __okAction;
 
 - (void)stopRecording:(UIButton*)button
 {
-	[UIView performSystemAnimation:UISystemAnimationDelete onViews:@[self] options:0 animations:nil completion:^(BOOL finished) {
-		[DTXUIInteractionRecorder endRecording];
+	[UIView performSystemAnimation:UISystemAnimationDelete onViews:@[_wrapperView] options:0 animations:nil completion:^(BOOL finished) {
+		[DTXUIInteractionRecorder stopRecording];
 	}];
 }
 

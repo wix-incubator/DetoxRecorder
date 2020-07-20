@@ -436,6 +436,11 @@ _ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
 let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: outputTestFile), testName: testName)
 args.append(contentsOf: ["-DTXServiceName", recordingHandler.serviceName])
 
+signal(SIGINT) { _ in
+	signal(SIGINT, nil)
+	recordingHandler.printFinishAndExit(true)
+}
+
 let recordProcess = xcrunSimctlProcess()
 recordProcess.simctlArguments = args
 if shouldInsert == false || parser.bool(forKey: "noInsertLibraries") == true {

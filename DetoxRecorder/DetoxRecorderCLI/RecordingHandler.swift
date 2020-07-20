@@ -88,8 +88,8 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 		try writeOutroToFile()
 	}
 	
-	fileprivate func printFinishAndExit() -> Never {
-		LNUsagePrintMessageAndExit(prependMessage: "Finished recording to \(self.currentFileUrl.path)", logLevel: .stdOut)
+	func printFinishAndExit(_ leadingNewLine: Bool = false) -> Never {
+		LNUsagePrintMessageAndExit(prependMessage: "\(leadingNewLine ? "\n" : "")Finished recording to \(self.currentFileUrl.path)", logLevel: .stdOut)
 	}
 	
 	fileprivate func startReceiving() {

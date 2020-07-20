@@ -27,8 +27,10 @@
 		390FF63B2497CB3A0022BF11 /* UITableView+SelectionCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF6392497CB3A0022BF11 /* UITableView+SelectionCapture.m */; };
 		390FF63E249820190022BF11 /* NSObject+AttachedObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF63C249820190022BF11 /* NSObject+AttachedObjects.h */; };
 		390FF63F249820190022BF11 /* NSObject+AttachedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF63D249820190022BF11 /* NSObject+AttachedObjects.m */; };
-		393CB0DE24C4C3EF00BDBDA9 /* DTXSocketConnectionStatic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0DD24C4C3EB00BDBDA9 /* DTXSocketConnectionStatic.framework */; };
-		393CB0DF24C4C3EF00BDBDA9 /* DTXSocketConnectionStatic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0DD24C4C3EB00BDBDA9 /* DTXSocketConnectionStatic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		393CB0F924C5BC3200BDBDA9 /* DTXSocketConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; };
+		393CB0FA24C5BC3200BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		393CB0FD24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; };
+		393CB0FE24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
@@ -91,36 +93,34 @@
 		39F5AD202461A31400FB7F18 /* DTXUIInteractionRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		39F5AD292461F70A00FB7F18 /* _DTXScrollToAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */; };
 		39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */; };
-		39FB28DB24C4919800A0EF16 /* DTXSocketConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FB28CD24C48F3E00A0EF16 /* DTXSocketConnection.framework */; };
-		39FB28DC24C4919800A0EF16 /* DTXSocketConnection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 39FB28CD24C48F3E00A0EF16 /* DTXSocketConnection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		39FB28E424C4B00500A0EF16 /* RecordingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FB28E324C4B00500A0EF16 /* RecordingHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		393CB0DC24C4C3EB00BDBDA9 /* PBXContainerItemProxy */ = {
+		393CB0F324C5BC1800BDBDA9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 393CB0D924C4C3A300BDBDA9;
-			remoteInfo = DTXSocketConnectionStatic;
-		};
-		393CB0E124C4C3F500BDBDA9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 393CB0CF24C4C3A300BDBDA9;
-			remoteInfo = DTXSocketConnectionStatic;
-		};
-		39FB28CC24C48F3E00A0EF16 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */;
+			containerPortal = 393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 39498C2F1F1F84960030B620;
 			remoteInfo = DTXSocketConnection;
 		};
-		39FB28D924C4919100A0EF16 /* PBXContainerItemProxy */ = {
+		393CB0F524C5BC1800BDBDA9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */;
+			containerPortal = 393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 393CB0D924C4C3A300BDBDA9;
+			remoteInfo = DTXSocketConnectionStatic;
+		};
+		393CB0F724C5BC2800BDBDA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 393CB0CF24C4C3A300BDBDA9;
+			remoteInfo = DTXSocketConnectionStatic;
+		};
+		393CB0FB24C5BC3E00BDBDA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 39498C2E1F1F84960030B620;
 			remoteInfo = DTXSocketConnection;
@@ -134,7 +134,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				393CB0DF24C4C3EF00BDBDA9 /* DTXSocketConnectionStatic.framework in Embed Frameworks */,
+				393CB0FA24C5BC3200BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,7 +154,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				39FB28DC24C4919800A0EF16 /* DTXSocketConnection.framework in Embed Frameworks */,
+				393CB0FE24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,6 +178,7 @@
 		392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTXCaptureControlWindow.h; sourceTree = "<group>"; };
 		392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXCaptureControlWindow.m; sourceTree = "<group>"; };
 		392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXUIInteractionRecorder.m; sourceTree = "<group>"; };
+		393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DTXSocketConnection.xcodeproj; path = DTXSocketConnection/DTXSocketConnection.xcodeproj; sourceTree = "<group>"; };
 		39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXSetDatePickerDateAction.h; sourceTree = "<group>"; };
 		39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXSetDatePickerDateAction.m; sourceTree = "<group>"; };
 		39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXPickerViewValueChangeAction.h; sourceTree = "<group>"; };
@@ -255,7 +256,6 @@
 		39F5AD032461A28400FB7F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXScrollToAction.h; sourceTree = "<group>"; };
 		39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollToAction.m; sourceTree = "<group>"; };
-		39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DTXSocketConnection.xcodeproj; path = DTXSocketConnection/DTXSocketConnection.xcodeproj; sourceTree = SOURCE_ROOT; };
 		39FB28E324C4B00500A0EF16 /* RecordingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -264,7 +264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				393CB0DE24C4C3EF00BDBDA9 /* DTXSocketConnectionStatic.framework in Frameworks */,
+				393CB0F924C5BC3200BDBDA9 /* DTXSocketConnection.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +272,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39FB28DB24C4919800A0EF16 /* DTXSocketConnection.framework in Frameworks */,
+				393CB0FD24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +300,7 @@
 		392F353B225F6851003E8CF2 = {
 			isa = PBXGroup;
 			children = (
+				393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */,
 				39AE549A2492464C0093BFEE /* Settings */,
 				39449C3F2462E78100B967FC /* Utils */,
 				390FF62B249686100022BF11 /* EventCapture */,
@@ -326,10 +327,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		393CB0EF24C5BC1800BDBDA9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */,
+				393CB0F624C5BC1800BDBDA9 /* DTXSocketConnection.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		39449C3F2462E78100B967FC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */,
 				39C0135C2473CC8000784C84 /* DTXAppleInternals.h */,
 				395AD7C724B385D4002B382B /* DTXLogging.h */,
 				395AD7C624B385D4002B382B /* DTXLogging.m */,
@@ -445,15 +454,6 @@
 			path = Actions;
 			sourceTree = "<group>";
 		};
-		39FB28C924C48F3E00A0EF16 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				39FB28CD24C48F3E00A0EF16 /* DTXSocketConnection.framework */,
-				393CB0DD24C4C3EB00BDBDA9 /* DTXSocketConnectionStatic.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		39FB28D524C48F6700A0EF16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,7 +512,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				393CB0E224C4C3F500BDBDA9 /* PBXTargetDependency */,
+				393CB0F824C5BC2800BDBDA9 /* PBXTargetDependency */,
 			);
 			name = DetoxRecorderCLI;
 			productName = DetoxRecorderCLI;
@@ -532,7 +532,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				39FB28DA24C4919100A0EF16 /* PBXTargetDependency */,
+				393CB0FC24C5BC3E00BDBDA9 /* PBXTargetDependency */,
 			);
 			name = DetoxRecorder;
 			productName = Replay;
@@ -574,8 +574,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 39FB28C924C48F3E00A0EF16 /* Products */;
-					ProjectRef = 39FB28C824C48F3E00A0EF16 /* DTXSocketConnection.xcodeproj */;
+					ProductGroup = 393CB0EF24C5BC1800BDBDA9 /* Products */;
+					ProjectRef = 393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -588,18 +588,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		393CB0DD24C4C3EB00BDBDA9 /* DTXSocketConnectionStatic.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DTXSocketConnectionStatic.framework;
-			remoteRef = 393CB0DC24C4C3EB00BDBDA9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		39FB28CD24C48F3E00A0EF16 /* DTXSocketConnection.framework */ = {
+		393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = DTXSocketConnection.framework;
-			remoteRef = 39FB28CC24C48F3E00A0EF16 /* PBXContainerItemProxy */;
+			remoteRef = 393CB0F324C5BC1800BDBDA9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		393CB0F624C5BC1800BDBDA9 /* DTXSocketConnection.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = DTXSocketConnection.framework;
+			remoteRef = 393CB0F524C5BC1800BDBDA9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -697,15 +697,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		393CB0E224C4C3F500BDBDA9 /* PBXTargetDependency */ = {
+		393CB0F824C5BC2800BDBDA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DTXSocketConnectionStatic;
-			targetProxy = 393CB0E124C4C3F500BDBDA9 /* PBXContainerItemProxy */;
+			targetProxy = 393CB0F724C5BC2800BDBDA9 /* PBXContainerItemProxy */;
 		};
-		39FB28DA24C4919100A0EF16 /* PBXTargetDependency */ = {
+		393CB0FC24C5BC3E00BDBDA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DTXSocketConnection;
-			targetProxy = 39FB28D924C4919100A0EF16 /* PBXContainerItemProxy */;
+			targetProxy = 393CB0FB24C5BC3E00BDBDA9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

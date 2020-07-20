@@ -47,7 +47,7 @@ static void DTXSendCommand(NSDictionary* dict)
 		if(error != nil)
 		{
 			[DTXUIInteractionRecorder _presentError:error completionHandler:^{
-				[DTXUIInteractionRecorder _exitIfNeeded];
+				[DTXUIInteractionRecorder stopRecording];
 			}];
 		}
 	}];
@@ -177,36 +177,6 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	}
 	else
 	{
-//		NSString* testNamePath = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestOutputPath"];
-//		NSString* testName = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestName"] ?: @"My Recorded Test";
-//
-//		if(testNamePath != nil)
-//		{
-//			NSURL* testURL = [NSURL fileURLWithPath:testNamePath];
-//
-//			NSError* error = nil;
-//			if([@"" writeToURL:testURL atomically:YES encoding:NSUTF8StringEncoding error:&error] == NO)
-//			{
-//				dtx_log_error(@"Error opening output file for writing: %@", error.localizedDescription);
-//			}
-//			else
-//			{
-//				currentFile = [NSFileHandle fileHandleForWritingToURL:testURL error:&error];
-//
-//				if(error)
-//				{
-//					dtx_log_error(@"Error opening output file for writing: %@", error.localizedDescription);
-//				}
-//			}
-//
-//			if(currentFile == nil)
-//			{
-//				[self _presentError:error completionHandler:^{
-//					[self endRecording];
-//				}];
-//			}
-//		}
-		
 		_appearanceBlock();
 		_appearanceBlock = nil;
 	}
@@ -221,43 +191,43 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 
 + (void)_exitIfNeeded
 {
-	if(startedByUser == NO &&
-	   (([delegate respondsToSelector:@selector(interactionRecorderShouldExitApp)] == NO && [NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecNoExit"] == NO) ||
-	   [delegate interactionRecorderShouldExitApp]))
+	BOOL responds = [delegate respondsToSelector:@selector(interactionRecorderShouldExitApp)];
+	if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXRecNoExit"] == NO &&
+		((responds == NO && startedByUser == NO) ||
+		(responds == YES && [delegate interactionRecorderShouldExitApp] == YES)))
 	{
 		exit(0);
 	}
 }
 
-+ (void)endRecording
+#define IGNORE_IF_WAS_ERROR(x) if(fileError == nil) { x; if(fileError != nil) { dtx_log_error(@"Error writing to output file: %@", fileError.localizedDescription); } }
+
++ (void)stopRecording
 {
-	NSError* error = nil;
+	if(_pingTimer != nil)
+	{
+		dispatch_cancel(_pingTimer);
+	}
+	_pingTimer = nil;
+	
+	__block NSError* fileError = nil;
 	BOOL delayExit = NO;
 	
-	if(_currentConnection != nil)
+	NSFileHandle* file = nil;
+	if(_currentConnection == nil)
 	{
-		DTXSendCommand(@{@"type": @"end"});
-		[_currentConnection closeRead];
-		[_currentConnection closeWrite];
-		_currentConnection = nil;
-	}
+		NSString* testNamePath = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestOutputPath"];
+		NSString* testName = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestName"] ?: @"My Recorded Test";
 	
-	/*
-	 NSData* intro = [[NSString stringWithFormat:@"describe('Recorded suite', () => {\n\tit('%@', async () => {\n", testName] dataUsingEncoding:NSUTF8StringEncoding];
-	 fileOutro = [@"\t}\n}" dataUsingEncoding:NSUTF8StringEncoding];
-	 */
-	
-//	if([currentFile closeAndReturnError:&error] == NO)
-//	{
-//		delayExit = YES;
-//		[self _presentError:error completionHandler:^{
-//			[self _exitIfNeeded];
-//		}];
-//	}
-	
-	if(error)
-	{
-		dtx_log_error(@"Error closing output file: %@", error.localizedDescription);
+		NSURL* testOutputURL = [NSURL fileURLWithPath:testNamePath];
+		if(testOutputURL != nil)
+		{
+			IGNORE_IF_WAS_ERROR([@"" writeToURL:testOutputURL atomically:YES encoding:NSUTF8StringEncoding error:&fileError]);
+			IGNORE_IF_WAS_ERROR(file = [NSFileHandle fileHandleForWritingToURL:testOutputURL error:&fileError]);
+		}
+		
+		NSString* str = [NSString stringWithFormat:@"describe('Recorded suite', () => {\n\tit('%@', async () => {\n", testName];
+		IGNORE_IF_WAS_ERROR([file writeData:[str dataUsingEncoding:NSUTF8StringEncoding]]);
 	}
 	
 	NSMutableArray<NSString*>* detoxCommands = nil;
@@ -268,6 +238,13 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	
 	[recordedActions enumerateObjectsUsingBlock:^(DTXRecordedAction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 		NSString* detoxDescription = obj.detoxDescription;
+		
+		if(_currentConnection == nil)
+		{
+			NSString* str = [NSString stringWithFormat:@"\t\t%@\n", detoxDescription];
+			IGNORE_IF_WAS_ERROR([file writeData:[str dataUsingEncoding:NSUTF8StringEncoding] error:&fileError]);
+		}
+		
 		[detoxCommands addObject:detoxDescription];
 	}];
 	
@@ -276,13 +253,38 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 		[delegate interactionRecorderDidEndRecordingWithTestCommands:detoxCommands];
 	}
 	
+	if(_currentConnection == nil)
+	{
+		IGNORE_IF_WAS_ERROR([file writeData:[@"\t}\n}" dataUsingEncoding:NSUTF8StringEncoding] error:&fileError]);
+		IGNORE_IF_WAS_ERROR([file closeAndReturnError:&fileError]);
+	}
+	
+	if(_currentConnection != nil)
+	{
+		DTXSendCommand(@{@"type": @"end"});
+		[_currentConnection closeRead];
+		[_currentConnection closeWrite];
+		_currentConnection = nil;
+	}
+	
 	recordedActions = nil;
-	captureControlWindow.hidden = YES;
-	captureControlWindow = nil;
+	
+	dispatch_block_t UICleanupBlock = ^ {
+		captureControlWindow.hidden = YES;
+		captureControlWindow = nil;
+		
+		[self _exitIfNeeded];
+	};
+	
+	if(fileError != nil)
+	{
+		delayExit = YES;
+		[self _presentError:fileError completionHandler:UICleanupBlock];
+	}
 	
 	if(delayExit == NO)
 	{
-		[self _exitIfNeeded];
+		UICleanupBlock();
 	}
 }
 
@@ -911,8 +913,8 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 
 + (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary<NSString *, NSNumber *> *)errorDict
 {
-	[self _presentError:[NSError errorWithDomain:@"" code:[errorDict[NSNetServicesErrorCode] unsignedIntValue] userInfo:@{}] completionHandler:^{
-		[self endRecording];
+	[self _presentError:[NSError errorWithDomain:@"" code:[errorDict[NSNetServicesErrorCode] unsignedIntValue] userInfo:@{NSLocalizedDescriptionKey: @"Unable to connec to the recording service."}] completionHandler:^{
+		[self stopRecording];
 	}];
 }
 
@@ -947,14 +949,14 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 {
 	dtx_log_info(@"Socket connection closed for reading.");
 	
-	[self _exitIfNeeded];
+	[self stopRecording];
 }
 
 + (void)writeClosedForSocketConnection:(DTXSocketConnection*)socketConnection
 {
 	dtx_log_info(@"Socket connection closed for writing.");
 	
-	[self _exitIfNeeded];
+	[self stopRecording];
 }
 
 
@@ -965,6 +967,11 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 + (void)beginRecording
 {
 	[self startRecording];
+}
+
++ (void)endRecording
+{
+	[self stopRecording];
 }
 
 @end
