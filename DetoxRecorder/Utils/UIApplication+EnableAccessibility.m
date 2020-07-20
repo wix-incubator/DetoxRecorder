@@ -9,6 +9,8 @@
 #import "UIApplication+EnableAccessibility.h"
 @import Darwin;
 
+DTX_CREATE_LOG(DetoxRecorderApplicationAccessibility)
+
 @interface NSObject ()
 
 - (void)setAccessibilityPreferenceAsMobile:(CFStringRef)key value:(CFBooleanRef)value notification:(CFStringRef)notification;
@@ -20,7 +22,7 @@ DTX_DIRECT_MEMBERS
 
 + (void)dtxrec_enableAccessibilityForSimulator
 {
-	NSLog(@"Enabling accessibility for automation on Simulator.");
+	dtx_log_info(@"Enabling accessibility for automation on Simulator.");
 	static NSString *path =
 	@"/System/Library/PrivateFrameworks/AccessibilityUtilities.framework/AccessibilityUtilities";
 	char const *const localPath = [path fileSystemRepresentation];

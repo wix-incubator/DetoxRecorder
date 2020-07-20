@@ -25,6 +25,7 @@ const CGFloat buttonWidth = 44;
 
 @interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate>
 
+//Those should not be direct methods.
 - (void)_minimizeBar:(UIButton*)button;
 - (void)_expandBar:(UIButton*)button;
 - (void)takeScreenshot:(UIButton*)button;

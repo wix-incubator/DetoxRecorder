@@ -24,9 +24,19 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 		netService = NetService(domain: "local", type: "_detoxrecorder._tcp", name: serviceName, port: 0)
 		
 		do {
-			currentFileUrl = recordingUrl
-			try "".write(to: recordingUrl, atomically: true, encoding: .utf8)
-			currentFile = try FileHandle(forWritingTo: recordingUrl)
+			let directoryUrl: URL
+			if recordingUrl.hasDirectoryPath {
+				directoryUrl = recordingUrl
+				currentFileUrl = recordingUrl.appendingPathComponent("recorder_test.js", isDirectory: false)
+			} else {
+				directoryUrl = recordingUrl.deletingLastPathComponent()
+				currentFileUrl = recordingUrl
+			}
+			
+			try FileManager.default.createDirectory(at: directoryUrl, withIntermediateDirectories: true, attributes: nil)
+			
+			try "".write(to: currentFileUrl, atomically: true, encoding: .utf8)
+			currentFile = try FileHandle(forWritingTo: currentFileUrl)
 			let intro = "describe('Recorded suite', () => {\n\tit('\(testName)', async () => {\n".data(using: .utf8)!
 			fileOutro = "\t}\n}".data(using: .utf8)!
 			

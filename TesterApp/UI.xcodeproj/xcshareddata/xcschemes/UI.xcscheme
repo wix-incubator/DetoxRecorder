@@ -60,7 +60,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-DTXRecTestOutputPath &quot;/Users/lnatan/Desktop/test.js&quot;"
+            argument = "-DTXRecTestOutputPath &quot;~/Desktop&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

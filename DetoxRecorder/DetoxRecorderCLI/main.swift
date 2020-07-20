@@ -433,7 +433,7 @@ terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
 
 _ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
 
-let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: outputTestFile), testName: testName)
+let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: (outputTestFile as NSString).expandingTildeInPath), testName: testName)
 args.append(contentsOf: ["-DTXServiceName", recordingHandler.serviceName])
 
 signal(SIGINT) { _ in

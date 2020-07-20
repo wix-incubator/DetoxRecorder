@@ -18,4 +18,7 @@
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate;
 + (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy includingRoot:(BOOL)includingRoot passingPredicate:(NSPredicate*)predicate;
 
+- (id)text;
+- (id)placeholder;
+
 @end

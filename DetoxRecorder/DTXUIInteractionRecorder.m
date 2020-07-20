@@ -11,6 +11,7 @@
 #import "DTXRecordedAction.h"
 #import "DTXAppleInternals.h"
 #import "NSUserDefaults+RecorderUtils.h"
+#import "NSString+SimulatorSafeTildeExpansion.h"
 #import <DTXSocketConnection/DTXSocketConnection.h>
 
 DTX_CREATE_LOG(InteractionController)
@@ -220,7 +221,19 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 		NSString* testNamePath = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestOutputPath"];
 		NSString* testName = [NSUserDefaults.standardUserDefaults stringForKey:@"DTXRecTestName"] ?: @"My Recorded Test";
 	
-		NSURL* testOutputURL = [NSURL fileURLWithPath:testNamePath];
+		NSURL* testOutputURL = [NSURL fileURLWithPath:testNamePath.dtx_stringByExpandingTildeInPath];
+		NSURL* directoryURL;
+		
+		if(testOutputURL.hasDirectoryPath)
+		{
+			directoryURL = testOutputURL;
+			testOutputURL = [testOutputURL URLByAppendingPathComponent:@"recorder_test.js" isDirectory:NO];
+		} else {
+			directoryURL = [testOutputURL URLByDeletingLastPathComponent];
+		}
+		
+		IGNORE_IF_WAS_ERROR([NSFileManager.defaultManager createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:&fileError]);
+		
 		if(testOutputURL != nil)
 		{
 			IGNORE_IF_WAS_ERROR([@"" writeToURL:testOutputURL atomically:YES encoding:NSUTF8StringEncoding error:&fileError]);
