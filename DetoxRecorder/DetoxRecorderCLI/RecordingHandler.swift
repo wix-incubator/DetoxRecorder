@@ -3,7 +3,7 @@
 //  DetoxRecorderCLI
 //
 //  Created by Leo Natan (Wix) on 7/19/20.
-//  Copyright © 2020 Wix. All rights reserved.
+//  Copyright © 2019-2020 Wix. All rights reserved.
 //
 
 import Foundation
