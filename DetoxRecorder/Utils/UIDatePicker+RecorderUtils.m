@@ -8,6 +8,7 @@
 
 #import "UIDatePicker+RecorderUtils.h"
 
+DTX_DIRECT_MEMBERS
 @implementation UIDatePicker (RecorderUtils)
 
 - (NSString*)dtxrec_dateFormatForDetox

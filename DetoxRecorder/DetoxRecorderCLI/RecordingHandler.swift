@@ -89,7 +89,7 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 	}
 	
 	func printFinishAndExit(_ leadingNewLine: Bool = false) -> Never {
-		LNUsagePrintMessageAndExit(prependMessage: "\(leadingNewLine ? "\n" : "")Finished recording to \(self.currentFileUrl.path)", logLevel: .stdOut)
+		LNUsagePrintMessageAndExit(prependMessage: "\(leadingNewLine ? "\n" : "")Finished recording to \(currentFileUrl.path)", logLevel: .stdOut)
 	}
 	
 	fileprivate func startReceiving() {

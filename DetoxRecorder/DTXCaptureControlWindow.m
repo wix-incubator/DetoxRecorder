@@ -23,8 +23,21 @@
 
 const CGFloat buttonWidth = 44;
 
-@interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate> @end
+@interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate>
 
+- (void)_minimizeBar:(UIButton*)button;
+- (void)_expandBar:(UIButton*)button;
+- (void)takeScreenshot:(UIButton*)button;
+- (void)settings:(UIButton*)button;
+- (void)toggleXYRecording:(_DTXCaptureControlButton*)button;
+- (void)takeScreenshotLongPress:(UILongPressGestureRecognizer*)lgr;
+- (void)addComment:(UIButton*)button;
+- (void)stopRecording:(UIButton*)button;
+- (void)_alertControllerTextFieldTextDidChange:(UITextField*)textField;
+
+@end
+
+DTX_DIRECT_MEMBERS
 @implementation DTXCaptureControlWindow
 {
 	UIView* _wrapperView;
@@ -78,6 +91,10 @@ const CGFloat buttonWidth = 44;
 	if(self)
 	{
 		self.rootViewController = [UIViewController new];
+		
+		self.windowLevel = UIWindowLevelStatusBar;
+		self.hidden = NO;
+		self.windowScene = [UIWindowScene _keyWindowScene];
 	}
 	
 	return self;
@@ -220,10 +237,6 @@ const CGFloat buttonWidth = 44;
 	
 	self.alpha = 0.0;
 	
-	self.windowLevel = UIWindowLevelStatusBar;
-	self.hidden = NO;
-	self.windowScene = [UIWindowScene _keyWindowScene];
-	
 	_stopRecording.tintColor = UIColor.whiteColor;
 	_stopRecording.backgroundColor = UIColor.systemRedColor;
 	[self traitCollectionDidChange:nil];
@@ -305,7 +318,7 @@ const CGFloat buttonWidth = 44;
 
 - (void)settings:(UIButton*)button
 {
-	auto settingsController = [[DTXRecSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	auto settingsController = [[DTXRecSettingsViewController alloc] initWithStyle:UITableViewStyleInsetGrouped];
 	auto navigationController = [[UINavigationController alloc] initWithRootViewController:settingsController];
 	navigationController.navigationBar.prefersLargeTitles = NO;
 	navigationController.modalPresentationStyle = UIModalPresentationPopover;
@@ -545,6 +558,38 @@ static __weak UIAlertAction* __okAction;
 
 - (void)stopRecording:(UIButton*)button
 {
+//	UIView* snapshot = [UIScreen.mainScreen snapshotViewAfterScreenUpdates:NO];
+//	UIView* blackView = [[UIView alloc] initWithFrame:self.bounds];
+//	blackView.backgroundColor = UIColor.blackColor;
+//	[blackView addSubview:snapshot];
+//	[self addSubview:blackView];
+//	
+//	[UIView animateKeyframesWithDuration:0.5 delay:0.0 options:UIViewKeyframeAnimationOptionBeginFromCurrentState animations:^{
+//		__block CGRect frame = snapshot.frame;
+//		frame.origin = CGPointMake(frame.origin.x, CGRectGetMidY(frame)-15);
+//		frame.size = CGSizeMake(frame.size.width, 30);
+//		
+//		[UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.9 animations:^{
+//			snapshot.frame = frame;
+//		}];
+//		
+//		[UIView addKeyframeWithRelativeStartTime:0.8 relativeDuration:0.2 animations:^{
+//			frame.origin = CGPointMake(CGRectGetMidX(frame)-15, CGRectGetMidY(frame)-15);
+//			frame.size = CGSizeMake(30, 30);
+//			snapshot.frame = frame;
+//		}];
+//		
+//		
+//		[UIView addKeyframeWithRelativeStartTime:0.9 relativeDuration:0.1 animations:^{
+//			frame.origin = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+//			frame.size = CGSizeMake(0, 0);
+//			snapshot.frame = frame;
+//		}];
+//		
+//	} completion:^(BOOL finished) {
+//		[DTXUIInteractionRecorder stopRecording];
+//	}];
+	
 	[UIView performSystemAnimation:UISystemAnimationDelete onViews:@[_wrapperView] options:0 animations:nil completion:^(BOOL finished) {
 		[DTXUIInteractionRecorder stopRecording];
 	}];

@@ -24,6 +24,7 @@ DTX_CREATE_LOG(InteractionController)
 @end
 @implementation _DTXVisualizedView @end
 
+DTX_DIRECT_MEMBERS
 @implementation DTXUIInteractionRecorder
 
 static __weak id<DTXUIInteractionRecorderDelegate> delegate;
@@ -142,7 +143,7 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 		return;
 	}
 	
-	UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error Creating Test File" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Recording Error" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 	[errorAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		if(handler) { handler(); }
 	}]];

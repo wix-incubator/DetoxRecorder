@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, setter=dtxrec_setRecordingBarMinimized:) BOOL dtxrec_recordingBarMinimized;
 
+@property (nonatomic, copy, setter=dtxrec_setDetoxVersionCompatibility:) NSString* dtxrec_detoxVersionCompatibility;
+
 @end
 
 NS_ASSUME_NONNULL_END

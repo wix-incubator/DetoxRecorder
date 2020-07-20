@@ -8,6 +8,7 @@
 
 #import "UIView+RecorderUtils.h"
 
+DTX_DIRECT_MEMBERS
 @implementation UIView (RecorderUtils)
 
 + (void)_dtxrec_appendViewsRecursivelyFromArray:(NSArray<UIView*>*)views passingPredicate:(NSPredicate*)predicate storage:(NSMutableArray<UIView*>*)storage

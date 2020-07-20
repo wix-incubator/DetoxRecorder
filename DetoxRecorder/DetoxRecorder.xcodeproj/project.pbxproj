@@ -31,6 +31,8 @@
 		393CB0FA24C5BC3200BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		393CB0FD24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; };
 		393CB0FE24C5BC4600BDBDA9 /* DTXSocketConnection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 393CB0F424C5BC1800BDBDA9 /* DTXSocketConnection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		393CB10224C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.h in Headers */ = {isa = PBXBuildFile; fileRef = 393CB10024C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.h */; };
+		393CB10324C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 393CB10124C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.m */; };
 		39449C4A2462F68000B967FC /* _DTXSetDatePickerDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */; };
 		39449C4B2462F68000B967FC /* _DTXSetDatePickerDateAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */; };
 		39449C4E2462F81800B967FC /* _DTXPickerViewValueChangeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */; };
@@ -179,6 +181,8 @@
 		392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXCaptureControlWindow.m; sourceTree = "<group>"; };
 		392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTXUIInteractionRecorder.m; sourceTree = "<group>"; };
 		393CB0EE24C5BC1800BDBDA9 /* DTXSocketConnection.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DTXSocketConnection.xcodeproj; path = DTXSocketConnection/DTXSocketConnection.xcodeproj; sourceTree = "<group>"; };
+		393CB10024C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTXRecSettingsMultipleChoiceController.h; sourceTree = "<group>"; };
+		393CB10124C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTXRecSettingsMultipleChoiceController.m; sourceTree = "<group>"; };
 		39449C482462F68000B967FC /* _DTXSetDatePickerDateAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXSetDatePickerDateAction.h; sourceTree = "<group>"; };
 		39449C492462F68000B967FC /* _DTXSetDatePickerDateAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXSetDatePickerDateAction.m; sourceTree = "<group>"; };
 		39449C4C2462F81800B967FC /* _DTXPickerViewValueChangeAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXPickerViewValueChangeAction.h; sourceTree = "<group>"; };
@@ -416,6 +420,8 @@
 			children = (
 				39AE549B249247370093BFEE /* DTXRecSettingsViewController.h */,
 				39AE549C249247370093BFEE /* DTXRecSettingsViewController.m */,
+				393CB10024C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.h */,
+				393CB10124C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 				39C013412472EB8E00784C84 /* _DTXLongPressAction.h in Headers */,
 				39C0139A2473CD0900784C84 /* NSArray+Utils.h in Headers */,
 				39C0137A2473CC8000784C84 /* NSUserDefaults+RecorderUtils.h in Headers */,
+				393CB10224C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.h in Headers */,
 				39C013902473CC8000784C84 /* UIApplication+EnableAccessibility.h in Headers */,
 				39BA9FB524A11A2400681E72 /* _DTXShakeDeviceAction.h in Headers */,
 				39C013912473CC8000784C84 /* UIDatePicker+RecorderUtils.h in Headers */,
@@ -677,6 +684,7 @@
 				39F5AD0B2461A29400FB7F18 /* DTXUIInteractionRecorder.m in Sources */,
 				39F5AD122461A2AF00FB7F18 /* _DTXTapAction.m in Sources */,
 				39F5AD112461A2AF00FB7F18 /* DTXRecordedAction.m in Sources */,
+				393CB10324C5ECA000BDBDA9 /* DTXRecSettingsMultipleChoiceController.m in Sources */,
 				39C0138F2473CC8000784C84 /* UIApplication+EnableAccessibility.m in Sources */,
 				39F5AD0D2461A29A00FB7F18 /* UIGestureRecognizer+GestureCapture.m in Sources */,
 				39F5AD2A2461F70A00FB7F18 /* _DTXScrollToAction.m in Sources */,

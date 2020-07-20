@@ -9,6 +9,7 @@
 #import "NSUserDefaults+RecorderUtils.h"
 @import Darwin;
 
+DTX_DIRECT_MEMBERS
 @implementation NSUserDefaults (RecorderUtils)
 
 + (void)load
@@ -19,6 +20,7 @@
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_convertScrollEventsToWaitfor": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_rnLongPressDelay": @0.5}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_recordingBarMinimized": @YES}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_detoxVersionCompatibility": @"17.0"}];
 	}
 }
 
@@ -90,6 +92,16 @@
 - (void)dtxrec_setRecordingBarMinimized:(BOOL)dtxrec_recordingBarMinimized
 {
 	[self setBool:dtxrec_recordingBarMinimized forKey:@"dtxrec_recordingBarMinimized"];
+}
+
+- (NSString *)dtxrec_detoxVersionCompatibility
+{
+	return [self stringForKey:@"dtxrec_detoxVersionCompatibility"];
+}
+
+- (void)dtxrec_setDetoxVersionCompatibility:(NSString *)dtxrec_detoxVersionCompatibility
+{
+	[self setObject:dtxrec_detoxVersionCompatibility forKey:@"dtxrec_detoxVersionCompatibility"];
 }
 
 @end

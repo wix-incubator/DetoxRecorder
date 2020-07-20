@@ -10,6 +10,7 @@
 #import "UIView+RecorderUtils.h"
 #import "DTXAppleInternals.h"
 
+DTX_DIRECT_MEMBERS
 @implementation UIPickerView (RecorderUtils)
 
 - (NSString*)dtxrec_valueForComponent:(NSInteger)component

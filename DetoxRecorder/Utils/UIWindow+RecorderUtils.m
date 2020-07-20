@@ -24,6 +24,7 @@
 
 @end
 
+DTX_DIRECT_MEMBERS
 @implementation UIWindow (RecorderUtils)
 
 + (UIWindow*)dtxrec_keyWindow

@@ -8,11 +8,19 @@
 
 #import "DTXRecSettingsViewController.h"
 #import "NSUserDefaults+RecorderUtils.h"
+#import "DTXRecSettingsMultipleChoiceController.h"
 
 typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	_DTXRecSettingsCellStyleBool,
 	_DTXRecSettingsCellStyleDouble,
+	_DTXRecSettingsCellStyleMultiple
 };
+
+@interface NSObject ()
+
+- (void)_driverClickedUp;
+
+@end
 
 @interface DTXRecDurationFormatter : NSFormatter
 
@@ -144,6 +152,28 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 
 @end
 
+@interface _DTXRecSettingsCell2 : UITableViewCell @end
+@implementation _DTXRecSettingsCell2
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
+{
+	return [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+}
+
+@end
+
+@interface _DTXRecSettingsTableView : UITableView @end
+@implementation _DTXRecSettingsTableView
+
+- (void)layoutSubviews
+{
+	[UIView performWithoutAnimation:^{
+		[super layoutSubviews];
+	}];
+}
+
+@end
+
 @implementation DTXRecSettingsViewController
 {
 	NSArray<NSArray<NSDictionary<NSString*,NSArray*>*>*>* _settings;
@@ -161,6 +191,7 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	
 	if(self)
 	{
+		self.tableView = [[_DTXRecSettingsTableView alloc] initWithFrame:CGRectZero style:style];
 		_dcf = [DTXRecDurationFormatter new];
 		
 		[self.tableView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
@@ -169,13 +200,15 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 		self.navigationItem.title = @"Detox Recorder Settings";
 		
 		[self.tableView registerClass:_DTXRecSettingsCell.class forCellReuseIdentifier:@"SettingCell"];
+		[self.tableView registerClass:_DTXRecSettingsCell2.class forCellReuseIdentifier:@"SettingCell2"];
 		
 		_settingHeaders = @[
 			@"Recording Settings",
 			(id)NSNull.null,
 			(id)NSNull.null,
 			@"Visualization & Animations",
-			(id)NSNull.null
+			(id)NSNull.null,
+			@"Compatibility",
 		];
 		
 		_settingFooters = @[
@@ -183,46 +216,68 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 			@"When enabled, actions performed on elements, immediately after scrolling the containing scroll view, will enhance the scroll action to waitfor for better accuracy.",
 			@"The delay before a touch is categorized as a long press action in React Native.",
 			@"When enabled, there will be no visualization for recorded actions.",
-			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled."
+			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled.",
+			@"Detox Recorder will produce test files compatible with the selected Detox version. Make sure to set this before recording any events."
 		];
 		
 		_settings = @[
 			@[
 				@{@"Precise Tap Coordinates":
-					  @[NSStringFromSelector(@selector(dtxrec_attemptXYRecording)),
-						@(_DTXRecSettingsCellStyleBool)],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_attemptXYRecording)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
 				},
 				@{@"Coalesce Scroll Events":
-					  @[NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents)),
-						@(_DTXRecSettingsCellStyleBool)],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_coalesceScrollEvents)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
 				}
 			],
 			@[
 				@{@"Enhance Scroll Events":
-					  @[NSStringFromSelector(@selector(dtxrec_convertScrollEventsToWaitfor)),
-						@(_DTXRecSettingsCellStyleBool)],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_convertScrollEventsToWaitfor)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
 				}
 			],
 			@[
 				@{@"React Native Long Press Delay":
-					  @[NSStringFromSelector(@selector(dtxrec_rnLongPressDelay)),
-						@(_DTXRecSettingsCellStyleDouble),
-						@0.5,
-						@3.0],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_rnLongPressDelay)),
+						  @(_DTXRecSettingsCellStyleDouble),
+						  @0.5,
+						  @3.0
+					  ],
 				}
 			],
 			@[
 				@{@"Disable Visualizations":
-					  @[NSStringFromSelector(@selector(dtxrec_disableVisualizations)),
-						@(_DTXRecSettingsCellStyleBool)],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_disableVisualizations)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
 				},
 			],
 			@[
 				@{@"Minimize Other Animations":
-					  @[NSStringFromSelector(@selector(dtxrec_disableAnimations)),
-						@(_DTXRecSettingsCellStyleBool)],
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_disableAnimations)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
 				},
-			]
+			],
+			@[
+				@{@"Detox Version":
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_detoxVersionCompatibility)),
+						  @(_DTXRecSettingsCellStyleMultiple),
+						  @[@"17.0"],
+					  ],
+				},
+			],
 		];
 	}
 	
@@ -292,20 +347,31 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return NO;
+	auto cell = [tableView cellForRowAtIndexPath:indexPath];
+	NSArray* cellSettings = _settings[indexPath.section][indexPath.row][cell.textLabel.text];
+	_DTXRecSettingsCellStyle style = [cellSettings[1] unsignedIntegerValue];
+	
+	return style == _DTXRecSettingsCellStyleMultiple;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	auto cell = [tableView dequeueReusableCellWithIdentifier:@"SettingCell"];
-	cell.textLabel.text = _settings[indexPath.section][indexPath.row].allKeys.firstObject;
-	cell.textLabel.minimumScaleFactor = 0.5;
-	
-	NSArray* cellSettings = _settings[indexPath.section][indexPath.row][cell.textLabel.text];
-	
-	NSString* userDefaultsKey = cellSettings[0];
+	NSString* cellTitle = _settings[indexPath.section][indexPath.row].allKeys.firstObject;
+	NSArray* cellSettings = _settings[indexPath.section][indexPath.row][cellTitle];
 	_DTXRecSettingsCellStyle style = [cellSettings[1] unsignedIntegerValue];
 	
+	auto cell = [tableView dequeueReusableCellWithIdentifier:style == _DTXRecSettingsCellStyleMultiple ? @"SettingCell2" : @"SettingCell"];
+	cell.textLabel.text = cellTitle;
+	cell.textLabel.adjustsFontSizeToFitWidth = YES;
+	cell.textLabel.minimumScaleFactor = 0.5;
+
+	NSString* userDefaultsKey = cellSettings[0];
+	
+	if(style == _DTXRecSettingsCellStyleMultiple)
+	{
+		cell.detailTextLabel.text = [[NSUserDefaults.standardUserDefaults objectForKey:userDefaultsKey] description];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	if(style == _DTXRecSettingsCellStyleBool)
 	{
 		UISwitch* sw = [UISwitch new];
@@ -329,6 +395,19 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	auto cell = [tableView cellForRowAtIndexPath:indexPath];
+	NSArray* cellSettings = _settings[indexPath.section][indexPath.row][cell.textLabel.text];
+	
+	DTXRecSettingsMultipleChoiceController* multiple = [[DTXRecSettingsMultipleChoiceController alloc] initWithStyle:self.tableView.style];
+	multiple.userDefaultsKeyPath = cellSettings[0];
+	multiple.options = cellSettings[2];
+	multiple.title = cell.textLabel.text;
+	
+	[self.navigationController pushViewController:multiple animated:YES];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
 	self.preferredContentSize = self.tableView.contentSize;
@@ -337,6 +416,8 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	
+	[self.tableView reloadData];
 	
 	self.navigationItem.rightBarButtonItem = self.popoverPresentationController.presentingViewController.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact ? _doneButton : nil;
 }

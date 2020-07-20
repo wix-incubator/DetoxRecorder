@@ -5,13 +5,13 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ ! "$BRANCH" = "master" ]; then
 	printf >&2 "\033[1;31mNot on master branch, abording\033[0m"
-	exit -1
+	exit 255
 fi
 
 if  [[ -n $(git status --porcelain) ]]; then
   printf >&2 "\033[1;31mCannot release version because there are unstaged changes, aborting\nChanges:\033[0m\n"
   git status --short
-  exit -1
+  exit 255
 fi
 
 if [[ -n $(git log --branches --not --remotes) ]]; then
@@ -23,19 +23,18 @@ echo -e "\033[1;34mCreating release notes\033[0m"
 
 RELEASE_NOTES_FILE="${SCRIPTPATH}/Distribution/_tmp_release_notes.md"
 
-# rm -f "${RELEASE_NOTES_FILE}"
 touch "${RELEASE_NOTES_FILE}"
 open -Wn "${RELEASE_NOTES_FILE}"
 
 if ! [ -s "${RELEASE_NOTES_FILE}" ]; then
 	echo -e >&2 "\033[1;31mNo release notes provided, aborting\033[0m"
 	rm -f "${RELEASE_NOTES_FILE}"
-	exit -1
+	exit 255
 fi
 
-${SCRIPTPATH}/Scripts/updateCopyright.sh
+"${SCRIPTPATH}/Scripts/updateCopyright.sh"
 
-${SCRIPTPATH}/build.sh
+"${SCRIPTPATH}/build.sh"
 
 echo -e "\033[1;34mCopying script\033[0m"
 cp "${SCRIPTPATH}/record.sh" "${SCRIPTPATH}/Distribution"

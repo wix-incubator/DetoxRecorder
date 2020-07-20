@@ -8,6 +8,7 @@
 
 #import "UISlider+RecorderUtils.h"
 
+DTX_DIRECT_MEMBERS
 @implementation UISlider (RecorderUtils)
 
 - (double)dtxrec_normalizedSliderPosition
