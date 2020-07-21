@@ -20,7 +20,10 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 	var previousFileOffset: UInt64 = 0
 	let fileOutro: Data
 	
-	init(recordingUrl: URL, testName: String) {
+	fileprivate var awaitingCompletionHandler: ((RecordingHandler) -> Void)?
+	
+	init(recordingUrl: URL, testName: String, completionHandler: @escaping (RecordingHandler) -> Void) {
+		awaitingCompletionHandler = completionHandler
 		netService = NetService(domain: "local", type: "_detoxrecorder._tcp", name: serviceName, port: 0)
 		
 		do {
@@ -170,6 +173,8 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 	
 	func netServiceDidPublish(_ sender: NetService) {
 		log.info("Published recording service: \(sender)")
+		awaitingCompletionHandler?(self)
+		awaitingCompletionHandler = nil
 	}
 	
 	func netService(_ sender: NetService, didNotPublish errorDict: [String : NSNumber]) {

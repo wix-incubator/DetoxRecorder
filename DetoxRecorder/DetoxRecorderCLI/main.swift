@@ -201,7 +201,9 @@ func whichURLFor(binaryName: String) throws -> URL {
 	whichProcess.executableURL = URL(fileURLWithPath: shellPath)
 	whichProcess.arguments = ["-l", "-c", "which \(binaryName)"]
 	
-	let response = (try? whichProcess.launchAndWaitUntilExitAndReturnOutput()) ?? ""
+	let response_ = (try? whichProcess.launchAndWaitUntilExitAndReturnOutput()) ?? ""
+	//Only take the last line of response, to ignore any frivolous output the shell might do beforehand.
+	let response = String(response_.split(whereSeparator: \.isNewline).last!)
 	if response.count == 0 {
 		throw "\(binaryName) not found"
 	}
@@ -433,34 +435,35 @@ terminateProcess.simctlArguments = ["terminate", simulatorId, appBundleId]
 
 _ = try? terminateProcess.launchAndWaitUntilExitAndReturnOutput()
 
-let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: (outputTestFile as NSString).expandingTildeInPath), testName: testName)
-args.append(contentsOf: ["-DTXServiceName", recordingHandler.serviceName])
+let recordingHandler = RecordingHandler(recordingUrl: URL(fileURLWithPath: (outputTestFile as NSString).expandingTildeInPath), testName: testName) { recordingHandler in
+	args.append(contentsOf: ["-DTXServiceName", recordingHandler.serviceName])
+	
+	let recordProcess = xcrunSimctlProcess()
+	recordProcess.simctlArguments = args
+	if shouldInsert == false || parser.bool(forKey: "noInsertLibraries") == true {
+		recordProcess.environment = [:]
+	} else {
+		let frameworkUrl : URL
+		if let frameworkOverridePath = parser.object(forKey: "recorderFrameworkPath") as? String {
+			frameworkUrl = URL(fileURLWithPath: frameworkOverridePath, isDirectory: true)
+		} else {
+			frameworkUrl = Bundle.main.executableURL!.deletingLastPathComponent().appendingPathComponent("DetoxRecorder.framework/")
+		}
+		recordProcess.environment = ["SIMCTL_CHILD_DYLD_INSERT_LIBRARIES": frameworkUrl.appendingPathComponent("DetoxRecorder").standardized.path]
+	}
+	
+	do {
+		try recordProcess.launchAndWaitUntilExitAndReturnOutput()
+	} catch {
+		LNUsagePrintMessageAndExit(prependMessage: "Failed starting recording: \(error.localizedDescription).", logLevel: .error)
+	}
+	
+	LNUsagePrintMessage(prependMessage: "Recording… (CTRL+C to stop)", logLevel: .stdOut)
+}
 
 signal(SIGINT) { _ in
 	signal(SIGINT, nil)
 	recordingHandler.printFinishAndExit(true)
 }
-
-let recordProcess = xcrunSimctlProcess()
-recordProcess.simctlArguments = args
-if shouldInsert == false || parser.bool(forKey: "noInsertLibraries") == true {
-	recordProcess.environment = [:]
-} else {
-	let frameworkUrl : URL
-	if let frameworkOverridePath = parser.object(forKey: "recorderFrameworkPath") as? String {
-		frameworkUrl = URL(fileURLWithPath: frameworkOverridePath, isDirectory: true)
-	} else {
-		frameworkUrl = Bundle.main.executableURL!.deletingLastPathComponent().appendingPathComponent("DetoxRecorder.framework/")
-	}
-	recordProcess.environment = ["SIMCTL_CHILD_DYLD_INSERT_LIBRARIES": frameworkUrl.appendingPathComponent("DetoxRecorder").standardized.path]
-}
-
-do {
-	try recordProcess.launchAndWaitUntilExitAndReturnOutput()
-} catch {
-	LNUsagePrintMessageAndExit(prependMessage: "Failed starting recording: \(error.localizedDescription).", logLevel: .error)
-}
-
-LNUsagePrintMessage(prependMessage: "Recording… (CTRL+C to stop)", logLevel: .stdOut)
 
 RunLoop.current.run(until: .distantFuture)

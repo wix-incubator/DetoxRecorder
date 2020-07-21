@@ -25,6 +25,15 @@ DTX_CREATE_LOG(InteractionController)
 @end
 @implementation _DTXVisualizedView @end
 
+@interface DTXUIInteractionRecorder ()
+
++ (void)netServiceDidResolveAddress:(NSNetService *)sender;
++ (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary<NSString *, NSNumber *> *)errorDict;
++ (void)readClosedForSocketConnection:(DTXSocketConnection*)socketConnection;
++ (void)writeClosedForSocketConnection:(DTXSocketConnection*)socketConnection;
+
+@end
+
 DTX_DIRECT_MEMBERS
 @implementation DTXUIInteractionRecorder
 
