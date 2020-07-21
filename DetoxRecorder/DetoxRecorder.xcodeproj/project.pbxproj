@@ -265,6 +265,7 @@
 		39F5AD272461F70A00FB7F18 /* _DTXScrollToAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _DTXScrollToAction.h; sourceTree = "<group>"; };
 		39F5AD282461F70A00FB7F18 /* _DTXScrollToAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _DTXScrollToAction.m; sourceTree = "<group>"; };
 		39FB28E324C4B00500A0EF16 /* RecordingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingHandler.swift; sourceTree = "<group>"; };
+		39FFFB1624C737A000B83E80 /* DTXUIInteractionRecorder-Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTXUIInteractionRecorder-Private.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +317,7 @@
 				392F3559225F6882003E8CF2 /* DTXCaptureControlWindow.h */,
 				392F355A225F6882003E8CF2 /* DTXCaptureControlWindow.m */,
 				392F3553225F6882003E8CF2 /* DTXUIInteractionRecorder.h */,
+				39FFFB1624C737A000B83E80 /* DTXUIInteractionRecorder-Private.h */,
 				392F355C225F6882003E8CF2 /* DTXUIInteractionRecorder.m */,
 				39F5AD022461A28400FB7F18 /* DetoxRecorder.h */,
 				39B71F8D2464142B00CC9A88 /* DetoxRecorder.pch */,

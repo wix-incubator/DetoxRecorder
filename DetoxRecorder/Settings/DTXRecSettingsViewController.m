@@ -9,6 +9,7 @@
 #import "DTXRecSettingsViewController.h"
 #import "NSUserDefaults+RecorderUtils.h"
 #import "DTXRecSettingsMultipleChoiceController.h"
+#import "DTXUIInteractionRecorder-Private.h"
 
 typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 	_DTXRecSettingsCellStyleBool,
@@ -211,13 +212,23 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 			@"Compatibility",
 		];
 		
+		NSString* compatFooter;
+		if([DTXUIInteractionRecorder _hasRecordedActions])
+		{
+			compatFooter = @"Detox Recorder will produce test files compatible with the selected Detox version.\nNote: Changing this setting will take effect during the next recording.";
+		}
+		else
+		{
+			compatFooter = @"Detox Recorder will produce test files compatible with the selected Detox version.";
+		}
+		
 		_settingFooters = @[
 			@"When enabled, consecutive scroll actions will be coalesced into a single action.",
 			@"When enabled, actions performed on elements, immediately after scrolling the containing scroll view, will enhance the scroll action to waitfor for better accuracy.",
 			@"The delay before a touch is categorized as a long press action in React Native.",
 			@"When enabled, there will be no visualization for recorded actions.",
 			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled.",
-			@"Detox Recorder will produce test files compatible with the selected Detox version. Make sure to set this before recording any events."
+			compatFooter,
 		];
 		
 		_settings = @[

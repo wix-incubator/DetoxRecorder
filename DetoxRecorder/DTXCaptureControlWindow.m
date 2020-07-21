@@ -678,23 +678,29 @@ static __weak UIAlertAction* __okAction;
 	[UIImagePNGRepresentation([[_settings imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"SettingsButton.png"] atomically:YES];
 	[UIImagePNGRepresentation([[_stopRecording imageForState:UIControlStateNormal] imageWithConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:pointSize]]) writeToURL:[url URLByAppendingPathComponent:@"StopButton.png"] atomically:YES];
 	
-	[self settings:_settings];
+	auto settingsController = [[DTXRecSettingsViewController alloc] initWithStyle:UITableViewStyleInsetGrouped];
+	settingsController.tableView.showsVerticalScrollIndicator = NO;
+	settingsController.tableView.showsHorizontalScrollIndicator = NO;
+	auto navigationController = [[UINavigationController alloc] initWithRootViewController:settingsController];
+	navigationController.navigationBar.prefersLargeTitles = NO;
+	CGRect frame = UIEdgeInsetsInsetRect(self.bounds, self.safeAreaInsets);
+	navigationController.view.frame = frame;
+	[self addSubview:navigationController.view];
+	[settingsController viewWillAppear:NO];
+	[navigationController.view layoutIfNeeded];
+	frame.size.height = navigationController.navigationBar.bounds.size.height + settingsController.tableView.contentSize.height;
+	navigationController.view.frame = frame;
 	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		CGRect safeBounds = UIEdgeInsetsInsetRect(self.bounds, self.safeAreaInsets);
-		CGRect drawBounds = CGRectOffset(self.bounds, 0, -self.safeAreaInsets.top);
-		
-		UIGraphicsBeginImageContextWithOptions(safeBounds.size, NO, 1.0);
-		[self drawViewHierarchyInRect:drawBounds afterScreenUpdates:YES];
-		UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		
-		[UIImagePNGRepresentation(image) writeToURL:[url URLByAppendingPathComponent:@"RecordingSettings.png"] atomically:YES];
-		
-		[self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-		
-		self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
-	});
+	UIGraphicsBeginImageContextWithOptions(navigationController.view.bounds.size, NO, 1.0);
+	[navigationController.view drawViewHierarchyInRect:navigationController.view.bounds afterScreenUpdates:YES];
+	image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	[UIImagePNGRepresentation(image) writeToURL:[url URLByAppendingPathComponent:@"RecordingSettings.png"] atomically:YES];
+	
+	[navigationController.view removeFromSuperview];
+	
+	self.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
 }
 
 - (void)generateScreenshotsForDocumentation

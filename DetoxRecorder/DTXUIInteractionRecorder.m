@@ -6,7 +6,7 @@
 //  Copyright © 2019 Leo Natan. All rights reserved.
 //
 
-#import "DTXUIInteractionRecorder.h"
+#import "DTXUIInteractionRecorder-Private.h"
 #import "DTXCaptureControlWindow.h"
 #import "DTXRecordedAction.h"
 #import "DTXAppleInternals.h"
@@ -930,6 +930,18 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 + (void)_sendPing
 {
 	DTXSendCommand(@{@"type": @"ping"});
+}
+
++ (BOOL)_hasRecordedActions
+{
+#if DEBUG
+	if([NSUserDefaults.standardUserDefaults boolForKey:@"DTXGenerateArtwork"])
+	{
+		return YES;
+	}
+#endif
+	
+	return recordedActions.count > 0;
 }
 
 #pragma mark NSNetServiceDelegate

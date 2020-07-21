@@ -15,3 +15,5 @@ Tapping on the **settings button (![](Resources/SettingsButton.png))** in the re
 **Disable Visualizations** disables visualizations after each recorded event. Disabling visualizations is not recommended, since matching estimation is also disabled.
 
 **Minimize Other Animations** minimizes or disables certain Detox Recorder animations, such as the take screenshot animation.
+
+**Detox Version** sets the minimum Detox version to support in recorded test files. Setting to the newest supported Detox version will result in improved element matching logic as well as additional additional actions supported. **Note:** Make changes to this setting before recording any action. Once an action has been recorded, the Detox version will be locked for the duration of the recording.
