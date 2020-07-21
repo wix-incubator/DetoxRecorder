@@ -183,7 +183,7 @@ static void* DTXLongPressDateAtBegin = &DTXLongPressDateAtBegin;
 				}];
 			}
 		}
-		else //User tapped on another view
+		else if(self.view != nil) //User tapped on another view
 		{
 			[DTXUIInteractionRecorder addGestureRecognizerTap:(id)self withEvent:self._activeEvents.anyObject];
 		}
