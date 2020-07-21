@@ -20,10 +20,11 @@ Detox Recorder can work with any app installed on your simulator, or use the inf
 
 #### Known Limitations
 
-- Complex gestures such as swipe and zoom are not supported
-- It is not possible to deduce long press delay in RN interactions; use the settings screen to define the delay for your app
-- Interactions with map views
-- Interactions with web views
+- Complex gestures such as pans, swipes and zooms are not supported
+- Interactions with system alerts (such as permissions and authentication) are not supported
+- Interactions with map views are not supported
+- Interactions with web views are not supported
+- It is not possible to deduce the delay of long press in RN gestures; use the settings screen to define a delay suitable for your app
 
 ### Requirements
 
@@ -93,7 +94,7 @@ It is recommended to strive for <span style="color:green">**green**</span> eleme
 
 #### Recording Controls
 
-During recording you will see that a new bar is displayed at the top of the screen. This bar contains recording controls that add additional functionality, as well as settings to augment the recording experience in your app.
+During recording you will see that a new bar is displayed at the top of the screen. This bar contains recording controls that add additional functionality, as well as settings to augment the recording experience in your app. You can collapse the bar to minimize its interference with your content.
 
 
 
