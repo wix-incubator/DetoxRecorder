@@ -41,7 +41,7 @@ class RecordingHandler: NSObject, NetServiceDelegate, DTXSocketConnectionDelegat
 			try "".write(to: currentFileUrl, atomically: true, encoding: .utf8)
 			currentFile = try FileHandle(forWritingTo: currentFileUrl)
 			let intro = "describe('Recorded suite', () => {\n\tit('\(testName)', async () => {\n".data(using: .utf8)!
-			fileOutro = "\t}\n}".data(using: .utf8)!
+			fileOutro = "\t})\n});".data(using: .utf8)!
 			
 			try currentFile.write(contentsOf: intro)
 			try currentFile.write(contentsOf: fileOutro)

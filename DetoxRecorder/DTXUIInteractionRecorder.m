@@ -278,7 +278,7 @@ static BOOL DTXUpdateAction(BOOL (^updateBlock)(DTXRecordedAction* action, BOOL*
 	
 	if(_currentConnection == nil)
 	{
-		IGNORE_IF_WAS_ERROR([file writeData:[@"\t}\n}" dataUsingEncoding:NSUTF8StringEncoding] error:&fileError]);
+		IGNORE_IF_WAS_ERROR([file writeData:[@"\t})\n});" dataUsingEncoding:NSUTF8StringEncoding] error:&fileError]);
 		IGNORE_IF_WAS_ERROR([file closeAndReturnError:&fileError]);
 	}
 	
