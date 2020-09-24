@@ -1,4 +1,7 @@
 #!/bin/zsh -e
+
+# Assumes gh is installed and logged in
+
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -55,12 +58,8 @@ git add -A &> /dev/null
 git commit -m "${VERSION}" &> /dev/null
 git push
 
-#Escape user input in markdown to valid JSON string using PHP 🤦‍♂️ (https://stackoverflow.com/a/13466143/983912)
-RELEASENOTESCONTENTS=$(printf '%s' "$(<"${RELEASE_NOTES_FILE}")" | php -r 'echo json_encode(file_get_contents("php://stdin"));')
-
 echo -e "\033[1;34mCreating GitHub release\033[0m"
 
-API_JSON=$(printf '{"tag_name": "%s","target_commitish": "master", "name": "v%s", "body": %s, "draft": false, "prerelease": false}' "$VERSION" "$VERSION" "$RELEASENOTESCONTENTS")
-curl -H "Authorization: token ${GITHUB_RELEASES_TOKEN}" -s --data "$API_JSON" https://api.github.com/repos/wix/DetoxRecorder/releases
+gh release create --repo wix/DetoxRecorder "$VERSION" --title "$VERSION" --notes-file "${RELEASE_NOTES_FILE}"
 
 rm -f "${RELEASE_NOTES_FILE}"
