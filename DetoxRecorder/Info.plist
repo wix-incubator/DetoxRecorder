@@ -17,9 +17,9 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>145</string>
+	<string>146</string>
 	<key>DTXBuildDate</key>
-	<date>2020-07-21T00:11:41Z</date>
+	<date>2020-09-24T15:41:45Z</date>
 	<key>DTXSourceRoot</key>
 	<string>$(DTXSRCROOT)</string>
 </dict>
