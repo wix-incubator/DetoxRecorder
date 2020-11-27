@@ -6,20 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		397CA701247EA1D0005E8A71 /* DetoxRecorderFramework */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 397CA704247EA1D0005E8A71 /* Build configuration list for PBXAggregateTarget "DetoxRecorderFramework" */;
-			buildPhases = (
-				397CA705247EA1D9005E8A71 /* Build Universal Framework */,
-			);
-			dependencies = (
-			);
-			name = DetoxRecorderFramework;
-			productName = DetoxRecorderFramework;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		390FF62E24968B620022BF11 /* NSString+QuotedStringForJS.h in Headers */ = {isa = PBXBuildFile; fileRef = 390FF62C24968B620022BF11 /* NSString+QuotedStringForJS.h */; };
 		390FF62F24968B620022BF11 /* NSString+QuotedStringForJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 390FF62D24968B620022BF11 /* NSString+QuotedStringForJS.m */; };
@@ -565,9 +551,6 @@
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Wix;
 				TargetAttributes = {
-					397CA701247EA1D0005E8A71 = {
-						CreatedOnToolsVersion = 11.5;
-					};
 					397CA712247EB41B005E8A71 = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -597,7 +580,6 @@
 			projectRoot = "";
 			targets = (
 				39F5ACFF2461A28400FB7F18 /* DetoxRecorder */,
-				397CA701247EA1D0005E8A71 /* DetoxRecorderFramework */,
 				397CA712247EB41B005E8A71 /* DetoxRecorderCLI */,
 			);
 		};
@@ -629,28 +611,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		397CA705247EA1D9005E8A71 /* Build Universal Framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Universal Framework";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/sh -e";
-			shellScript = "UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\nINFOPLIST_FILE=Info.plist\n\n# Make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\necho $buildNumber\nshortVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\necho $shortVersion\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Delete :DTXBuildDate\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\" || :\n/usr/libexec/PlistBuddy -c \"Add :DTXBuildDate date $(date)\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n\necho \"\\\"${shortVersion}.${buildNumber}\\\"\" > \"${PROJECT_DIR}/DetoxRecorderCLI/version.h\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -scheme ${PROJECT_NAME} ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphoneos build -derivedDataPath \"${SYMROOT}/../..\" OBJROOT=\"${OBJROOT}/DependentBuilds\" -quiet\nxcodebuild -scheme ${PROJECT_NAME} ONLY_ACTIVE_ARCH=YES -configuration ${CONFIGURATION} -sdk iphonesimulator build -derivedDataPath \"${SYMROOT}/../..\" OBJROOT=\"${OBJROOT}/DependentBuilds\" -quiet\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Step 4. Create universal binaries for embedded frameworks if needed\nif [ -d \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks\" ]; then\nfor SUB_FRAMEWORK in $( ls \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks\" ); do\nif [ -d \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/$SUB_FRAMEWORK\" ]; then\necho \"Processing ${SUB_FRAMEWORK} as a dir\"\nBINARY_NAME=\"${SUB_FRAMEWORK%.*}\"\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}/${BINARY_NAME}\"\nelse\necho \"Processing ${SUB_FRAMEWORK} as a file\"\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/Frameworks/${SUB_FRAMEWORK}\"\nfi\ndone\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		397CA70F247EB41B005E8A71 /* Sources */ = {
@@ -844,22 +804,6 @@
 			};
 			name = Release;
 		};
-		397CA702247EA1D0005E8A71 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		397CA703247EA1D0005E8A71 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		397CA718247EB41B005E8A71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -957,15 +901,6 @@
 			buildConfigurations = (
 				392F354B225F6851003E8CF2 /* Debug */,
 				392F354C225F6851003E8CF2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		397CA704247EA1D0005E8A71 /* Build configuration list for PBXAggregateTarget "DetoxRecorderFramework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				397CA702247EA1D0005E8A71 /* Debug */,
-				397CA703247EA1D0005E8A71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
