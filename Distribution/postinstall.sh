@@ -1,5 +1,10 @@
 #!/bin/zsh
-SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-CLI="${SCRIPTPATH}/DetoxRecorderCLI"
+OS="$(uname)"
 
-codesign -fs - "${CLI}"
+if [[ $OS == 'Darwin' ]]; then
+  SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+  CLI="${SCRIPTPATH}/DetoxRecorderCLI"
+  
+  codesign -fs - "${CLI}"
+fi
+
