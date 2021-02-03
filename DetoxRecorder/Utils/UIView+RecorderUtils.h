@@ -11,14 +11,10 @@
 
 @interface UIView (RecorderUtils)
 
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInAllWindowsPassingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInWindowScene:(id /* UIScene* */)scene passingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy passingPredicate:(NSPredicate*)predicate;
-+ (NSMutableArray<UIView*>*)dtxrec_findViewsInHierarchy:(UIView*)hierarchy includingRoot:(BOOL)includingRoot passingPredicate:(NSPredicate*)predicate;
-
-- (id)text;
-- (id)placeholder;
++ (NSMutableArray<UIView*>*)dtx_findViewsInAllWindowsPassingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtx_findViewsInKeySceneWindowsPassingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtx_findViewsInWindows:(NSArray<UIWindow*>*)windows passingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtx_findViewsInHierarchy:(id)hierarchy passingPredicate:(NSPredicate*)predicate;
++ (NSMutableArray<UIView*>*)dtx_findViewsInHierarchy:(id)hierarchy includingRoot:(BOOL)includingRoot passingPredicate:(NSPredicate*)predicate;
 
 @end

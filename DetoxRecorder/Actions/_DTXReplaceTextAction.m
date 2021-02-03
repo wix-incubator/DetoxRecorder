@@ -16,18 +16,26 @@
 	
 	if(self)
 	{
-		if(text.length > 0)
-		{
-			self.actionType = DTXRecordedActionTypeReplaceText;
-			self.actionArgs = @[text];
-		}
-		else
-		{
-			self.actionType = DTXRecordedActionTypeClearText;
-		}
+		[self updateReplaceTextActionWithView:view text:text];
+		self.allowsUpdates = YES;
 	}
 	
 	return self;
+}
+
+- (BOOL)updateReplaceTextActionWithView:(UIView*)view text:(NSString*)text
+{
+	if(text.length > 0)
+	{
+		self.actionType = DTXRecordedActionTypeReplaceText;
+		self.actionArgs = @[text];
+	}
+	else
+	{
+		self.actionType = DTXRecordedActionTypeClearText;
+	}
+	
+	return YES;
 }
 
 - (NSString *)detoxDescription

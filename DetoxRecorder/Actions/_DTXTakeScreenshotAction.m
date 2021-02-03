@@ -29,7 +29,7 @@ static NSUInteger screenshotCounter = 0;
 		
 		screenshotCounter++;
 		
-		self.actionArgs = @[[NSString stringWithFormat:@"Screenshot %@", screenshotName.length > 0 ? screenshotName : @(screenshotCounter)]];
+		self.actionArgs = @[screenshotName.length > 0 ? screenshotName : [NSString stringWithFormat:@"Screenshot %@", @(screenshotCounter)]];
 	}
 	
 	return self;

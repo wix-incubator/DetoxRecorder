@@ -10,20 +10,22 @@
 #import "DTXUIInteractionRecorder.h"
 #import "DTXRecSettingsViewController.h"
 #import "NSUserDefaults+RecorderUtils.h"
+#import "DTXExpectationBuilderWindow.h"
 @import AudioToolbox;
 
 @interface UIWindowScene ()
 
 + (instancetype)_keyWindowScene;
-@property(readonly, nonatomic) UIWindow *_keyWindow;
+@property (readonly, nonatomic) UIWindow *_keyWindow;
 
 @end
 
 #define SCREEN_PERCENT 0.25
 
-const CGFloat buttonWidth = 44;
+//static CGFloat buttonWidth = 38;
+static CGFloat buttonWidth = 44;
 
-@interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate>
+@interface DTXCaptureControlWindow () <UIPopoverPresentationControllerDelegate, DTXExpectationBuilderWindowDelegate>
 
 //Those should not be direct methods.
 - (void)_minimizeBar:(UIButton*)button;
@@ -31,6 +33,7 @@ const CGFloat buttonWidth = 44;
 - (void)takeScreenshot:(UIButton*)button;
 - (void)settings:(UIButton*)button;
 - (void)toggleXYRecording:(_DTXCaptureControlButton*)button;
+- (void)addExpectation:(UIButton*)button;
 - (void)takeScreenshotLongPress:(UILongPressGestureRecognizer*)lgr;
 - (void)addComment:(UIButton*)button;
 - (void)stopRecording:(UIButton*)button;
@@ -38,7 +41,6 @@ const CGFloat buttonWidth = 44;
 
 @end
 
-DTX_DIRECT_MEMBERS
 @implementation DTXCaptureControlWindow
 {
 	UIView* _wrapperView;
@@ -46,13 +48,14 @@ DTX_DIRECT_MEMBERS
 	_DTXCaptureControlButton* _stopRecording;
 	
 	UIVisualEffectView* _chevronEffectView;
-	UIButton* _chevronButton;
+	UIButton* _minimizeButton;
 	UIButton* _openButton;
 	
 	UIStackView* _actionButtonsStackView;
 	UIScrollView* _actionButtonsScrollView;
 	_DTXCaptureControlButton* _takeScreenshot;
 	_DTXCaptureControlButton* _xyRecord;
+	_DTXCaptureControlButton* _addExpectation;
 	_DTXCaptureControlButton* _settings;
 	_DTXCaptureControlButton* _addComment;
 	
@@ -61,6 +64,7 @@ DTX_DIRECT_MEMBERS
 	NSLayoutConstraint* _leadingConstraint;
 	NSLayoutConstraint* _trailingConstraint;
 	
+	BOOL _acceptsKeyWindow;
 	__weak UIWindow* _prevKeyWindow;
 	
 #if DEBUG
@@ -103,6 +107,8 @@ DTX_DIRECT_MEMBERS
 
 - (void)appear
 {
+	buttonWidth = MIN(44, (MIN(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height) - 16) / (8 + 0.85));
+	
 	_backgroundView = [UIVisualEffectView new];
 	_backgroundView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemUltraThinMaterialDark];
 	_backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -111,35 +117,35 @@ DTX_DIRECT_MEMBERS
 	_chevronEffectView.effect = [UIVibrancyEffect effectForBlurEffect:(id)_backgroundView.effect style:UIVibrancyEffectStyleLabel];
 	_chevronEffectView.translatesAutoresizingMaskIntoConstraints = NO;
 	
-	_chevronButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_chevronButton setImage:[UIImage systemImageNamed:@"chevron.compact.right" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:40]] forState:UIControlStateNormal];
-	_chevronButton.transform = CGAffineTransformMakeScale(1.0, 0.7);
-	_chevronButton.translatesAutoresizingMaskIntoConstraints = NO;
-	[_chevronButton addTarget:self action:@selector(_minimizeBar:) forControlEvents:UIControlEventPrimaryActionTriggered];
+	_minimizeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[_minimizeButton setImage:[UIImage systemImageNamed:@"chevron.compact.right" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:0.9 * buttonWidth]] forState:UIControlStateNormal];
+	_minimizeButton.transform = CGAffineTransformMakeScale(1.0, 0.7);
+	_minimizeButton.translatesAutoresizingMaskIntoConstraints = NO;
+	[_minimizeButton addTarget:self action:@selector(_minimizeBar:) forControlEvents:UIControlEventPrimaryActionTriggered];
 	
 	_openButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_openButton setImage:[UIImage systemImageNamed:@"chevron.compact.left" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:40]] forState:UIControlStateNormal];
+	[_openButton setImage:[UIImage systemImageNamed:@"chevron.compact.left" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:0.9 * buttonWidth]] forState:UIControlStateNormal];
 	_openButton.transform = CGAffineTransformMakeScale(1.0, 0.7);
 	_openButton.translatesAutoresizingMaskIntoConstraints = NO;
 	[_openButton addTarget:self action:@selector(_expandBar:) forControlEvents:UIControlEventPrimaryActionTriggered];
 	_openButton.alpha = 0.0;
 	
-	[_chevronEffectView.contentView addSubview:_chevronButton];
+	[_chevronEffectView.contentView addSubview:_minimizeButton];
 	[_chevronEffectView.contentView addSubview:_openButton];
 	[_backgroundView.contentView addSubview:_chevronEffectView];
 	
 	[NSLayoutConstraint activateConstraints:@[
-		[_chevronEffectView.topAnchor constraintEqualToAnchor:_chevronButton.topAnchor],
-		[_chevronEffectView.bottomAnchor constraintEqualToAnchor:_chevronButton.bottomAnchor],
-		[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_chevronButton.leadingAnchor],
-		[_chevronEffectView.trailingAnchor constraintEqualToAnchor:_chevronButton.trailingAnchor],
+		[_chevronEffectView.topAnchor constraintEqualToAnchor:_minimizeButton.topAnchor],
+		[_chevronEffectView.bottomAnchor constraintEqualToAnchor:_minimizeButton.bottomAnchor],
+		[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_minimizeButton.leadingAnchor],
+		[_chevronEffectView.trailingAnchor constraintEqualToAnchor:_minimizeButton.trailingAnchor],
 		
 		[_chevronEffectView.topAnchor constraintEqualToAnchor:_openButton.topAnchor],
 		[_chevronEffectView.bottomAnchor constraintEqualToAnchor:_openButton.bottomAnchor],
 		[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_openButton.leadingAnchor],
 		[_chevronEffectView.trailingAnchor constraintEqualToAnchor:_openButton.trailingAnchor],
 		
-		[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_backgroundView.leadingAnchor constant:12],
+		[_chevronEffectView.leadingAnchor constraintEqualToAnchor:_backgroundView.leadingAnchor constant:8],
 		[_chevronEffectView.centerYAnchor constraintEqualToAnchor:_backgroundView.centerYAnchor],
 	]];
 	
@@ -147,15 +153,13 @@ DTX_DIRECT_MEMBERS
 	_wrapperView.translatesAutoresizingMaskIntoConstraints = NO;
 	_wrapperView.clipsToBounds = YES;
 	
-	_wrapperView.layer.cornerRadius = (buttonWidth + 8) / 2;
-	
 	[self.rootViewController.view addSubview:_wrapperView];
 	
 	_topConstraint = [_wrapperView.topAnchor constraintEqualToAnchor:self.rootViewController.view.safeAreaLayoutGuide.topAnchor];
 	_topConstraint.priority = UILayoutPriorityRequired;
 	[self _updateTopConstraint];
 	
-	UIImageSymbolConfiguration* buttonConfiguration = [UIImageSymbolConfiguration configurationWithPointSize:17];
+	UIImageSymbolConfiguration* buttonConfiguration = [UIImageSymbolConfiguration configurationWithPointSize:buttonWidth / 2.5882352941];
 	
 	_takeScreenshot = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 	[_takeScreenshot setImage:[UIImage systemImageNamed:@"camera.fill" withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
@@ -193,16 +197,20 @@ DTX_DIRECT_MEMBERS
 		[_xyRecord setImageTransform:CGAffineTransformMakeRotation(-M_PI_2) forState:UIControlStateNormal];
 	}
 	[_xyRecord addTarget:self action:@selector(toggleXYRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
+
+	_addExpectation = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
+	[_addExpectation setImage:[UIImage systemImageNamed:@"plus.app.fill" withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
+	[_addExpectation addTarget:self action:@selector(addExpectation:) forControlEvents:UIControlEventPrimaryActionTriggered];
 	
 	_addComment = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
 	[_addComment setImage:[UIImage systemImageNamed:@"plus.bubble.fill" withConfiguration:buttonConfiguration] forState:UIControlStateNormal];
 	[_addComment addTarget:self action:@selector(addComment:) forControlEvents:UIControlEventPrimaryActionTriggered];
 	
 	_stopRecording = [_DTXCaptureControlButton buttonWithType:UIButtonTypeSystem];
-	[_stopRecording setImage:[UIImage systemImageNamed:@"stop.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:20]] forState:UIControlStateNormal];
+	[_stopRecording setImage:[UIImage systemImageNamed:@"stop.fill" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:buttonWidth / 2.2]] forState:UIControlStateNormal];
 	[_stopRecording addTarget:self action:@selector(stopRecording:) forControlEvents:UIControlEventPrimaryActionTriggered];
 	
-	_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _addComment, _xyRecord, _settings]];
+	_actionButtonsStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_takeScreenshot, _addComment, _xyRecord, _addExpectation, _settings]];
 	_actionButtonsStackView.translatesAutoresizingMaskIntoConstraints = NO;
 	_actionButtonsStackView.axis = UILayoutConstraintAxisHorizontal;
 	_actionButtonsStackView.distribution = UIStackViewDistributionEqualSpacing;
@@ -212,10 +220,10 @@ DTX_DIRECT_MEMBERS
 	[_wrapperView addSubview:_actionButtonsStackView];
 	[_wrapperView addSubview:_stopRecording];
 	
-	_widthConstraint = [_wrapperView.widthAnchor constraintEqualToConstant:buttonWidth + 40];
+	_widthConstraint = [_wrapperView.widthAnchor constraintEqualToConstant:buttonWidth * 1.9];
 	_widthConstraint.active = NO;
 	
-	_leadingConstraint = [_actionButtonsStackView.leadingAnchor constraintEqualToAnchor:_wrapperView.leadingAnchor constant:40.0];
+	_leadingConstraint = [_actionButtonsStackView.leadingAnchor constraintEqualToAnchor:_wrapperView.leadingAnchor constant:0.8 * buttonWidth];
 	_trailingConstraint = [_stopRecording.leadingAnchor constraintEqualToAnchor:_actionButtonsStackView.trailingAnchor constant:8.0];
 	
 	[NSLayoutConstraint activateConstraints:@[
@@ -236,6 +244,7 @@ DTX_DIRECT_MEMBERS
 		[_stopRecording.centerYAnchor constraintEqualToAnchor:_wrapperView.centerYAnchor],
 	]];
 	
+	_wrapperView.layer.cornerRadius = (buttonWidth + 8) / 2;
 	self.alpha = 0.0;
 	
 	_stopRecording.tintColor = UIColor.whiteColor;
@@ -257,14 +266,24 @@ DTX_DIRECT_MEMBERS
 		
 		if(NSUserDefaults.standardUserDefaults.dtxrec_recordingBarMinimized == YES)
 		{
-			[self _minimizeBar:_chevronButton];
+			[self _minimizeBar:_minimizeButton];
 		}
 	}];
+}
+
+- (BOOL)_canBecomeKeyWindow
+{
+	return _acceptsKeyWindow;
 }
 
 - (void)makeKeyWindow
 {
 	if(self.isKeyWindow)
+	{
+		return;
+	}
+	
+	if(_acceptsKeyWindow == NO)
 	{
 		return;
 	}
@@ -282,11 +301,21 @@ DTX_DIRECT_MEMBERS
 
 - (void)becomeKeyWindow
 {
+	if(_acceptsKeyWindow == NO)
+	{
+		return;
+	}
+	
 	[super becomeKeyWindow];
 }
 
 - (void)resignKeyWindow
 {
+	if(_acceptsKeyWindow == NO)
+	{
+		return;
+	}
+	
 	[super resignKeyWindow];
 }
 
@@ -334,6 +363,19 @@ DTX_DIRECT_MEMBERS
 	NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording = !NSUserDefaults.standardUserDefaults.dtxrec_attemptXYRecording;
 }
 
+- (void)addExpectation:(UIButton*)button
+{
+	_expectationBuilderWindow = [[DTXExpectationBuilderWindow alloc] initWithCaptureControlWindow:self];
+	_expectationBuilderWindow.delegate = self;
+	_expectationBuilderWindow.appWindow = UIWindowScene._keyWindowScene._keyWindow;
+	_expectationBuilderWindow.windowLevel = self.windowLevel;
+	[_expectationBuilderWindow makeKeyAndVisible];
+	
+	[UIView animateWithDuration:0.15 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:0 animations:^{
+		self.alpha = 0.0;
+	} completion:nil];
+}
+
 - (void)takeScreenshot:(UIButton*)button
 {
 	[DTXUIInteractionRecorder addTakeScreenshot];
@@ -364,6 +406,7 @@ static __weak UIAlertAction* __okAction;
 	[screenshot addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 		textField.placeholder = @"Name";
 		[textField addTarget:self action:@selector(_alertControllerTextFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
+		_acceptsKeyWindow = YES;
 		[self makeKeyWindow];
 		[textField becomeFirstResponder];
 	}];
@@ -371,6 +414,7 @@ static __weak UIAlertAction* __okAction;
 	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"Take Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[DTXUIInteractionRecorder addTakeScreenshotWithName:screenshot.textFields.firstObject.text];
 		[self _restoreKeyWindow];
+		_acceptsKeyWindow = NO;
 		
 	}];
 	okAction.enabled = NO;
@@ -378,6 +422,7 @@ static __weak UIAlertAction* __okAction;
 	[screenshot addAction:okAction];
 	[screenshot addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		[self _restoreKeyWindow];
+		_acceptsKeyWindow = NO;
 	}]];
 	
 	[self.rootViewController presentViewController:screenshot animated:YES completion:^{
@@ -393,6 +438,7 @@ static __weak UIAlertAction* __okAction;
 	[comment addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
 		textField.placeholder = @"Single Line Comment";
 		[textField addTarget:self action:@selector(_alertControllerTextFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
+		_acceptsKeyWindow = YES;
 		[self makeKeyWindow];
 		[textField becomeFirstResponder];
 	}];
@@ -400,6 +446,7 @@ static __weak UIAlertAction* __okAction;
 	UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"Add Comment" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[DTXUIInteractionRecorder addCodeComment:comment.textFields.firstObject.text];
 		[self _restoreKeyWindow];
+		_acceptsKeyWindow = NO;
 		
 	}];
 	okAction.enabled = NO;
@@ -407,6 +454,7 @@ static __weak UIAlertAction* __okAction;
 	[comment addAction:okAction];
 	[comment addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		[self _restoreKeyWindow];
+		_acceptsKeyWindow = NO;
 	}]];
 	
 	[self.rootViewController presentViewController:comment animated:YES completion:^{
@@ -542,7 +590,7 @@ static __weak UIAlertAction* __okAction;
 						_wrapperView.alpha = 0.0;
 						
 						[UIView animateWithDuration:0.25 delay:0.1 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowAnimatedContent animations:^{
-							_wrapperView.alpha = 0.75;
+							_wrapperView.alpha = 1.0;
 						} completion:nil];
 					}];
 				}];
@@ -607,7 +655,7 @@ static __weak UIAlertAction* __okAction;
 		[_wrapperView layoutIfNeeded];
 		
 		_actionButtonsStackView.alpha = 0.0;
-		_chevronButton.alpha = 0.0;
+		_minimizeButton.alpha = 0.0;
 		_openButton.alpha = 1.0;
 	} completion:^(BOOL finished) {
 		NSUserDefaults.standardUserDefaults.dtxrec_recordingBarMinimized = YES;
@@ -625,7 +673,7 @@ static __weak UIAlertAction* __okAction;
 		[_wrapperView layoutIfNeeded];
 		
 		_actionButtonsStackView.alpha = 1.0;
-		_chevronButton.alpha = 1.0;
+		_minimizeButton.alpha = 1.0;
 		_openButton.alpha = 0.0;
 	} completion:^(BOOL finished) {
 		NSUserDefaults.standardUserDefaults.dtxrec_recordingBarMinimized = NO;
@@ -649,6 +697,18 @@ static __weak UIAlertAction* __okAction;
 	{
 		return UIModalPresentationPopover;
 	}
+}
+
+#pragma mark DTXExpectationBuilderWindowDelegate
+
+- (void)expectationBuilderWindowDidEnd:(DTXExpectationBuilderWindow*)elementPicker
+{
+	_expectationBuilderWindow.hidden = YES;
+	_expectationBuilderWindow = nil;
+	
+	[UIView animateWithDuration:0.15 delay:0.0 usingSpringWithDamping:500.0 initialSpringVelocity:0.0 options:0 animations:^{
+		self.alpha = 1.0;
+	} completion:nil];
 }
 
 #if DEBUG

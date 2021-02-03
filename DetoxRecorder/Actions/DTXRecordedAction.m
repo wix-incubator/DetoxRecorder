@@ -146,6 +146,13 @@ DTXRecordedActionType const DTXRecordedActionTypeDeviceShake = @"shake";
 	return NO;
 }
 
+- (BOOL)updateReplaceTextActionWithView:(UIView*)view text:(NSString*)text
+{
+	[self doesNotRecognizeSelector:_cmd];
+	
+	return NO;
+}
+
 static NSDictionary* _DTXDeepDiveOnDictionary(NSDictionary* d)
 {
 	NSMutableDictionary* rv = [NSMutableDictionary new];

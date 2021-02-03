@@ -13,6 +13,7 @@
 + (instancetype)_keyWindowScene;
 @property(readonly, nonatomic) UIWindow *_keyWindow;
 - (id)_allWindowsIncludingInternalWindows:(_Bool)arg1 onlyVisibleWindows:(_Bool)arg2;
++ (id)_keyboardWindowSceneForScreen:(UIScreen*)arg1 create:(_Bool)arg2;
 
 @end
 
@@ -24,78 +25,79 @@
 
 @end
 
-DTX_DIRECT_MEMBERS
 @implementation UIWindow (RecorderUtils)
 
-+ (UIWindow*)dtxrec_keyWindow
++ (UIWindow*)dtx_keyWindow
 {
-	if(@available(iOS 13, *))
-	{
-		return UIWindowScene._keyWindowScene._keyWindow;
-	}
-	else
-	{
-		return UIWindow.keyWindow;
-	}
+	return UIWindowScene._keyWindowScene._keyWindow;
 }
 
-+ (NSArray<UIWindow *> *)dtxrec_allKeyWindowSceneWindows
++ (NSArray<UIWindow *> *)dtx_allKeyWindowSceneWindows
 {
-	id scene = nil;
-	
-	if (@available(iOS 13.0, *))
-	{
-		scene = UIWindowScene._keyWindowScene;
-	}
-	
-	return [self dtxrec_allWindowsForScene:scene];
+	UIWindowScene* scene = UIWindowScene._keyWindowScene;
+	return [self dtx_allWindowsForScene:scene];
 }
 
-+ (NSArray<UIWindow*>*)dtxrec_allWindowsForScene:(id)scene
++ (NSArray<UIWindow*>*)dtx_allWindowsForScene:(UIWindowScene*)scene
 {
-	NSMutableArray<UIWindow*>* windows = [[self dtxrec_allWindows] mutableCopy];
-	
-	if (@available(iOS 13.0, *))
+	NSMutableArray<UIWindow*>* windows = [[self dtx_allWindows] mutableCopy];
+	scene = scene ?: UIWindowScene._keyWindowScene;
+	if(scene != nil)
 	{
-		scene = scene ?: UIWindowScene._keyWindowScene;
-		[windows filterUsingPredicate:[NSPredicate predicateWithFormat:@"windowScene == %@", scene]];
+		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"windowScene == %@", scene];
+		
+		UIScene* keyboardScene = [UIWindowScene _keyboardWindowSceneForScreen:[scene screen] create:NO];
+		if(keyboardScene != nil)
+		{
+			predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"windowScene == %@", keyboardScene]]];
+		}
+		
+		[windows filterUsingPredicate:predicate];
 	}
 	
 	return windows;
 }
 
-+ (NSArray<UIWindow*>*)dtxrec_allWindows
++ (NSArray<UIWindow*>*)dtx_allWindows
 {
 	return [[UIWindow allWindowsIncludingInternalWindows:YES onlyVisibleWindows:NO] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hidden == NO"]];
 }
 
-+ (void)_dtxrec_enumerateWindows:(NSArray<UIWindow*>*)windows usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
++ (void)_dtx_enumerateWindows:(NSArray<UIWindow*>*)windows usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
 {
-	[windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-		block(obj, idx, stop);
-	}];
-}
-
-+ (void)dtxrec_enumerateAllWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
-{
-	[self _dtxrec_enumerateWindows:self.dtxrec_allWindows usingBlock:block];
-}
-
-+ (void)dtxrec_enumerateKeyWindowSceneWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
-{
-	id scene = nil;
-	
-	if (@available(iOS 13.0, *))
+	NSUInteger idx = 0;
+	for (UIWindow * _Nonnull obj in windows.reverseObjectEnumerator)
 	{
-		scene = UIWindowScene._keyWindowScene;
+		BOOL stop = NO;
+		block(obj, idx, &stop);
+		if(stop == YES)
+		{
+			break;
+		}
 	}
-	
-	[self dtxrec_enumerateWindowsInScene:scene usingBlock:block];
 }
 
-+ (void)dtxrec_enumerateWindowsInScene:(id)scene usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
++ (void)dtx_enumerateAllWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
 {
-	[self _dtxrec_enumerateWindows:[self dtxrec_allWindowsForScene:scene] usingBlock:block];
+	[self _dtx_enumerateWindows:self.dtx_allWindows usingBlock:block];
+}
+
++ (void)dtx_enumerateKeyWindowSceneWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
+{
+	UIWindowScene* scene = UIWindowScene._keyWindowScene;
+	[self dtx_enumerateWindowsInScene:scene usingBlock:block];
+}
+
++ (void)dtx_enumerateWindowsInScene:(UIWindowScene*)scene usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block
+{
+	[self _dtx_enumerateWindows:[self dtx_allWindowsForScene:scene] usingBlock:block];
+}
+
+- (NSString *)dtx_shortDescription
+{
+	CGRect frame = self.frame;
+	
+	return [NSString stringWithFormat:@"<%@: %p; frame = (%@ %@; %@ %@);>", self.class, self, @(frame.origin.x), @(frame.origin.y), @(frame.size.width), @(frame.size.height)];
 }
 
 @end

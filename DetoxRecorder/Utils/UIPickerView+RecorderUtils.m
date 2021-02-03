@@ -10,7 +10,6 @@
 #import "UIView+RecorderUtils.h"
 #import "DTXAppleInternals.h"
 
-DTX_DIRECT_MEMBERS
 @implementation UIPickerView (RecorderUtils)
 
 - (NSString*)dtxrec_valueForComponent:(NSInteger)component
@@ -35,7 +34,7 @@ DTX_DIRECT_MEMBERS
 		}
 		else
 		{
-			UILabel* label = (id)[UIView dtxrec_findViewsInHierarchy:view passingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+			UILabel* label = (id)[UIView dtx_findViewsInHierarchy:view passingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
 				return [evaluatedObject isKindOfClass:UILabel.class];
 			}]].firstObject;
 			value = label.text;

@@ -49,6 +49,8 @@ extern DTXRecordedActionType const DTXRecordedActionTypeDeviceShake;
 - (BOOL)updateScrollActionWithScrollView:(UIScrollView*)scrollView fromDeltaOriginOffset:(CGPoint)deltaOriginOffset toNewOffset:(CGPoint)newOffset;
 - (BOOL)enhanceScrollActionWithTargetElement:(DTXRecordedElement*)targetElement;
 
+- (BOOL)updateReplaceTextActionWithView:(UIView*)view text:(NSString*)text;
+
 + (instancetype)shakeDeviceAction;
 
 + (void)resetScreenshotCounter;

@@ -17,7 +17,6 @@ DTX_CREATE_LOG(DetoxRecorderApplicationAccessibility)
 
 @end
 
-DTX_DIRECT_MEMBERS
 @implementation UIApplication (EnableAccessibility)
 
 + (void)dtxrec_enableAccessibilityForSimulator

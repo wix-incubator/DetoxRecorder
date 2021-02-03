@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DTXExpectationBuilderWindow;
 
 @interface _DTXCaptureControlButton : UIButton
 
@@ -18,6 +19,8 @@
 @end
 
 @interface DTXCaptureControlWindow : UIWindow
+
+@property (nonatomic, strong) DTXExpectationBuilderWindow* expectationBuilderWindow;
 
 - (void)appear;
 

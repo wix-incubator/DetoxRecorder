@@ -17,6 +17,7 @@ DTX_DIRECT_MEMBERS
 	@autoreleasepool {
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_attemptXYRecording": @NO}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceScrollEvents": @YES}];
+		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_coalesceTextEvents": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_convertScrollEventsToWaitfor": @YES}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_rnLongPressDelay": @0.5}];
 		[NSUserDefaults.standardUserDefaults registerDefaults:@{@"dtxrec_recordingBarMinimized": @YES}];
@@ -42,6 +43,16 @@ DTX_DIRECT_MEMBERS
 - (void)dtxrec_setCoalesceScrollEvents:(BOOL)dtxrec_coalesceScrollEvents
 {
 	[self setBool:dtxrec_coalesceScrollEvents forKey:@"dtxrec_coalesceScrollEvents"];
+}
+
+- (BOOL)dtxrec_coalesceTextEvents
+{
+	return [self boolForKey:@"dtxrec_coalesceTextEvents"];
+}
+
+- (void)dtxrec_setCoalesceTextEvents:(BOOL)dtxrec_coalesceTextEvents
+{
+	[self setBool:dtxrec_coalesceTextEvents forKey:@"dtxrec_coalesceTextEvents"];
 }
 
 - (BOOL)dtxrec_convertScrollEventsToWaitfor

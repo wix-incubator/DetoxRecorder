@@ -12,14 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIWindow (RecorderUtils)
 
-@property (nonatomic, strong, class, readonly, nullable) UIWindow* dtxrec_keyWindow NS_SWIFT_NAME(dtxrec_keyWindow);
-@property (nonatomic, strong, class, readonly) NSArray<UIWindow*>* dtxrec_allKeyWindowSceneWindows;
+@property (nonatomic, strong, class, readonly, nullable) UIWindow* dtx_keyWindow NS_SWIFT_NAME(dtx_keyWindow);
+@property (nonatomic, strong, class, readonly) NSArray<UIWindow*>* dtx_allKeyWindowSceneWindows;
 
-+ (NSArray<UIWindow*>*)dtxrec_allWindows;
-+ (NSArray<UIWindow*>*)dtxrec_allWindowsForScene:(nullable id /* UIWindowScene* */)scene;
-+ (void)dtxrec_enumerateAllWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
-+ (void)dtxrec_enumerateKeyWindowSceneWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
-+ (void)dtxrec_enumerateWindowsInScene:(nullable id /* UIWindowScene* */)scene usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
++ (NSArray<UIWindow*>*)dtx_allWindows;
++ (NSArray<UIWindow*>*)dtx_allWindowsForScene:(nullable UIWindowScene*)scene;
++ (void)dtx_enumerateAllWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
++ (void)dtx_enumerateKeyWindowSceneWindowsUsingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
++ (void)dtx_enumerateWindowsInScene:(nullable UIWindowScene*)scene usingBlock:(void (NS_NOESCAPE ^)(UIWindow* obj, NSUInteger idx, BOOL *stop))block;
 
 @end
 

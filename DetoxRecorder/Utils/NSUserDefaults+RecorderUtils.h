@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, setter=dtxrec_setAttemptXYRecording:) BOOL dtxrec_attemptXYRecording;
 @property (nonatomic, assign, setter=dtxrec_setCoalesceScrollEvents:) BOOL dtxrec_coalesceScrollEvents;
+@property (nonatomic, assign, setter=dtxrec_setCoalesceTextEvents:) BOOL dtxrec_coalesceTextEvents;
 @property (nonatomic, assign, setter=dtxrec_setConvertScrollEventsToWaitfor:) BOOL dtxrec_convertScrollEventsToWaitfor;
 @property (nonatomic, assign, setter=dtxrec_setDisableVisualizations:) BOOL dtxrec_disableVisualizations;
 @property (nonatomic, assign, setter=dtxrec_setDisableAnimations:) BOOL dtxrec_disableAnimations;

@@ -207,6 +207,7 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 			@"Recording Settings",
 			(id)NSNull.null,
 			(id)NSNull.null,
+			(id)NSNull.null,
 			@"Visualization & Animations",
 			(id)NSNull.null,
 			@"Compatibility",
@@ -225,6 +226,7 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 		_settingFooters = @[
 			@"When enabled, consecutive scroll actions will be coalesced into a single action.",
 			@"When enabled, actions performed on elements, immediately after scrolling the containing scroll view, will enhance the scroll action to waitfor for better accuracy.",
+			@"When enabled, only a sinlge replaceText() call will be recorded.",
 			@"The delay before a touch is categorized as a long press action in React Native.",
 			@"When enabled, there will be no visualization for recorded actions.",
 			@"When enabled, miscellaneous Detox Recorder animations will be minimized or disabled.",
@@ -250,6 +252,14 @@ typedef NS_ENUM(NSUInteger, _DTXRecSettingsCellStyle) {
 				@{@"Enhance Scroll Events":
 					  @[
 						  NSStringFromSelector(@selector(dtxrec_convertScrollEventsToWaitfor)),
+						  @(_DTXRecSettingsCellStyleBool)
+					  ],
+				}
+			],
+			@[
+				@{@"Coalesce Text Events":
+					  @[
+						  NSStringFromSelector(@selector(dtxrec_coalesceTextEvents)),
 						  @(_DTXRecSettingsCellStyleBool)
 					  ],
 				}

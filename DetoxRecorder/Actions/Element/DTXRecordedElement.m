@@ -132,7 +132,7 @@ static NSString* DTXBestEffortAccessibilityIdentifierForView(UIView* view, UIAcc
 	{
 		NSPredicate* predicate = [NSPredicate predicateWithFormat:@"accessibilityIdentifier == %@", identifier];
 		
-		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:predicate];
+		NSArray* found = [UIView dtx_findViewsInAllWindowsPassingPredicate:predicate];
 		IDX_IF_NEEDED;
 	}
 	
@@ -152,11 +152,11 @@ static NSMutableString* _DTXBestEffortAccessibilityLabelForView(UIView* view)
 
 static NSMutableString* DTXBestEffortTextForView(UIView* view, NSInteger* idx, DTXRecordedElement* ancestorElement)
 {
-	NSMutableString* text = [view valueForKey:@"text"];
+	NSMutableString* text = [view valueForKey:@"dtx_text"];
 	
 	if(text.length > 0)
 	{
-		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"text == %@", text]];
+		NSArray* found = [UIView dtx_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"dtx_text == %@", text]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -169,7 +169,7 @@ static NSMutableString* DTXBestEffortAccessibilityLabelForView(UIView* view, NSI
 	
 	if(label.length > 0)
 	{
-		NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
+		NSArray* found = [UIView dtx_findViewsInAllWindowsPassingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]];
 		IDX_IF_NEEDED;
 	}
 	
@@ -183,14 +183,14 @@ static NSMutableString* DTXBestEffortByClassForView(UIView* view, NSString* text
 	NSPredicate* predicate = [NSPredicate predicateWithFormat:@"self isKindOfClass: %@", view.class];
 	if(text.length > 0)
 	{
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"text == %@", text]]];
+		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"dtx_text == %@", text]]];
 	}
 	else if(label.length > 0)
 	{
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", label]]];
 	}
 	
-	NSArray* found = [UIView dtxrec_findViewsInAllWindowsPassingPredicate:predicate];
+	NSArray* found = [UIView dtx_findViewsInAllWindowsPassingPredicate:predicate];
 	IDX_IF_NEEDED;
 	
 	return rv;

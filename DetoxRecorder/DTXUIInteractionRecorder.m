@@ -16,7 +16,7 @@
 
 DTX_CREATE_LOG(InteractionController)
 
-#define IGNORE_RECORDING_WINDOW(view) if(view.window == captureControlWindow) { return; }
+#define IGNORE_RECORDING_WINDOW(view) if((id)view.window == (id)captureControlWindow || (id)view.window == (id)captureControlWindow.expectationBuilderWindow) { return; }
 
 @interface _DTXVisualizedView : UIView
 
@@ -34,7 +34,6 @@ DTX_CREATE_LOG(InteractionController)
 
 @end
 
-DTX_DIRECT_MEMBERS
 @implementation DTXUIInteractionRecorder
 
 static __weak id<DTXUIInteractionRecorderDelegate> delegate;
@@ -875,6 +874,24 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 	[self _flashVisualizerView:previousTextChangeVisualizer];
 }
 
++ (BOOL)_coalesceTextEvent:(UIView<UITextInput>*)textInput text:(NSString*)text
+{
+	return DTXUpdateAction(^BOOL(DTXRecordedAction *prevAction, BOOL* remove) {
+		if(NSUserDefaults.standardUserDefaults.dtxrec_coalesceTextEvents == NO)
+		{
+			return NO;
+		}
+		
+		if(prevAction.allowsUpdates == NO || prevAction.actionType != DTXRecordedActionTypeReplaceText || [prevAction.element isReferencingView:textInput] == NO)
+		{
+			return NO;
+		}
+
+		[prevAction updateReplaceTextActionWithView:textInput text:text];
+		return YES;
+	});
+}
+
 + (void)addTextChangeEvent:(UIView<UITextInput>*)textInput
 {
 	IGNORE_RECORDING_WINDOW(textInput)
@@ -886,8 +903,14 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 		return;
 	}
 	
-	DTXAddAction(action);
 	[self _visualizeTextChangeOfView:textInput action:action];
+	
+	if([self _coalesceTextEvent:textInput text:text] == YES)
+	{
+		return;
+	}
+	
+	DTXAddAction(action);
 }
 
 + (void)addTextReturnKeyEvent:(UIView<UITextInput>*)textInput
@@ -900,8 +923,14 @@ static inline CGPoint DTXDirectionOfScroll(DTXRecordedAction* action)
 		return;
 	}
 	
-	DTXAddAction(action);
 	[self _visualizeReturnTapInView:textInput action:action];
+	
+	if([self _coalesceTextEvent:textInput text:@"\n"] == YES)
+	{
+		return;
+	}
+	
+	DTXAddAction(action);
 }
 
 + (void)addDeviceShake
