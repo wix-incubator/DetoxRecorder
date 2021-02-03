@@ -54,7 +54,7 @@ To use your Detox configuration to determine which app to record and on which si
 detox recorder --configuration "ios.sim.release" --outputTestFile "~/Desktop/RecordedTest.js" --testName "My Recorded Test" --record
 ```
 
-**Note:** If your Detox configuration resides outside of package.json, make sure that the configuration file is a valid JSON file. Arbitrary JS code is not supported.
+**Note:** Detox Recorder only supports valid JSON configuration files. If your Detox configuration resides outside of package.json, make sure that the configuration file is a valid JSON file. Arbitrary JS code is not supported.
 
 Or, alternatively, to start a recording of an already installed app, run the following command:
 
