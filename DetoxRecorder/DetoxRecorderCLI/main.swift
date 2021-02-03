@@ -140,15 +140,21 @@ class DetoxRecorderCLI
 			
 			do {
 				let data = try Data(contentsOf: url)
-				let jsonObj = try JSONSerialization.jsonObject(with: data, options: [])
 				
-				guard let dict = jsonObj as? [String: Any] else {
-					throw "Unknown file format"
+				do {
+					let jsonObj = try JSONSerialization.jsonObject(with: data, options: [])
+					
+					guard let dict = jsonObj as? [String: Any] else {
+						throw "Unknown file format"
+					}
+					
+					log.info("Using “\(configFileName)” config file")
+					
+					return dict
 				}
-				
-				log.info("Using “\(configFileName)” config file")
-				
-				return dict
+				catch {
+					LNUsagePrintMessageAndExit(prependMessage: "Unable to read \(url.path): \(error.localizedDescription) The config file must be in JSON format.", logLevel: .error)
+				}
 			}
 			catch {
 				continue
