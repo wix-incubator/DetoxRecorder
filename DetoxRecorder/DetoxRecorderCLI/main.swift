@@ -333,7 +333,7 @@ func prepareSimulatorId(simulatorId: String?, config: String?) -> String {
 	
 	var arguments: [String] = ["--list"]
 	deviceJson.forEach { key, value in
-		arguments.append("--by\(key.capitalizingFirstLetter())")
+		arguments.append("--by\(key.lowercased() == "os" ? "OS" : key.capitalizingFirstLetter())")
 		arguments.append(value)
 	}
 	
